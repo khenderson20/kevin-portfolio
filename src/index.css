@@ -1,6 +1,6 @@
 /* Import Design System and Typography */
 @import './styles/design-system.css';
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&family=Source+Sans+Pro:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;200;300;400;500;600;700;800;900&family=Source+Sans+Pro:wght@200;300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap');
 
 * {
   margin: 0;
@@ -12,12 +12,20 @@ body {
   margin: 0;
   background: var(--color-surface);
   min-height: 100vh;
-  font-family: var(--font-family-primary);
+  font-family: var(--typography-body-family);
+  font-size: var(--typography-body-size);
+  font-weight: var(--typography-body-weight);
+  line-height: var(--typography-body-line-height);
+  letter-spacing: var(--typography-body-letter-spacing);
   color: var(--color-on-surface);
   overflow-x: hidden;
   position: relative;
   transition: background-color var(--duration-normal) var(--ease-in-out),
               color var(--duration-normal) var(--ease-in-out);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern" 1, "liga" 1;
 }
 
 /* Subtle depth overlay for vintage equipment feel */

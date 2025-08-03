@@ -56,24 +56,45 @@ src/styles/
 - `--color-on-*`: Text on state colors
 - `--color-on-*-container`: Text on state containers
 
-### Typography System
+### Enhanced Typography System
 
-#### Font Families
+#### Font Families - Extended Stack
+- `--font-family-display`: Work Sans + Inter (hero/display text)
 - `--font-family-primary`: Work Sans (headings)
 - `--font-family-secondary`: Source Sans Pro (body text)
-- `--font-family-mono`: IBM Plex Mono (code/brand)
+- `--font-family-mono`: IBM Plex Mono + JetBrains Mono (code)
+- `--font-family-serif`: Georgia (print/formal content)
 
-#### Font Sizes (Fluid Typography)
-- `--font-size-xs` to `--font-size-6xl`
-- Uses `clamp()` for responsive scaling
-- Base scale: 12px to 88px
+#### Font Sizes - Fluid Typography Scale
+- `--font-size-2xs` to `--font-size-9xl` (10px to 192px)
+- Uses `clamp()` for responsive scaling across all breakpoints
+- Optimized scaling ratios for perfect visual hierarchy
+- Extended range for display typography and micro-content
 
-#### Font Weights
-- `--font-weight-light`: 300
-- `--font-weight-regular`: 400
-- `--font-weight-medium`: 500
-- `--font-weight-semibold`: 600
-- `--font-weight-bold`: 700
+#### Font Weights - Complete Range
+- `--font-weight-thin`: 100 (minimal presence)
+- `--font-weight-extralight`: 200 (delicate emphasis)
+- `--font-weight-light`: 300 (subtle text)
+- `--font-weight-regular`: 400 (standard text)
+- `--font-weight-medium`: 500 (emphasized text)
+- `--font-weight-semibold`: 600 (strong emphasis)
+- `--font-weight-bold`: 700 (high emphasis)
+- `--font-weight-extrabold`: 800 (maximum impact)
+- `--font-weight-black`: 900 (strongest weight)
+
+#### Semantic Typography Tokens
+- **Display Typography**: `--typography-display-1/2/3-*` for hero content
+- **Heading Hierarchy**: `--typography-h1/h2/h3/h4/h5/h6-*` for structured content
+- **Body Text**: `--typography-body-large/body/body-small-*` for readable content
+- **UI Labels**: `--typography-label-large/label/label-small-*` for interface text
+- **Specialized**: `--typography-code/caption/overline-*` for specific use cases
+
+#### Advanced Typography Features
+- **Text Rendering**: Optimized for legibility and performance
+- **Font Features**: Ligatures, kerning, and OpenType features
+- **Reading Widths**: Optimal line lengths (45ch, 65ch, 85ch)
+- **Text Shadows**: Multiple levels for depth and emphasis
+- **Responsive Utilities**: Mobile and desktop-specific typography
 
 ### Spacing System
 

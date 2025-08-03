@@ -7,6 +7,7 @@
 @import './styles/loading.css';
 @import './styles/contact-form.css';
 @import './styles/hero.css';
+@import './styles/navigation.css';
 
 /* Mobile-First Base Styles */
 .portfolio {
@@ -15,7 +16,7 @@
   flex-direction: column;
 }
 
-/* Navbar Styles - Mobile First */
+/* Enhanced Navbar Styles */
 .navbar {
   position: fixed;
   top: 0;
@@ -23,45 +24,32 @@
   right: 0;
   z-index: var(--z-index-sticky);
   display: flex;
-  flex-direction: column;
   align-items: center;
   padding: var(--space-4);
   background: var(--color-surface-container);
   backdrop-filter: blur(20px);
   border-bottom: 2px solid var(--color-border);
-  border-top: 1px solid var(--color-border-variant);
-  height: auto;
-  min-height: 120px;
   box-sizing: border-box;
-  gap: var(--space-4);
   box-shadow: var(--shadow-lg);
+  transition: all var(--duration-normal) var(--ease-in-out);
 }
 
 .nav-brand {
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-on-surface);
-  text-decoration: none;
-  letter-spacing: var(--letter-spacing-wide);
-  text-transform: uppercase;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  flex: 1;
 }
 
 .nav-content {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: var(--space-3);
-  width: 100%;
+  gap: var(--space-6);
 }
 
 .nav-links {
   display: flex;
-  flex-wrap: wrap;
   gap: var(--space-2);
   align-items: center;
-  justify-content: center;
 }
 
 .nav-link {
@@ -92,7 +80,7 @@
 .main-content {
   flex: 1;
   padding: var(--space-4);
-  padding-top: 140px;
+  padding-top: 84px; /* Mobile navbar height + spacing */
   width: 100%;
   background:
     linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.9) 100%),
@@ -181,20 +169,29 @@
 .music-section h2,
 .about-section h2,
 .contact-section h2 {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
+  font-family: var(--typography-h1-family);
+  font-size: var(--typography-h1-size);
+  font-weight: var(--typography-h1-weight);
+  line-height: var(--typography-h1-line-height);
+  letter-spacing: var(--typography-h1-letter-spacing);
   margin-bottom: var(--space-4);
   text-align: center;
   color: var(--color-on-surface);
-  line-height: var(--line-height-tight);
+  text-rendering: optimizeLegibility;
 }
 
 .section-intro {
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-relaxed);
+  font-family: var(--typography-body-large-family);
+  font-size: var(--typography-body-large-size);
+  font-weight: var(--typography-body-large-weight);
+  line-height: var(--typography-body-large-line-height);
+  letter-spacing: var(--typography-body-large-letter-spacing);
   color: var(--color-on-surface-variant);
   text-align: center;
   margin-bottom: var(--space-6);
+  max-width: var(--reading-width-normal);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .projects-grid,
@@ -218,11 +215,23 @@
 
 .project-card h3,
 .track-card h3 {
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-semibold);
+  font-family: var(--typography-h3-family);
+  font-size: var(--typography-h3-size);
+  font-weight: var(--typography-h3-weight);
+  line-height: var(--typography-h3-line-height);
+  letter-spacing: var(--typography-h3-letter-spacing);
   margin-bottom: var(--space-3);
   color: var(--color-on-surface);
-  line-height: var(--line-height-snug);
+}
+
+.project-card p,
+.track-card p {
+  font-family: var(--typography-body-family);
+  font-size: var(--typography-body-size);
+  font-weight: var(--typography-body-weight);
+  line-height: var(--typography-body-line-height);
+  letter-spacing: var(--typography-body-letter-spacing);
+  color: var(--color-on-surface-variant);
 }
 
 .project-description,
@@ -381,15 +390,13 @@
 /* Tablet - 768px and up */
 @media (min-width: 768px) {
   .navbar {
-    flex-direction: row;
     justify-content: space-between;
     padding: var(--space-4) var(--space-8);
     height: 80px;
     min-height: 80px;
-    gap: 0;
   }
 
-  .nav-brand {
+  .nav-brand .brand-text {
     font-size: var(--font-size-xl);
   }
 
@@ -403,7 +410,7 @@
     width: auto;
     justify-content: flex-end;
   }
-  
+
   .main-content {
     padding: 2rem;
     padding-top: 100px;
