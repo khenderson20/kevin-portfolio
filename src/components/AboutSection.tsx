@@ -55,7 +55,7 @@ function AboutSection() {
   ];
 
   return (
-    <section className="about-section" aria-labelledby="about-heading">
+    <section className="about-section" id="about" aria-labelledby="about-heading">
       <header>
         <h2 id="about-heading">Professional Background</h2>
         <p className="section-intro">

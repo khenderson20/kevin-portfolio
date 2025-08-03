@@ -29,7 +29,7 @@ function DevelopmentSection() {
   ];
 
   return (
-    <section className="dev-section" aria-labelledby="dev-heading">
+    <section className="dev-section" id="development" aria-labelledby="dev-heading">
       <header>
         <h2 id="dev-heading">Technical Projects</h2>
         <p className="section-intro">

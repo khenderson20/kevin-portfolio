@@ -37,7 +37,7 @@ function MusicSection() {
   ];
 
   return (
-    <section className="music-section" aria-labelledby="music-heading">
+    <section className="music-section" id="music" aria-labelledby="music-heading">
       <header>
         <h2 id="music-heading">Audio Engineering Projects</h2>
         <p className="section-intro">

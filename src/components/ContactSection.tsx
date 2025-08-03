@@ -15,7 +15,7 @@ function ContactSection() {
   ];
 
   return (
-    <section className="contact-section" aria-labelledby="contact-heading">
+    <section className="contact-section" id="contact" aria-labelledby="contact-heading">
       <header>
         <h2 id="contact-heading">Let's Connect</h2>
         <p className="section-intro">
