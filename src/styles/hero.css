@@ -8,7 +8,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: 2rem 1rem;
+  padding: var(--space-8) var(--space-4);
   text-align: center;
 }
 
@@ -60,17 +60,17 @@
 .hero-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
   background: rgba(120, 219, 226, 0.1);
   border: 1px solid rgba(120, 219, 226, 0.2);
-  border-radius: 50px;
-  font-size: 0.875rem;
-  font-weight: 500;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
   color: rgba(120, 219, 226, 0.9);
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-8);
   backdrop-filter: blur(10px);
-  animation: badgePulse 3s ease-in-out infinite;
+  animation: badgePulse 3s var(--ease-in-out) infinite;
 }
 
 .badge-icon {
@@ -80,14 +80,14 @@
 
 /* Typography */
 .hero-title {
-  font-family: 'Work Sans', 'Source Sans Pro', sans-serif;
+  font-family: var(--font-family-primary);
   font-size: clamp(2.5rem, 8vw, 4.5rem);
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  color: #ffffff;
-  margin-bottom: 1.5rem;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--color-neutral-0);
+  margin-bottom: var(--space-6);
+  text-shadow: var(--shadow-lg);
 }
 
 .title-line {

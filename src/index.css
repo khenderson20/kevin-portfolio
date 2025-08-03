@@ -1,4 +1,5 @@
-/* Import Moog-Inspired Typography */
+/* Import Design System and Typography */
+@import './styles/design-system.css';
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&family=Source+Sans+Pro:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
 * {
@@ -9,30 +10,14 @@
 
 body {
   margin: 0;
-  background:
-    /* Vintage dust particles */
-    radial-gradient(circle at 15% 25%, rgba(200, 180, 140, 0.03) 0%, transparent 2px),
-    radial-gradient(circle at 85% 15%, rgba(180, 160, 120, 0.025) 0%, transparent 1.5px),
-    radial-gradient(circle at 45% 75%, rgba(220, 200, 160, 0.02) 0%, transparent 2.5px),
-    radial-gradient(circle at 75% 85%, rgba(190, 170, 130, 0.03) 0%, transparent 1px),
-    radial-gradient(circle at 25% 65%, rgba(210, 190, 150, 0.025) 0%, transparent 2px),
-    radial-gradient(circle at 65% 35%, rgba(170, 150, 110, 0.02) 0%, transparent 1.8px),
-    /* Vintage noise texture */
-    repeating-conic-gradient(from 0deg at 30% 40%, transparent 0deg, rgba(160, 140, 100, 0.008) 0.5deg, transparent 1deg),
-    repeating-conic-gradient(from 45deg at 70% 60%, transparent 0deg, rgba(140, 120, 80, 0.006) 0.3deg, transparent 0.8deg),
-    /* Aged paper-like texture */
-    radial-gradient(ellipse at 20% 20%, rgba(180, 160, 120, 0.04) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 80%, rgba(160, 140, 100, 0.035) 0%, transparent 55%),
-    /* Subtle wear patterns */
-    linear-gradient(45deg, transparent 30%, rgba(140, 120, 80, 0.015) 50%, transparent 70%),
-    linear-gradient(-45deg, transparent 40%, rgba(160, 140, 100, 0.012) 60%, transparent 80%),
-    /* Main vintage gradient background */
-    linear-gradient(135deg, #1c1a16 0%, #2a2620 25%, #1f1d18 50%, #252218 75%, #201e19 100%);
+  background: var(--color-surface);
   min-height: 100vh;
-  font-family: 'Work Sans', 'Source Sans Pro', system-ui, Helvetica, Arial, sans-serif;
-  color: #e0e0e0;
+  font-family: var(--font-family-primary);
+  color: var(--color-on-surface);
   overflow-x: hidden;
   position: relative;
+  transition: background-color var(--duration-normal) var(--ease-in-out),
+              color var(--duration-normal) var(--ease-in-out);
 }
 
 /* Subtle depth overlay for vintage equipment feel */
