@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 
-function HomeSection() {
+interface HomeSectionProps {
+  onNavigateToSection?: (section: string) => void;
+}
+
+function HomeSection({ onNavigateToSection }: HomeSectionProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -10,23 +14,25 @@ function HomeSection() {
   }, []);
 
   const handleMusicClick = () => {
-    // Navigate to music section
-    const musicSection = document.getElementById('music');
-    if (musicSection) {
-      musicSection.scrollIntoView({ behavior: 'smooth' });
+    if (onNavigateToSection) {
+      onNavigateToSection('music');
+    } else {
+      // Fallback for direct navigation
+      window.location.hash = 'music';
     }
   };
 
   const handleCodeClick = () => {
-    // Navigate to development section
-    const devSection = document.getElementById('development');
-    if (devSection) {
-      devSection.scrollIntoView({ behavior: 'smooth' });
+    if (onNavigateToSection) {
+      onNavigateToSection('development');
+    } else {
+      // Fallback for direct navigation
+      window.location.hash = 'development';
     }
   };
 
   return (
-    <section className="hero" id="home">
+    <div className="hero">
       <div className="hero-background">
         <div className="hero-gradient"></div>
         <div className="hero-particles"></div>
@@ -105,7 +111,7 @@ function HomeSection() {
           <div className="arrow-down"></div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 

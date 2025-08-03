@@ -96,15 +96,11 @@ export function testAnimationPerformance(
   }
 
   // Test for performance-friendly properties
-  const performantProperties = [
-    'transform', 'opacity', 'filter', 'backdrop-filter'
-  ];
-  
   const element = document.querySelector(`[style*="${animationName}"]`);
   if (element) {
     const computedStyle = window.getComputedStyle(element);
     const willChange = computedStyle.willChange;
-    
+
     if (!willChange || willChange === 'auto') {
       recommendations.push('Consider adding will-change property for better performance');
     }
