@@ -1,36 +1,63 @@
-import { useEffect, useState } from "react";
-import type { Schema } from "../amplify/data/resource";
-import { generateClient } from "aws-amplify/data";
+import { useState } from 'react';
+import Navbar from './components/Navbar';
+import HomeSection from './components/HomeSection';
+import MusicSection from './components/MusicSection';
+import DevelopmentSection from './components/DevelopmentSection';
+import AboutSection from './components/AboutSection';
+import ContactSection from './components/ContactSection';
+import './App.css';
 
 function App() {
-  const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
-  const [client, setClient] = useState<ReturnType<typeof generateClient<Schema>> | null>(null);
+  const [activeSection, setActiveSection] = useState('home');
 
-  useEffect(() => {
-    const amplifyClient = generateClient<Schema>();
-    setClient(amplifyClient);
-    
-    amplifyClient.models.Todo.observeQuery().subscribe({
-      next: (data) => setTodos([...data.items]),
-    });
-  }, []);
-
-  function createTodo() {
-    if (client) {
-      client.models.Todo.create({ content: window.prompt("Todo content") });
-    }
-  }
+  const sections = [
+    { id: 'home', label: 'Home' },
+    { id: 'music', label: 'Music' },
+    { id: 'development', label: 'Development' },
+    { id: 'about', label: 'About' },
+    { id: 'contact', label: 'Contact' }
+  ];
 
   return (
-    <main>
-      <h1>My todos</h1>
-      <button onClick={createTodo}>+ new</button>
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo.id}>{todo.content}</li>
-        ))}
-      </ul>
-    </main>
+    <div className="portfolio">
+      <Navbar 
+        sections={sections}
+        activeSection={activeSection}
+        setActiveSection={setActiveSection}
+      />
+
+      <main className="main-content">
+        <div className="section-container">
+          <div className="section-wrapper">
+            {activeSection === 'home' && (
+              <div className="section-fade-in">
+                <HomeSection />
+              </div>
+            )}
+            {activeSection === 'music' && (
+              <div className="section-fade-in">
+                <MusicSection />
+              </div>
+            )}
+            {activeSection === 'development' && (
+              <div className="section-fade-in">
+                <DevelopmentSection />
+              </div>
+            )}
+            {activeSection === 'about' && (
+              <div className="section-fade-in">
+                <AboutSection />
+              </div>
+            )}
+            {activeSection === 'contact' && (
+              <div className="section-fade-in">
+                <ContactSection />
+              </div>
+            )}
+          </div>
+        </div>
+      </main>
+    </div>
   );
 }
 
