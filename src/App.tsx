@@ -1,14 +1,16 @@
-import { useState } from 'react';
+import { Suspense, lazy } from 'react';
+import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import HomeSection from './components/HomeSection';
 import MusicSection from './components/MusicSection';
 import DevelopmentSection from './components/DevelopmentSection';
 import AboutSection from './components/AboutSection';
 import ContactSection from './components/ContactSection';
+import { useActiveSection } from './hooks/useActiveSection';
 import './App.css';
 
 function App() {
-  const [activeSection, setActiveSection] = useState('home');
+  const { activeSection, navigateToSection } = useActiveSection();
 
   const sections = [
     { id: 'home', label: 'Home' },
@@ -18,15 +20,16 @@ function App() {
     { id: 'contact', label: 'Contact' }
   ];
 
-  return (
-    <div className="portfolio">
-      <Navbar 
-        sections={sections}
-        activeSection={activeSection}
-        setActiveSection={setActiveSection}
-      />
 
-      <main className="main-content">
+  return (
+    <ErrorBoundary>
+      <div className="portfolio">
+        <Navbar 
+          sections={sections}
+          activeSection={activeSection}
+          setActiveSection={navigateToSection}
+        />
+        <main className="main-content">
         <div className="section-container">
           <div className="section-wrapper">
             {activeSection === 'home' && (
@@ -56,8 +59,9 @@ function App() {
             )}
           </div>
         </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </ErrorBoundary>
   );
 }
 
