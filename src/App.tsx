@@ -1,4 +1,4 @@
-import { Suspense, lazy } from 'react';
+
 import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import HomeSection from './components/HomeSection';
