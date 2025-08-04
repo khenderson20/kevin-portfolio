@@ -257,7 +257,7 @@ export function useTouchDevice() {
       setIsTouchDevice(
         'ontouchstart' in window ||
         navigator.maxTouchPoints > 0 ||
-        // @ts-ignore - for older browsers
+        // @ts-expect-error - for older browsers compatibility
         navigator.msMaxTouchPoints > 0
       );
     };
@@ -276,3 +276,4 @@ export function useTouchDevice() {
 
   return isTouchDevice;
 }
+

@@ -147,7 +147,6 @@ export function smoothScrollToElement(
 
   const {
     block = 'start',
-    inline = 'start',
     offset = 0,
     ...scrollOptions
   } = options;
@@ -314,7 +313,7 @@ export function polyfillSmoothScroll() {
     // Override native scrollTo with smooth implementation
     const originalScrollTo = window.scrollTo;
 
-    (window as any).scrollTo = function(x: number | ScrollToOptions, y?: number) {
+    (window as Window & { scrollTo: (x: number | ScrollToOptions, y?: number) => void }).scrollTo = function(x: number | ScrollToOptions, y?: number) {
       if (typeof x === 'object' && x && x.behavior === 'smooth') {
         smoothScrollTo(x.top || 0, {
           duration: 600,
@@ -350,3 +349,5 @@ export function getScrollProgress(): number {
   const docHeight = document.documentElement.scrollHeight - window.innerHeight;
   return Math.min(Math.max(scrollTop / docHeight, 0), 1);
 }
+
+
