@@ -1,5 +1,6 @@
 import ThemeToggle from './ThemeToggle';
 import { useMobileNavigation } from '../hooks/useMobileNavigation';
+import { useNavbarScroll } from '../hooks/useNavbarScroll';
 
 interface Section {
   id: string;
@@ -27,6 +28,8 @@ function Navbar({ sections, activeSection, setActiveSection }: NavbarProps) {
     trapFocus: true,
   });
 
+  const { isScrolled } = useNavbarScroll({ threshold: 50 });
+
   const handleNavClick = (sectionId: string) => {
     setActiveSection(sectionId);
     // Menu will close automatically due to closeOnNavigate option
@@ -51,7 +54,11 @@ function Navbar({ sections, activeSection, setActiveSection }: NavbarProps) {
   };
 
   return (
-    <nav className="navbar" role="navigation" aria-label="Main navigation">
+    <nav
+      className={`navbar ${isScrolled ? 'scrolled' : ''}`}
+      role="navigation"
+      aria-label="Main navigation"
+    >
       <div className="nav-brand">
         <span className="brand-text">Kevin Henderson</span>
       </div>
