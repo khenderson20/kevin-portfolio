@@ -1,15 +1,18 @@
 
+import { useEffect, useState, lazy, Suspense } from 'react';
 import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
-import HomeSection from './components/HomeSection';
-import MusicSection from './components/MusicSection';
-import DevelopmentSection from './components/DevelopmentSection';
-import AboutSection from './components/AboutSection';
-import ContactSection from './components/ContactSection';
 import ScrollIndicator from './components/ScrollIndicator';
 import { useActiveSection } from './hooks/useActiveSection';
 import './App.css';
-import { useState, useEffect } from 'react';
+import SectionErrorBoundary from './components/SectionErrorBoundary';
+
+// Lazy load heavy components
+const HomeSection = lazy(() => import('./components/HomeSection'));
+const MusicSection = lazy(() => import('./components/MusicSection'));
+const DevelopmentSection = lazy(() => import('./components/DevelopmentSection'));
+const AboutSection = lazy(() => import('./components/AboutSection'));
+const ContactSection = lazy(() => import('./components/ContactSection'));
 
 function App() {
   const { activeSection, navigateToSection } = useActiveSection();
@@ -56,25 +59,23 @@ function App() {
           setActiveSection={navigateToSection}
         />
         <main className="main-content">
-          <section id="home" className="page-section">
-            <HomeSection onNavigateToSection={navigateToSection} />
-          </section>
-
-          <section id="music" className="page-section">
-            <MusicSection />
-          </section>
-
-          <section id="development" className="page-section">
-            <DevelopmentSection />
-          </section>
-
-          <section id="about" className="page-section">
-            <AboutSection />
-          </section>
-
-          <section id="contact" className="page-section">
-            <ContactSection />
-          </section>
+          <Suspense fallback={<div className="loading-skeleton">Loading...</div>}>
+            <SectionErrorBoundary sectionName="Home">
+              <HomeSection onNavigateToSection={navigateToSection} />
+            </SectionErrorBoundary>
+            <SectionErrorBoundary sectionName="Music">
+              <MusicSection />
+            </SectionErrorBoundary>
+            <SectionErrorBoundary sectionName="Development">
+              <DevelopmentSection />
+            </SectionErrorBoundary>
+            <SectionErrorBoundary sectionName="About">
+              <AboutSection />
+            </SectionErrorBoundary>
+            <SectionErrorBoundary sectionName="Contact">
+              <ContactSection />
+            </SectionErrorBoundary>
+          </Suspense>
         </main>
       </div>
     </ErrorBoundary>

@@ -122,3 +122,4 @@ function AnimatedCounter({
 }
 
 export default AnimatedCounter;
+
