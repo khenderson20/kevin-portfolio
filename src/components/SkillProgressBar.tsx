@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 
 interface SkillProgressBarProps {
   skill: string;
@@ -19,64 +20,40 @@ function SkillProgressBar({
   color = 'var(--color-primary)',
   className = ''
 }: SkillProgressBarProps) {
-  const [isVisible, setIsVisible] = useState(false);
   const [animatedLevel, setAnimatedLevel] = useState(0);
-  const progressRef = useRef<HTMLDivElement>(null);
-  const observerRef = useRef<IntersectionObserver | null>(null);
-
-  // Set up intersection observer for animation trigger
-  useEffect(() => {
-    const currentRef = progressRef.current;
-    
-    if (!currentRef) return;
-
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !isVisible) {
-            setTimeout(() => {
-              setIsVisible(true);
-            }, delay);
-          }
-        });
-      },
-      {
-        threshold: 0.3,
-        rootMargin: '0px 0px -10% 0px'
-      }
-    );
-
-    observerRef.current.observe(currentRef);
-
-    return () => {
-      if (observerRef.current && currentRef) {
-        observerRef.current.unobserve(currentRef);
-      }
-    };
-  }, [delay, isVisible]);
+  
+  const { elementRef, isIntersecting } = useIntersectionObserver({
+    threshold: 0.3,
+    rootMargin: '0px 0px -10% 0px',
+    triggerOnce: true
+  });
 
   // Animate progress bar when visible
   useEffect(() => {
-    if (!isVisible) return;
+    if (!isIntersecting) return;
 
-    const duration = 1500; // 1.5 seconds
-    const steps = 60; // 60fps
-    const increment = level / steps;
-    const stepDuration = duration / steps;
+    const timer = setTimeout(() => {
+      const duration = 1500;
+      const steps = 60;
+      const increment = level / steps;
+      const stepDuration = duration / steps;
 
-    let currentStep = 0;
-    const timer = setInterval(() => {
-      currentStep++;
-      const newLevel = Math.min(currentStep * increment, level);
-      setAnimatedLevel(newLevel);
+      let currentStep = 0;
+      const animationTimer = setInterval(() => {
+        currentStep++;
+        const newLevel = Math.min(currentStep * increment, level);
+        setAnimatedLevel(newLevel);
 
-      if (currentStep >= steps) {
-        clearInterval(timer);
-      }
-    }, stepDuration);
+        if (currentStep >= steps) {
+          clearInterval(animationTimer);
+        }
+      }, stepDuration);
 
-    return () => clearInterval(timer);
-  }, [isVisible, level]);
+      return () => clearInterval(animationTimer);
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [isIntersecting, level, delay]);
 
   const getLevelLabel = (level: number): string => {
     if (level >= 90) return 'Expert';
@@ -95,7 +72,7 @@ function SkillProgressBar({
 
   return (
     <div 
-      ref={progressRef}
+      ref={elementRef as React.RefObject<HTMLDivElement>}
       className={`skill-progress-bar ${className}`}
       role="progressbar"
       aria-valuenow={Math.round(animatedLevel)}
@@ -123,7 +100,7 @@ function SkillProgressBar({
           style={{
             width: `${animatedLevel}%`,
             backgroundColor: color || getProgressColor(level),
-            transition: isVisible ? 'width 0.1s ease-out' : 'none'
+            transition: isIntersecting ? 'width 0.1s ease-out' : 'none'
           }}
         >
           <div className="progress-shine" />
@@ -145,3 +122,6 @@ function SkillProgressBar({
 }
 
 export default SkillProgressBar;
+
+
+

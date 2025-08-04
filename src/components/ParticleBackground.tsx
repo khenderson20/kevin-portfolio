@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 
 interface Particle {
   x: number;
@@ -40,8 +41,14 @@ function ParticleBackground({
   const mouseRef = useRef({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState(false);
 
+  // Use intersection observer to pause animation when not visible
+  const { elementRef, isIntersecting } = useIntersectionObserver({
+    threshold: 0.1,
+    triggerOnce: false // Keep observing for performance
+  });
+
   // Initialize particles
-  const initParticles = (width: number, height: number) => {
+  const initParticles = useCallback((width: number, height: number) => {
     const particles: Particle[] = [];
     
     for (let i = 0; i < particleCount; i++) {
@@ -63,10 +70,10 @@ function ParticleBackground({
     }
     
     particlesRef.current = particles;
-  };
+  }, [particleCount, speed, particleSize]);
 
   // Update particle positions
-  const updateParticles = (width: number, height: number) => {
+  const updateParticles = useCallback((width: number, height: number) => {
     particlesRef.current.forEach((particle) => {
       // Update position
       particle.x += particle.vx;
@@ -107,10 +114,10 @@ function ParticleBackground({
         particle.opacity = Math.random() * 0.5 + 0.1;
       }
     });
-  };
+  }, [interactive, speed]);
 
   // Draw particles
-  const drawParticles = (ctx: CanvasRenderingContext2D) => {
+  const drawParticles = useCallback((ctx: CanvasRenderingContext2D) => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     
     // Draw particles
@@ -147,7 +154,7 @@ function ParticleBackground({
             const lifeOpacity = (1 - particle.life / particle.maxLife) * 
                                (1 - otherParticle.life / otherParticle.maxLife);
             ctx.globalAlpha = (particle.connectionDistance - distance) / 
-                             particle.connectionDistance * 0.6 * lifeOpacity; // Increase from 0.3 to 0.6
+                             particle.connectionDistance * 0.6 * lifeOpacity;
             // Create a gradient for the connection line
             const gradient = ctx.createLinearGradient(
               particle.x, particle.y, 
@@ -157,7 +164,7 @@ function ParticleBackground({
             gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.9)');
             gradient.addColorStop(1, 'rgba(64, 224, 208, 0.8)');
             ctx.strokeStyle = gradient;
-            ctx.lineWidth = 1.5 + Math.random() * 1; // Increase from 0.5 to 1.5
+            ctx.lineWidth = 1.5 + Math.random() * 1;
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
             ctx.lineTo(otherParticle.x, otherParticle.y);
@@ -169,10 +176,10 @@ function ParticleBackground({
         });
       });
     }
-  };
+  }, [particleColor, interactive]);
 
   // Animation loop
-  const animate = () => {
+  const animate = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas || !isVisible) return;
     
@@ -183,7 +190,7 @@ function ParticleBackground({
     drawParticles(ctx);
     
     animationRef.current = requestAnimationFrame(animate);
-  };
+  }, [isVisible, drawParticles, updateParticles]);
 
   // Handle mouse movement
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -200,7 +207,7 @@ function ParticleBackground({
   };
 
   // Handle resize
-  const handleResize = () => {
+  const handleResize = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     
@@ -211,7 +218,7 @@ function ParticleBackground({
     canvas.height = parent.clientHeight;
     
     initParticles(canvas.width, canvas.height);
-  };
+  }, [initParticles]);
 
   // Setup and cleanup
   useEffect(() => {
@@ -243,20 +250,27 @@ function ParticleBackground({
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, []); // Empty dependency array for setup only
+  }, [handleResize]); // Add handleResize to dependency array
 
   // Restart animation when visibility changes
   useEffect(() => {
-    if (isVisible) {
+    if (isIntersecting) {
       animate();
     } else if (animationRef.current) {
       cancelAnimationFrame(animationRef.current);
     }
-  }, [isVisible, particleColor, particleCount, speed, interactive]); // Only depend on isVisible
+  }, [isIntersecting, animate]);
 
   return (
     <canvas
-      ref={canvasRef}
+      ref={(node) => {
+        (canvasRef as React.MutableRefObject<HTMLCanvasElement | null>).current = node;
+        if (typeof elementRef === 'function') {
+          (elementRef as (instance: HTMLCanvasElement | null) => void)(node);
+        } else if (elementRef && typeof elementRef === 'object' && 'current' in elementRef) {
+          (elementRef as React.MutableRefObject<HTMLCanvasElement | null>).current = node;
+        }
+      }}
       className={`particle-background ${className}`}
       style={{
         position: 'absolute',
@@ -275,10 +289,4 @@ function ParticleBackground({
 }
 
 export default ParticleBackground;
-
-
-
-
-
-
 

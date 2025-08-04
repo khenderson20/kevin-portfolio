@@ -1,125 +1,51 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 
 interface AnimatedCounterProps {
   end: number;
-  start?: number;
+  suffix?: string;
   duration?: number;
   delay?: number;
-  prefix?: string;
-  suffix?: string;
-  decimals?: number;
-  separator?: string;
-  className?: string;
-  onComplete?: () => void;
 }
 
-function AnimatedCounter({
-  end,
-  start = 0,
-  duration = 2000,
-  delay = 0,
-  prefix = '',
-  suffix = '',
-  decimals = 0,
-  separator = ',',
-  className = '',
-  onComplete
-}: AnimatedCounterProps) {
-  const [count, setCount] = useState(start);
-  const [isVisible, setIsVisible] = useState(false);
-  const counterRef = useRef<HTMLSpanElement>(null);
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  const animationRef = useRef<number | null>(null);
+function AnimatedCounter({ end, suffix = '', duration = 2000, delay = 0 }: AnimatedCounterProps) {
+  const [displayValue, setDisplayValue] = useState(0);
+  
+  const { elementRef, isIntersecting } = useIntersectionObserver({
+    threshold: 0.5,
+    rootMargin: '0px 0px -10% 0px',
+    triggerOnce: true
+  });
 
-  // Set up intersection observer for animation trigger
+  // Start animation when element becomes visible
   useEffect(() => {
-    const currentRef = counterRef.current;
-    
-    if (!currentRef) return;
-
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !isVisible) {
-            setTimeout(() => {
-              setIsVisible(true);
-            }, delay);
+    if (isIntersecting) {
+      const timer = setTimeout(() => {
+        // Start counter animation
+        const startTime = Date.now();
+        const animate = () => {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          setDisplayValue(Math.floor(end * progress));
+          
+          if (progress < 1) {
+            requestAnimationFrame(animate);
           }
-        });
-      },
-      {
-        threshold: 0.5,
-        rootMargin: '0px 0px -10% 0px'
-      }
-    );
-
-    observerRef.current.observe(currentRef);
-
-    return () => {
-      if (observerRef.current && currentRef) {
-        observerRef.current.unobserve(currentRef);
-      }
-    };
-  }, [delay, isVisible]);
-
-  // Animate counter when visible
-  useEffect(() => {
-    if (!isVisible) return;
-
-    const startTime = performance.now();
-    const startValue = start;
-    const endValue = end;
-    const totalChange = endValue - startValue;
-
-    const animate = (currentTime: number) => {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
+        };
+        animate();
+      }, delay);
       
-      // Easing function (ease-out cubic)
-      const easedProgress = 1 - Math.pow(1 - progress, 3);
-      
-      const currentValue = startValue + (totalChange * easedProgress);
-      setCount(currentValue);
-
-      if (progress < 1) {
-        animationRef.current = requestAnimationFrame(animate);
-      } else {
-        setCount(endValue);
-        onComplete?.();
-      }
-    };
-
-    animationRef.current = requestAnimationFrame(animate);
-
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
-  }, [isVisible, start, end, duration, onComplete]);
-
-  // Format number with separators
-  const formatNumber = (num: number): string => {
-    const fixed = num.toFixed(decimals);
-    const parts = fixed.split('.');
-    
-    // Add thousand separators
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, separator);
-    
-    return parts.join('.');
-  };
+      return () => clearTimeout(timer);
+    }
+  }, [isIntersecting, end, duration, delay]);
 
   return (
-    <span 
-      ref={counterRef}
-      className={`animated-counter ${className}`}
-      aria-live="polite"
-      aria-label={`${prefix}${formatNumber(count)}${suffix}`}
-    >
-      {prefix}{formatNumber(count)}{suffix}
+    <span ref={elementRef} className="animated-counter">
+      {displayValue}{suffix}
     </span>
   );
 }
 
 export default AnimatedCounter;
+
 
