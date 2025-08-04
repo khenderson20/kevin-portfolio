@@ -693,159 +693,858 @@
 
 /* Interactive states now handled by interactive-states.css */
 
-/* About Section Styles - Mobile First */
-/* Section layout styles now handled by main section selector above */
+/* ===== ENHANCED ABOUT SECTION STYLES ===== */
+/* Design System Compliant with Color Theming */
+
+.about-section {
+  /* Section layout handled by main page-section selector */
+}
+
+.about-header {
+  text-align: center;
+  margin-bottom: var(--space-12);
+}
 
 .about-content {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: var(--space-12);
+  width: 100%;
+  max-width: var(--container-max-width-xl);
+  margin: 0 auto;
 }
+
+.section-heading {
+  text-align: center;
+  margin-bottom: var(--space-8);
+  position: relative;
+}
+
+.section-heading::after {
+  content: '';
+  position: absolute;
+  bottom: calc(-1 * var(--space-2));
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--space-16);
+  height: 2px;
+  background: linear-gradient(90deg, transparent, currentColor, transparent);
+  opacity: 0.6;
+}
+
+/* ===== ABOUT SUMMARY SECTION ===== */
 
 .about-summary {
   text-align: center;
-  margin-bottom: var(--space-4); /* 16px - Apple grid system */
+  padding: var(--space-8);
+  background: var(--color-surface-container);
+  border: var(--card-border-width) solid var(--color-border);
+  border-radius: var(--card-border-radius-lg);
+  box-shadow: var(--shadow-md);
 }
 
-.about-summary h3 {
-  font-size: 1.5rem;
-  margin-bottom: var(--space-4); /* 16px - Apple grid system */
-  color: #e8eaed;
+.summary-content {
+  max-width: var(--reading-width-wide);
+  margin: 0 auto;
 }
 
-.about-summary p {
-  font-size: var(--font-size-base); /* Using design system font size */
-  line-height: 1.6;
-  color: rgba(180, 185, 195, 0.9);
-  margin-bottom: var(--space-4); /* 16px - Apple grid system */
+.summary-content p {
+  margin-bottom: var(--space-4);
+  color: var(--color-on-surface-variant);
 }
 
-.experience-grid,
-.education-grid {
+.summary-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== EXPERIENCE SECTION ===== */
+
+.experience-section {
+  width: 100%;
+}
+
+.experience-grid {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--space-6);
 }
 
-.experience-card,
-.education-card {
-  background: rgba(45, 48, 55, 0.8);
-  border: var(--card-border-width) solid rgba(110, 115, 125, 0.3);
-  border-radius: var(--card-border-radius-md); /* Standardized card radius */
-  padding: var(--card-padding-md); /* Standardized card padding */
-  backdrop-filter: blur(var(--space-2-5)); /* 10px - Apple grid system */
+/* ===== ADVANCED 3D CARD SYSTEM ===== */
+
+/* Enhanced 3D Card Base Styles with Multi-Axis Rotations */
+.card-3d {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  --mouse-x: 0.5;
+  --mouse-y: 0.5;
+  --mouse-from-center-x: 0;
+  --mouse-from-center-y: 0;
+  --quadrant-x: 0;
+  --quadrant-y: 0;
+
+  /* Advanced 3D Transformations - Increased angles for dramatic effect */
+  --tilt-x: calc(var(--mouse-from-center-y) * -30deg);
+  --tilt-y: calc(var(--mouse-from-center-x) * 25deg);
+  --tilt-z: calc((var(--quadrant-x) * var(--quadrant-y)) * 5deg);
+
+  /* Dynamic positioning for effects */
+  --glow-x: calc(var(--mouse-x) * 100%);
+  --glow-y: calc(var(--mouse-y) * 100%);
+  --shadow-x: calc(var(--mouse-from-center-x) * 20px);
+  --shadow-y: calc(var(--mouse-from-center-y) * 20px);
+
+  /* Performance optimizations */
+  will-change: transform;
+  contain: layout style paint;
+}
+
+.card-3d-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform var(--duration-normal) var(--ease-out);
+  transform-style: preserve-3d;
+  transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) rotateZ(var(--tilt-z));
+  transform-origin: center center;
+}
+
+.card-3d:hover .card-3d-inner {
+  transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) rotateZ(var(--tilt-z)) translateZ(30px);
+}
+
+/* Enhanced Card with Advanced Features */
+.card-enhanced {
+  position: relative;
+  overflow: visible;
+  isolation: isolate;
+}
+
+.card-3d-front {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  overflow: hidden;
+}
+
+/* ===== PARALLAX EFFECTS AND STAGGERED ANIMATIONS ===== */
+
+/* Parallax Layers with Different Movement Speeds */
+.parallax-layer {
+  transition: transform var(--duration-normal) var(--ease-out);
+  transform-style: preserve-3d;
+}
+
+.parallax-layer[data-speed="1"] {
+  /* Header elements - full movement */
+  transform: translateZ(10px);
+}
+
+.parallax-layer[data-speed="0.8"] {
+  /* Content elements - 80% movement */
+  transform: translateZ(8px) translateX(calc(var(--mouse-from-center-x) * -2px)) translateY(calc(var(--mouse-from-center-y) * -2px));
+}
+
+.parallax-layer[data-speed="0.6"] {
+  /* Background elements - 60% movement */
+  transform: translateZ(6px) translateX(calc(var(--mouse-from-center-x) * -4px)) translateY(calc(var(--mouse-from-center-y) * -4px));
+}
+
+.parallax-layer[data-speed="0.4"] {
+  /* Deep background - 40% movement */
+  transform: translateZ(4px) translateX(calc(var(--mouse-from-center-x) * -6px)) translateY(calc(var(--mouse-from-center-y) * -6px));
+}
+
+.parallax-layer[data-speed="0.2"] {
+  /* Deepest background - 20% movement */
+  transform: translateZ(2px) translateX(calc(var(--mouse-from-center-x) * -8px)) translateY(calc(var(--mouse-from-center-y) * -8px));
+}
+
+/* Staggered Animation Delays */
+.card-header {
+  animation-delay: 0ms;
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.card-content {
+  animation-delay: 100ms;
+  transition: all var(--duration-normal) var(--ease-out) 100ms;
+}
+
+.achievement-item {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: slideInUp var(--duration-normal) var(--ease-out) forwards;
+}
+
+.card-hovered .achievement-item {
+  animation-delay: calc(200ms + var(--animation-delay, 0ms));
+}
+
+@keyframes slideInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== SUBTLE VISUAL EFFECTS ===== */
+
+
+
+/* Enhanced 3D Depth Indicators */
+.card-depth-indicator {
+  position: absolute;
+  border-radius: var(--card-border-radius-lg);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-out);
+}
+
+/* ===== ENHANCED DEPTH AND LIGHTING ===== */
+
+/* Dynamic Light Sources */
+.light-source {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.primary-light {
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.01) 40%, transparent 80%);
+  top: calc(var(--glow-y) - 60px);
+  left: calc(var(--glow-x) - 60px);
+  transform: translateZ(50px);
+}
+
+.ambient-light {
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.008) 0%, rgba(255, 255, 255, 0.004) 50%, transparent 80%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateZ(30px);
+}
+
+.accent-light {
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.01) 0%, rgba(255, 255, 255, 0.005) 40%, transparent 80%);
+  top: calc(100% - var(--glow-y) - 50px);
+  right: calc(100% - var(--glow-x) - 50px);
+  transform: translateZ(40px);
+}
+
+.card-hovered .light-source {
+  opacity: 1;
+}
+
+/* Subtle Glass Depth Layers */
+.card-depth-1 {
+  top: 3px;
+  left: 3px;
+  right: 3px;
+  bottom: 3px;
+  background:
+    radial-gradient(ellipse at top left, rgba(255, 255, 255, 0.005) 0%, transparent 60%),
+    radial-gradient(ellipse at bottom right, rgba(0, 0, 0, 0.005) 0%, transparent 60%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.01) 0%, rgba(255, 255, 255, 0.005) 100%);
+  transform: translateZ(-8px);
+}
+
+.card-depth-2 {
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  background:
+    radial-gradient(ellipse at center, rgba(255, 255, 255, 0.003) 0%, transparent 70%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.005) 0%, rgba(255, 255, 255, 0.002) 100%);
+  transform: translateZ(-16px);
+}
+
+.card-depth-3 {
+  top: 9px;
+  left: 9px;
+  right: 9px;
+  bottom: 9px;
+  background:
+    radial-gradient(ellipse at center, rgba(0, 0, 0, 0.008) 0%, rgba(0, 0, 0, 0.003) 70%, transparent 100%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.003) 0%, transparent 100%);
+  transform: translateZ(-24px);
+}
+
+.card-3d:hover .card-depth-indicator {
+  opacity: 1;
+}
+
+/* Subtle Dim Glass Effects */
+.glass-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.01) 0%,
+    rgba(255, 255, 255, 0.005) 50%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
+  border-radius: var(--card-border-radius-lg);
+  opacity: 0.3;
+  transition: opacity var(--duration-normal) var(--ease-out);
+  pointer-events: none;
+}
+
+.card-hovered .glass-overlay {
+  opacity: 0.5;
+}
+
+/* ===== LOGO CONTAINER (RESERVED FOR MANUAL ADDITION) ===== */
+
+/*
+.logo-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80px;
+  height: 80px;
+  opacity: 0.03;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: opacity var(--duration-normal) var(--ease-out);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.card-hovered .logo-container {
+  opacity: 0.08;
+}
+*/
+
+/* ===== CLEAN MICRO-INTERACTIONS ===== */
+
+/* Ripple Effect on Click */
+.card-3d {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-3d::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease-out, height 0.6s ease-out;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.card-3d:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Glow Effect */
+.card-3d::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: var(--card-border-radius-lg);
+  background: radial-gradient(
+    circle at var(--glow-x) var(--glow-y),
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-out);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.card-3d:hover::before {
+  opacity: 1;
+}
+
+/* Floating Animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.card-3d:hover {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Enhanced Depth Shadow */
+.card-3d::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 10%;
+  right: 10%;
+  height: 20px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.3) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-out);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.card-3d:hover::after {
+  opacity: 1;
+  transform: translateY(10px) scale(1.1);
+}
+
+/* Shimmer Effect */
+.card-3d-front::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left var(--duration-slow) var(--ease-out);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.card-3d:hover .card-3d-front::before {
+  left: 100%;
+}
+
+/* ===== ENHANCED BASE CARD STYLES ===== */
+
+/* Dim Glass Experience Card Styles */
+.experience-card {
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: var(--card-border-radius-lg);
+  padding: var(--card-padding-lg);
   box-shadow:
-    inset 0 1px 0 rgba(180, 185, 195, 0.08),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.4),
-    0 4px 12px rgba(0, 0, 0, 0.3);
+    0 2px 8px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+  transition: all var(--duration-normal) var(--ease-out);
+  position: relative;
+  overflow: visible;
+  transform: translateZ(0);
+  will-change: transform, box-shadow;
 }
 
-.experience-card h3,
-.education-card h4 {
-  font-size: 1.25rem;
-  margin-bottom: var(--space-2); /* 8px - Apple grid system */
-  color: #e8eaed;
+.experience-card:hover {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow:
+    calc(var(--shadow-x) * 1px) calc(var(--shadow-y) * 1px) 20px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+    0 0 12px rgba(255, 255, 255, 0.02);
+  filter: drop-shadow(calc(var(--shadow-x) * 0.3px) calc(var(--shadow-y) * 0.3px) 6px rgba(0, 0, 0, 0.05));
 }
 
-.job-details,
-.education-details {
+/* ===== ENHANCED COLOR-THEMED CARDS ===== */
+
+/* Primary Theme - Enterprise/IBM - Dim Glass */
+.experience-card--primary {
+  border-left: 2px solid rgba(100, 255, 218, 0.3);
+  background: rgba(100, 255, 218, 0.005);
+  --theme-color: var(--color-primary);
+}
+
+.experience-card--primary .job-title {
+  color: var(--color-primary);
+}
+
+/* Secondary Theme - Research/Academic - Dim Glass */
+.experience-card--secondary {
+  border-left: 2px solid rgba(255, 100, 200, 0.25);
+  background: rgba(255, 100, 200, 0.005);
+  --theme-color: var(--color-secondary);
+}
+
+.experience-card--secondary .job-title {
+  color: var(--color-secondary);
+}
+
+/* Tertiary Theme - Government/Public Sector - Dim Glass */
+.experience-card--tertiary {
+  border-left: 2px solid rgba(255, 200, 100, 0.25);
+  background: rgba(255, 200, 100, 0.005);
+  --theme-color: var(--color-tertiary);
+}
+
+.experience-card--tertiary .job-title {
+  color: var(--color-tertiary);
+}
+
+/* Accent Theme - Development/Creative - Dim Glass */
+.experience-card--accent {
+  border-left: 2px solid rgba(100, 150, 255, 0.25);
+  background: rgba(100, 150, 255, 0.005);
+  --theme-color: var(--color-info);
+}
+
+.experience-card--accent .job-title {
+  color: var(--color-info);
+}
+
+/* Card Header Styles */
+.card-header {
+  margin-bottom: var(--space-6);
+}
+
+.job-title {
+  margin-bottom: var(--space-3);
+  color: var(--color-on-surface);
+}
+
+.job-details {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1); /* 4px - Apple grid system */
-  margin-bottom: var(--space-4); /* 16px - Apple grid system */
+  gap: var(--space-2);
 }
 
-.company,
-.institution {
-  font-weight: 600;
-  color: rgba(180, 185, 195, 0.9);
+.company {
+  color: var(--color-on-surface-variant);
+  font-weight: var(--font-weight-semibold);
 }
 
 .period {
-  font-size: 0.9rem;
-  color: rgba(180, 185, 195, 0.7);
+  color: var(--color-on-surface-muted);
+  text-transform: uppercase;
+}
+
+/* Card Content Styles */
+.card-content {
+  position: relative;
 }
 
 .achievements {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
 }
 
 .achievements li {
   position: relative;
-  padding-left: var(--space-6); /* 24px - Apple grid system */
-  margin-bottom: var(--space-3); /* 12px - Apple grid system */
-  color: rgba(180, 185, 195, 0.9);
-  line-height: 1.5;
+  padding-left: var(--space-6);
+  color: var(--color-on-surface-variant);
+  line-height: var(--line-height-relaxed);
 }
 
 .achievements li::before {
   content: "▸";
   position: absolute;
   left: 0;
-  color: #4a9eff;
-  font-weight: bold;
+  top: 0;
+  color: currentColor;
+  opacity: 0.7;
+  font-weight: var(--font-weight-bold);
+}
+
+/* ===== EDUCATION SECTION ===== */
+
+.education-section {
+  width: 100%;
 }
 
 .education-intro {
-  font-size: var(--font-size-base); /* Using design system font size */
-  line-height: 1.6;
-  color: rgba(180, 185, 195, 0.9);
   text-align: center;
-  margin-bottom: var(--space-6); /* 24px - Apple grid system */
+  margin-bottom: var(--space-8);
+  color: var(--color-on-surface-variant);
+  max-width: var(--reading-width-normal);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.education-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* ===== DIM GLASS EDUCATION CARDS ===== */
+
+.education-card {
+  background: rgba(100, 255, 218, 0.005);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: var(--card-border-radius-lg);
+  padding: var(--card-padding-lg);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+  transition: all var(--duration-normal) var(--ease-out);
+  border-left: 2px solid rgba(100, 255, 218, 0.3);
+  --theme-color: var(--color-primary);
+  transform: translateZ(0);
+  will-change: transform, box-shadow;
+  overflow: visible;
+}
+
+.education-card:hover {
+  background: rgba(100, 255, 218, 0.01);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-left: 2px solid rgba(100, 255, 218, 0.4);
+  box-shadow:
+    calc(var(--shadow-x) * 1px) calc(var(--shadow-y) * 1px) 20px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+    0 0 12px rgba(255, 255, 255, 0.02);
+  filter: drop-shadow(calc(var(--shadow-x) * 0.3px) calc(var(--shadow-y) * 0.3px) 6px rgba(0, 0, 0, 0.05));
+}
+
+.education-card h4 {
+  color: var(--color-primary);
+  margin-bottom: var(--space-3);
+}
+
+.education-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.institution {
+  color: var(--color-on-surface-variant);
+  font-weight: var(--font-weight-semibold);
 }
 
 .education-focus {
-  font-size: 0.9rem;
-  color: rgba(180, 185, 195, 0.8);
+  color: var(--color-on-surface-muted);
   font-style: italic;
-  margin-top: var(--space-2); /* 8px - Apple grid system */
+  margin-top: var(--space-2);
 }
+
+/* ===== RESPONSIVE BREAKPOINTS ===== */
 
 /* Tablet - 768px and up */
 @media (min-width: 768px) {
+  .about-content {
+    gap: var(--space-16);
+  }
+
   .about-summary {
     text-align: left;
+    padding: var(--space-10);
   }
-  
+
   .job-details,
   .education-details {
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
   }
-  
+
   .experience-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: var(--space-8);
   }
-  
+
   .education-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: var(--space-6);
+  }
+
+  .experience-card,
+  .education-card {
+    padding: var(--card-padding-xl);
   }
 }
 
 /* Desktop - 1024px and up */
 @media (min-width: 1024px) {
-  .about-summary h3 {
-    font-size: 1.75rem;
+  .about-content {
+    gap: var(--space-20);
   }
-  
-  .about-summary p {
-    font-size: 1.1rem;
+
+  .experience-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-10);
   }
-  
-  .experience-card h3 {
-    font-size: 1.375rem;
+
+  .education-grid {
+    grid-template-columns: 1fr;
+    max-width: var(--container-max-width-md);
+    margin: 0 auto;
   }
-  
+}
+
+/* Large Desktop - 1200px and up */
+@media (min-width: 1200px) {
+  .experience-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-12);
+  }
+
+  .about-summary {
+    padding: var(--space-12);
+  }
+}
+
+/* ===== ENHANCED ACCESSIBILITY & PERFORMANCE ===== */
+
+/* Hardware Acceleration and Performance Optimizations */
+.card-3d,
+.card-3d-inner,
+.card-3d-front,
+.parallax-layer {
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  contain: layout style paint;
+}
+
+/* Reduced Motion Support - Comprehensive */
+@media (prefers-reduced-motion: reduce) {
+  .card-3d,
+  .card-3d-inner,
+  .card-depth-indicator,
+  .card-3d::before,
+  .card-3d::after,
+  .card-3d-front::before,
+  .parallax-layer,
+  .achievement-item {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .card-3d:hover .card-3d-inner,
+  .card-3d:hover {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* High Contrast Mode Support - Enhanced */
+@media (prefers-contrast: high) {
+  .experience-card--primary .job-title,
+  .experience-card--secondary .job-title,
+  .experience-card--tertiary .job-title,
+  .experience-card--accent .job-title,
+  .education-card h4 {
+    text-shadow: none !important;
+  }
+
+  .card-3d::before,
+  .card-3d::after,
+  .card-3d-front::before,
+  .card-depth-indicator,
+  .logo-container {
+    display: none !important;
+  }
+
   .experience-card,
   .education-card {
-    padding: var(--space-8); /* 32px - Apple grid system */
+    border: 2px solid currentColor !important;
+    background: var(--color-surface-container) !important;
+  }
+}
+
+/* Enhanced Focus States for Keyboard Navigation */
+.card-3d:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 4px;
+  z-index: 10;
+}
+
+.card-3d:focus-visible .card-3d-inner {
+  transform: rotateX(0deg) rotateY(0deg) translateZ(15px);
+}
+
+
+
+/* Browser Support - Graceful Degradation */
+@supports not (color-mix(in srgb, red, blue)) {
+  .experience-card--primary,
+  .experience-card--secondary,
+  .experience-card--tertiary,
+  .experience-card--accent,
+  .education-card {
+    background: var(--color-surface-container) !important;
+  }
+}
+
+@supports not (backdrop-filter: blur(10px)) {
+  .experience-card,
+  .education-card,
+  .glass-overlay {
+    backdrop-filter: none;
+    background: rgba(45, 48, 55, 0.95);
+  }
+}
+
+
+
+/* Touch Device Optimizations - Enhanced */
+@media (hover: none) and (pointer: coarse) {
+  .card-3d:hover .card-3d-inner,
+  .card-3d:hover::before,
+  .card-3d:hover::after,
+  .card-3d:hover .card-3d-front::before {
+    transform: none;
+    opacity: 0;
+  }
+
+  .card-3d:hover {
+    animation: none;
+  }
+
+  /* Enhanced tap-based interaction for mobile */
+  .card-3d:active .card-3d-inner {
+    transform: translateZ(8px) scale(0.98);
+    transition: transform 0.15s ease-out;
+  }
+
+  .card-3d:active {
+    box-shadow:
+      0 10px 25px rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  }
+
+
+}
+
+/* Performance: Optimizations for low-end devices */
+@media (max-width: 768px) and (max-height: 1024px) {
+  .card-3d {
+    perspective: 800px;
+  }
+
+  .card-3d-inner {
+    transition: transform var(--duration-fast) var(--ease-out);
   }
 }
 
