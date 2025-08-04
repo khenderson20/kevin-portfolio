@@ -32,10 +32,9 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
-    "nvm": "^10.0.0",
     "tsx": "^4.7.2",
     "typescript": "^5.4.5",
-    "vite": "^7.0.6"
+    "vite": "^5.4.10"
   },
   "engines": {
     "node": ">=20.0.0"
