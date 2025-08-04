@@ -1,15 +1,48 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 
-/*== STEP 1 ===============================================================
-The section below creates a Todo database table with a "content" field. Try
-adding a new "isDone" field as a boolean. The authorization rule below
-specifies that any user authenticated via an API key can "create", "read",
-"update", and "delete" any "Todo" records.
+/*== PORTFOLIO DATA SCHEMA ===============================================
+This schema defines the data models for the portfolio website, including
+projects, skills, and experience records. Uses guest access for public
+read-only data with owner permissions for content management.
 =========================================================================*/
 const schema = a.schema({
-  Todo: a
+  Project: a
     .model({
-      content: a.string(),
+      title: a.string().required(),
+      tech: a.string().array().required(),
+      description: a.string().required(),
+      metrics: a.string(),
+      github: a.url(),
+      demo: a.url(),
+      image: a.url(),
+      featured: a.boolean().default(false),
+      category: a.enum(['frontend', 'backend', 'fullstack', 'mobile', 'audio']),
+      createdAt: a.datetime(),
+      updatedAt: a.datetime(),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+  Skill: a
+    .model({
+      name: a.string().required(),
+      category: a.string().required(),
+      level: a.enum(['beginner', 'intermediate', 'advanced']),
+      icon: a.string(),
+      yearsExperience: a.integer(),
+      featured: a.boolean().default(false),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+  Experience: a
+    .model({
+      role: a.string().required(),
+      company: a.string().required(),
+      period: a.string().required(),
+      type: a.enum(['enterprise', 'research', 'development', 'freelance']),
+      achievements: a.string().array(),
+      technologies: a.string().array(),
+      current: a.boolean().default(false),
+      featured: a.boolean().default(true),
     })
     .authorization((allow) => [allow.publicApiKey()]),
 });
@@ -20,38 +53,20 @@ export const data = defineData({
   schema,
   authorizationModes: {
     defaultAuthorizationMode: "apiKey",
-    // API Key is used for a.allow.public() rules
     apiKeyAuthorizationMode: {
       expiresInDays: 30,
     },
   },
 });
 
-/*== STEP 2 ===============================================================
-Go to your frontend source code. From your client-side code, generate a
-Data client to make CRUDL requests to your table. (THIS SNIPPET WILL ONLY
-WORK IN THE FRONTEND CODE FILE.)
+/*== USAGE EXAMPLES =====================================================
+// Fetch featured projects for homepage
+const { data: projects } = await client.models.Project.list({
+  filter: { featured: { eq: true } }
+});
 
-Using JavaScript or Next.js React Server Components, Middleware, Server 
-Actions or Pages Router? Review how to generate Data clients for those use
-cases: https://docs.amplify.aws/gen2/build-a-backend/data/connect-to-API/
+// Get all skills by category
+const { data: frontendSkills } = await client.models.Skill.list({
+  filter: { category: { eq: "Frontend" } }
+});
 =========================================================================*/
-
-/*
-"use client"
-import { generateClient } from "aws-amplify/data";
-import type { Schema } from "@/amplify/data/resource";
-
-const client = generateClient<Schema>() // use this Data client for CRUDL requests
-*/
-
-/*== STEP 3 ===============================================================
-Fetch records from the database and use them in your frontend component.
-(THIS SNIPPET WILL ONLY WORK IN THE FRONTEND CODE FILE.)
-=========================================================================*/
-
-/* For example, in a React component, you can use this snippet in your
-  function's RETURN statement */
-// const { data: todos } = await client.models.Todo.list()
-
-// return <ul>{todos.map(todo => <li key={todo.id}>{todo.content}</li>)}</ul>
