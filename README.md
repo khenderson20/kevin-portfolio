@@ -75,16 +75,65 @@ npm run lint
 
 ### Backend Setup
 
+#### Prerequisites for Amplify Gen2
+- AWS CLI configured with appropriate permissions
+- Node.js 18+ and npm installed
+- Amplify project connected to your AWS account
+
+#### Development Environment (Sandbox)
 ```bash
-# Initialize Amplify backend
-amplify init
+# Start a local development sandbox
+npx ampx sandbox
 
-# Deploy backend resources
-amplify push
-
-# Check backend status
-amplify status
+# The sandbox will:
+# - Deploy backend resources to AWS
+# - Generate amplify_outputs.json for local development
+# - Watch for changes and auto-deploy updates
+# - Provide a local development environment
 ```
+
+#### Production Deployment
+```bash
+# Connect your repository to Amplify Hosting (one-time setup)
+# Visit AWS Amplify Console and connect your Git repository
+
+# Deploy to production branch
+npx ampx pipeline-deploy --branch main --app-id YOUR_APP_ID
+
+# For other branches
+npx ampx pipeline-deploy --branch staging --app-id YOUR_APP_ID
+```
+
+#### Managing Your Backend
+```bash
+# Generate outputs file (amplify_outputs.json)
+npx ampx generate outputs
+
+# Generate GraphQL client code
+npx ampx generate graphql-client-code
+
+# Remove sandbox resources (cleanup)
+npx ampx sandbox delete
+
+# View backend configuration
+npx ampx configure list
+```
+
+#### Environment Management
+```bash
+# List all environments
+npx ampx configure list
+
+# Switch between environments
+npx ampx configure profile
+
+# Deploy to specific environment
+npx ampx pipeline-deploy --branch production --app-id YOUR_APP_ID
+```
+
+**Note**: Amplify Gen2 uses TypeScript-based configuration files (`amplify/backend.ts`, `amplify/data/resource.ts`) instead of the legacy CLI approach. Your backend resources are already configured and ready for deployment.
+
+For detailed Gen2 documentation, visit: https://docs.amplify.aws/react/how-amplify-works/concepts/
 
 ## Design System
 
