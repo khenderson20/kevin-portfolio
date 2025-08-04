@@ -264,22 +264,7 @@ select:disabled:not(.unstyled) {
 }
 
 /* ===== CONTACT LINK INTERACTIVE STATES ===== */
-
-.contact-link {
-  transition: var(--transition-hover);
-}
-
-.contact-link:hover:not(.disabled) {
-  transform: var(--hover-lift-subtle);
-  background: var(--bg-hover-moderate);
-  border-color: var(--border-hover);
-  box-shadow: var(--shadow-hover-subtle);
-}
-
-.contact-link:active:not(.disabled) {
-  transform: var(--active-press-subtle);
-  transition: var(--transition-active);
-}
+/* Contact links styled as static text for visual consistency */
 
 .contact-link:focus-visible:not(.disabled) {
   outline: var(--focus-ring-width) solid var(--focus-ring-color);
@@ -351,8 +336,7 @@ select:disabled:not(.unstyled) {
   .interactive-card:hover,
   .nav-item:hover,
   .nav-link:hover,
-  .skill-tag:hover,
-  .contact-link:hover {
+  .skill-tag:hover {
     transform: none;
   }
 }

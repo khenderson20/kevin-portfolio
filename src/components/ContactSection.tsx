@@ -107,34 +107,6 @@ function ContactSection() {
                       <span className="contact-value typography-body">{contactInfo.location}</span>
                     </div>
                   </div>
-
-                  <div className="contact-detail-item">
-                    <ContactIcons.phone className="contact-icon" aria-hidden="true" />
-                    <div className="contact-detail-content">
-                      <span className="contact-label typography-label-large">Phone</span>
-                      <a
-                        href={`tel:${contactInfo.phone}`}
-                        className="contact-value contact-link typography-body"
-                        aria-label={`Call ${contactInfo.phone}`}
-                      >
-                        {contactInfo.phone}
-                      </a>
-                    </div>
-                  </div>
-
-                  <div className="contact-detail-item">
-                    <ContactIcons.email className="contact-icon" aria-hidden="true" />
-                    <div className="contact-detail-content">
-                      <span className="contact-label typography-label-large">Email</span>
-                      <a
-                        href={`mailto:${contactInfo.email}`}
-                        className="contact-value contact-link typography-body"
-                        aria-label={`Send email to ${contactInfo.email}`}
-                      >
-                        {contactInfo.email}
-                      </a>
-                    </div>
-                  </div>
                 </div>
 
                 {/* Professional Links */}
@@ -178,4 +150,5 @@ function ContactSection() {
 }
 
 export default ContactSection;
+
 

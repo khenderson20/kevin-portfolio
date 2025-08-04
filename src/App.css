@@ -5,7 +5,6 @@
 
 /* Import additional styles */
 @import './styles/loading.css';
-@import './styles/contact-form.css';
 @import './styles/contact-section.css';
 @import './styles/hero.css';
 @import './styles/navigation.css';
@@ -815,14 +814,11 @@
   align-items: center;
   gap: var(--space-3); /* 12px - Apple grid system */
   padding: 0 var(--button-padding-x-md); /* Standardized button padding */
-  background: rgba(65, 68, 75, 0.8);
   border: 1px solid rgba(110, 115, 125, 0.3);
   border-radius: var(--button-border-radius); /* Standardized button radius */
   color: rgba(180, 185, 195, 0.9);
   text-decoration: none;
   font-size: var(--font-size-base);
-  height: var(--button-height-md); /* Standardized button height */
-  min-width: var(--button-min-width-md); /* Standardized minimum width */
   box-sizing: border-box;
   /* Interactive states handled by interactive-states.css */
 }
