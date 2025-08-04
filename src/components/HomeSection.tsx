@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import ParticleBackground from './ParticleBackground';
 
 interface HomeSectionProps {
   onNavigateToSection?: (section: string) => void;
@@ -33,12 +34,13 @@ function HomeSection({ onNavigateToSection }: HomeSectionProps) {
 
   return (
     <div className="hero">
-      <div className="hero-background">
-        <div className="hero-gradient"></div>
-        <div className="hero-particles"></div>
-      </div>
-
       <div className="hero-content">
+        <ParticleBackground
+        particleCount={150}
+        particleColor="hsla(186, 85%, 54%, 0.8)" // Primary color with alpha
+        speed={0.3}
+        interactive={true}
+      />
         <div className={`hero-text ${isVisible ? 'animate-in' : ''}`}>
           <div className="hero-badge">
             <span className="badge-icon">🎵</span>
@@ -102,13 +104,6 @@ function HomeSection({ onNavigateToSection }: HomeSectionProps) {
               <span className="company-logo">Open Source</span>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div className="hero-scroll-indicator">
-        <div className="scroll-arrow">
-          <span>Scroll to explore</span>
-          <div className="arrow-down"></div>
         </div>
       </div>
     </div>

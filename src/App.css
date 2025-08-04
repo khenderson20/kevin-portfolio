@@ -8,6 +8,7 @@
 @import './styles/contact-form.css';
 @import './styles/hero.css';
 @import './styles/navigation.css';
+@import './styles/interactive-elements.css';
 
 /* Mobile-First Base Styles */
 .portfolio {
