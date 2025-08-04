@@ -60,7 +60,7 @@ function ScrollIndicator({
     const baseStyle: React.CSSProperties = {
       position: 'fixed',
       backgroundColor: color,
-      zIndex: 1100, // Instead of 'var(--z-index-sticky)'
+      zIndex: 10, // Use --z-index-docked value (below navbar)
       transition: 'all 0.3s ease',
       opacity: isVisible ? 1 : 0,
     };

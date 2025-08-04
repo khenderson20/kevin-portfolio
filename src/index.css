@@ -61,18 +61,24 @@ main {
 }
 
 button {
-  border-radius: 4px;
+  border-radius: var(--button-border-radius); /* Standardized button radius */
   border: 1px solid rgba(160, 160, 160, 0.4);
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
+  padding: 0 var(--button-padding-x-md); /* Standardized button padding */
+  font-size: var(--font-size-base); /* Standardized font size */
+  font-weight: var(--button-font-weight); /* Standardized font weight */
   font-family: inherit;
   background:
     linear-gradient(145deg, rgba(80, 80, 80, 0.8) 0%, rgba(40, 40, 40, 0.8) 100%);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--duration-normal) var(--ease-in-out); /* Standardized transition */
   color: #e0e0e0;
   backdrop-filter: blur(10px);
+  height: var(--button-height-md); /* Standardized button height */
+  min-width: var(--button-min-width-sm); /* Standardized minimum width */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
     inset 0 -1px 0 rgba(0, 0, 0, 0.3),

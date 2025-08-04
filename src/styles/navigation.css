@@ -8,13 +8,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: var(--space-11); /* 44px - touch-friendly */
-  height: var(--space-11);
+  width: var(--touch-target-min); /* Standardized touch target */
+  height: var(--touch-target-min);
   background: transparent;
   border: none;
   cursor: pointer;
   padding: var(--space-2);
-  border-radius: var(--radius-md);
+  border-radius: var(--button-border-radius); /* Standardized button radius */
   transition: all var(--duration-normal) var(--ease-in-out);
   z-index: var(--z-index-modal);
 }
@@ -242,15 +242,18 @@
   .mobile-menu-overlay {
     display: none;
   }
-  
+
   .navbar {
     flex-direction: row;
     justify-content: space-between;
     padding: var(--space-4) var(--space-8);
     height: 80px;
     min-height: 80px;
+    max-width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
   }
-  
+
   .nav-content {
     display: flex;
   }

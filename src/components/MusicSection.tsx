@@ -51,72 +51,69 @@ function MusicSection() {
 
   return (
     <section className="music-section" id="music" aria-labelledby="music-heading">
-      <ParticleBackground
-        particleCount={25}
-        particleColor="rgba(var(--color-secondary-rgb), 0.1)"
-        speed={0.4}
-        interactive={true}
-      />
-
-      <header>
-        <h2 id="music-heading">Audio Engineering Projects</h2>
-        <p className="section-intro">
-          Bridging the gap between creative audio production and modern web technology
-        </p>
-
-        {/* Audio Stats Section */}
-        <div className="stats-grid" role="region" aria-label="Audio engineering statistics">
-          {audioStats.map((stat, index) => (
-            <div key={index} className="stat-item">
-              <div className="stat-value">
-                <AnimatedCounter
-                  end={stat.value}
-                  suffix={stat.suffix}
-                  duration={2500}
-                  delay={index * 300}
-                />
+      <main className="music-content">
+        <ParticleBackground
+          particleCount={25}
+          particleColor="rgba(var(--color-secondary-rgb), 0.1)"
+          speed={0.4}
+          interactive={true}
+        />
+        <header>
+          <h2 id="music-heading">Audio Engineering Projects</h2>
+          <p className="section-intro">
+            Bridging the gap between creative audio production and modern web technology
+          </p>
+          {/* Audio Stats Section */}
+          <div className="stats-grid" role="region" aria-label="Audio engineering statistics">
+            {audioStats.map((stat, index) => (
+              <div key={index} className="stat-item">
+                <div className="stat-value">
+                  <AnimatedCounter
+                    end={stat.value}
+                    suffix={stat.suffix}
+                    duration={2500}
+                    delay={index * 300}
+                  />
+                </div>
+                <div className="stat-label">{stat.label}</div>
               </div>
-              <div className="stat-label">{stat.label}</div>
-            </div>
-          ))}
-        </div>
-      </header>
-
-      <div className="music-grid" role="region" aria-label="Audio engineering projects">
-        {audioProjects.map((project, index) => (
-          <InteractiveCard
-            key={index}
-            glowEffect={true}
-            tiltEffect={true}
-            scaleOnHover={true}
-            shadowIntensity="medium"
-            className="track-card-wrapper"
-          >
-            <TrackCard track={project} />
-          </InteractiveCard>
-        ))}
-      </div>
-
-      <div className="audio-skills" role="region" aria-labelledby="audio-skills-heading">
-        <h3 id="audio-skills-heading">Audio Technology Skills</h3>
-        <p className="skills-intro">
-          Professional audio tools and technologies for modern digital production
-        </p>
-
-        <div className="audio-skills-grid">
-          {audioSkills.map((skill, index) => (
-            <SkillProgressBar
+            ))}
+          </div>
+        </header>
+        <div className="music-grid" role="region" aria-label="Audio engineering projects">
+          {audioProjects.map((project, index) => (
+            <InteractiveCard
               key={index}
-              skill={skill.name}
-              level={skill.level}
-              category="Audio"
-              delay={index * 100}
-              showPercentage={true}
-              color="var(--color-secondary)"
-            />
+              glowEffect={true}
+              tiltEffect={true}
+              scaleOnHover={true}
+              shadowIntensity="medium"
+              className="track-card-wrapper"
+            >
+              <TrackCard track={project} />
+            </InteractiveCard>
           ))}
         </div>
-      </div>
+        <div className="audio-skills" role="region" aria-labelledby="audio-skills-heading">
+          <h3 id="audio-skills-heading">Audio Technology Skills</h3>
+          <p className="skills-intro">
+            Professional audio tools and technologies for modern digital production
+          </p>
+          <div className="audio-skills-grid">
+            {audioSkills.map((skill, index) => (
+              <SkillProgressBar
+                key={index}
+                skill={skill.name}
+                level={skill.level}
+                category="Audio"
+                delay={index * 100}
+                showPercentage={true}
+                color="var(--color-secondary)"
+              />
+            ))}
+          </div>
+        </div>
+      </main>
     </section>
   );
 }

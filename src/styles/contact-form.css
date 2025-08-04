@@ -2,16 +2,20 @@
 .contact-form {
   background: var(--color-surface-container);
   border: var(--card-border-width) solid var(--color-border);
-  border-radius: var(--card-border-radius);
-  padding: var(--card-padding);
-  backdrop-filter: blur(10px);
+  border-radius: var(--card-border-radius-md); /* Standardized card radius */
+  padding: var(--card-padding-lg); /* Standardized card padding */
+  backdrop-filter: blur(var(--space-2-5)); /* 10px - Apple grid system */
   box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: var(--container-max-width-sm);
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .contact-form input,
 .contact-form textarea {
   width: 100%;
-  padding: var(--input-padding-x);
+  padding: 0 var(--input-padding-x-md); /* Standardized input padding */
   margin-bottom: var(--space-4);
   background: var(--color-surface);
   border: var(--input-border-width) solid var(--color-border);
@@ -21,7 +25,7 @@
   font-size: var(--font-size-base);
   transition: all var(--duration-normal) var(--ease-in-out);
   box-sizing: border-box;
-  height: var(--input-height);
+  height: var(--input-height-md); /* Standardized input height */
 }
 
 .contact-form input::placeholder,
@@ -34,28 +38,36 @@
   outline: none;
   border-color: rgba(130, 135, 145, 0.6);
   background: rgba(45, 48, 55, 0.9);
-  box-shadow: 0 0 0 2px rgba(180, 185, 195, 0.1);
+  box-shadow: 0 0 0 var(--space-0-5) rgba(180, 185, 195, 0.1); /* 2px - Apple grid system */
 }
 
 .contact-form textarea {
-  min-height: 120px;
+  min-height: var(--textarea-min-height-md); /* Standardized textarea height */
   resize: vertical;
+  padding: var(--input-padding-x-md); /* Consistent padding with inputs */
+  height: auto; /* Override input height for textarea */
 }
 
 .contact-form button {
   width: 100%;
-  padding: 0.875rem 2rem;
+  padding: 0 var(--button-padding-x-lg); /* Standardized button padding */
   background: linear-gradient(145deg, #d0d0d0 0%, #a0a0a0 100%);
   color: #1a1a1a;
   border: 1px solid #999999;
-  border-radius: 4px;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-weight: 600;
-  font-size: 1rem;
+  border-radius: var(--button-border-radius); /* Standardized button radius */
+  font-family: var(--font-family-secondary);
+  font-weight: var(--button-font-weight);
+  font-size: var(--font-size-base);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--duration-normal) var(--ease-in-out);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: var(--letter-spacing-wide);
+  height: var(--button-height-md); /* Standardized button height */
+  min-width: var(--button-min-width-md); /* Standardized minimum width */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.3),
     inset 0 -1px 0 rgba(0, 0, 0, 0.2),
@@ -83,11 +95,18 @@
 /* Mobile responsiveness */
 @media (min-width: 768px) {
   .contact-form {
-    max-width: 500px;
+    max-width: var(--container-max-width-sm);
+    margin: 0 auto;
   }
-  
+
   .contact-form button {
     width: auto;
-    min-width: 200px;
+    min-width: var(--button-min-width-lg);
+  }
+}
+
+@media (min-width: 1024px) {
+  .contact-form {
+    max-width: var(--container-max-width-md);
   }
 }

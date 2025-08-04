@@ -473,34 +473,166 @@
   --breakpoint-2xl: 1536px;
   
   /* ===== COMPONENT TOKENS ===== */
-  
-  /* Button */
-  --button-height-sm: var(--space-8);
-  --button-height-md: var(--space-11);
-  --button-height-lg: var(--space-12);
-  --button-padding-x-sm: var(--space-3);
-  --button-padding-x-md: var(--space-4);
-  --button-padding-x-lg: var(--space-6);
+
+  /* Button Sizing - Apple HIG Compliant */
+  --button-height-xs: var(--space-7);    /* 28px - Compact */
+  --button-height-sm: var(--space-8);    /* 32px - Small */
+  --button-height-md: var(--space-11);   /* 44px - Standard (Apple minimum touch target) */
+  --button-height-lg: var(--space-12);   /* 48px - Large */
+  --button-height-xl: var(--space-14);   /* 56px - Extra Large */
+
+  --button-padding-x-xs: var(--space-2);  /* 8px */
+  --button-padding-x-sm: var(--space-3);  /* 12px */
+  --button-padding-x-md: var(--space-4);  /* 16px */
+  --button-padding-x-lg: var(--space-6);  /* 24px */
+  --button-padding-x-xl: var(--space-8);  /* 32px */
+
+  --button-min-width-sm: var(--space-20);  /* 80px */
+  --button-min-width-md: var(--space-32);  /* 128px */
+  --button-min-width-lg: var(--space-40);  /* 160px */
+  --button-min-width-xl: var(--space-48);  /* 192px */
+
   --button-border-radius: var(--radius-md);
   --button-font-weight: var(--font-weight-medium);
-  
-  /* Input */
-  --input-height: var(--space-11);
-  --input-padding-x: var(--space-3);
+
+  /* Input Field Sizing */
+  --input-height-sm: var(--space-8);     /* 32px */
+  --input-height-md: var(--space-11);    /* 44px - Apple minimum touch target */
+  --input-height-lg: var(--space-12);    /* 48px */
+  --input-height-xl: var(--space-14);    /* 56px */
+
+  --input-padding-x-sm: var(--space-2);  /* 8px */
+  --input-padding-x-md: var(--space-3);  /* 12px */
+  --input-padding-x-lg: var(--space-4);  /* 16px */
+
   --input-border-radius: var(--radius-md);
   --input-border-width: 1px;
-  
-  /* Card */
-  --card-padding: var(--space-6);
-  --card-border-radius: var(--radius-lg);
+
+  /* Textarea Sizing */
+  --textarea-min-height-sm: var(--space-20);  /* 80px */
+  --textarea-min-height-md: var(--space-28);  /* 112px */
+  --textarea-min-height-lg: var(--space-36);  /* 144px */
+  --textarea-min-height-xl: var(--space-48);  /* 192px */
+
+  /* Card Sizing */
+  --card-padding-sm: var(--space-4);     /* 16px */
+  --card-padding-md: var(--space-6);     /* 24px */
+  --card-padding-lg: var(--space-8);     /* 32px */
+  --card-padding-xl: var(--space-10);    /* 40px */
+
+  --card-border-radius-sm: var(--radius-md);   /* 6px */
+  --card-border-radius-md: var(--radius-lg);   /* 8px */
+  --card-border-radius-lg: var(--radius-xl);   /* 12px */
+  --card-border-radius-xl: var(--radius-2xl);  /* 16px */
+
   --card-border-width: 1px;
-  
-  /* Container */
+
+  /* Icon Sizing */
+  --icon-size-xs: var(--space-3);        /* 12px */
+  --icon-size-sm: var(--space-4);        /* 16px */
+  --icon-size-md: var(--space-5);        /* 20px */
+  --icon-size-lg: var(--space-6);        /* 24px */
+  --icon-size-xl: var(--space-8);        /* 32px */
+  --icon-size-2xl: var(--space-10);      /* 40px */
+  --icon-size-3xl: var(--space-12);      /* 48px */
+
+  /* Avatar Sizing */
+  --avatar-size-xs: var(--space-6);      /* 24px */
+  --avatar-size-sm: var(--space-8);      /* 32px */
+  --avatar-size-md: var(--space-10);     /* 40px */
+  --avatar-size-lg: var(--space-12);     /* 48px */
+  --avatar-size-xl: var(--space-16);     /* 64px */
+  --avatar-size-2xl: var(--space-20);    /* 80px */
+  --avatar-size-3xl: var(--space-24);    /* 96px */
+
+  /* Navigation Sizing */
+  --nav-height-mobile: var(--space-16);   /* 64px */
+  --nav-height-tablet: var(--space-20);   /* 80px */
+  --nav-height-desktop: var(--space-24);  /* 96px */
+
+  --nav-item-height: var(--space-11);     /* 44px - Apple minimum touch target */
+  --nav-item-padding-x: var(--space-4);   /* 16px */
+
+  /* Container Sizing */
+  --container-max-width-xs: 480px;
   --container-max-width-sm: 640px;
   --container-max-width-md: 768px;
   --container-max-width-lg: 1024px;
   --container-max-width-xl: 1280px;
   --container-max-width-2xl: 1536px;
+
+  /* Section Sizing */
+  --section-padding-mobile: var(--space-4);    /* 16px */
+  --section-padding-tablet: var(--space-8);    /* 32px */
+  --section-padding-desktop: var(--space-12);  /* 48px */
+
+  --section-max-width-narrow: var(--container-max-width-md);   /* 768px */
+  --section-max-width-normal: var(--container-max-width-lg);   /* 1024px */
+  --section-max-width-wide: var(--container-max-width-xl);     /* 1280px */
+
+  /* Touch Target Minimums (Apple HIG) */
+  --touch-target-min: var(--space-11);    /* 44px - Apple minimum */
+  --touch-target-comfortable: var(--space-12); /* 48px - Comfortable */
+  --touch-target-large: var(--space-14);  /* 56px - Large */
+
+  /* ===== INTERACTIVE STATES SYSTEM ===== */
+
+  /* Hover State Transforms */
+  --hover-lift-subtle: translateY(-1px);
+  --hover-lift-moderate: translateY(-2px);
+  --hover-lift-strong: translateY(-4px);
+  --hover-scale-subtle: scale(1.02);
+  --hover-scale-moderate: scale(1.05);
+  --hover-scale-strong: scale(1.08);
+
+  /* Active State Transforms */
+  --active-press-subtle: translateY(0px) scale(0.98);
+  --active-press-moderate: translateY(1px) scale(0.96);
+  --active-press-strong: translateY(2px) scale(0.94);
+
+  /* Focus State Properties */
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --focus-ring-color: var(--color-primary);
+  --focus-ring-color-error: var(--color-error);
+  --focus-ring-color-success: var(--color-success);
+
+  /* Disabled State Properties */
+  --disabled-opacity: 0.6;
+  --disabled-opacity-subtle: 0.8;
+  --disabled-cursor: not-allowed;
+
+  /* Interactive State Transitions */
+  --transition-hover: all var(--duration-fast) var(--ease-out);
+  --transition-active: all var(--duration-faster) var(--ease-in);
+  --transition-focus: all var(--duration-fast) var(--ease-out);
+  --transition-disabled: all var(--duration-normal) var(--ease-out);
+
+  /* Shadow Elevation States */
+  --shadow-hover-subtle: var(--shadow-md);
+  --shadow-hover-moderate: var(--shadow-lg);
+  --shadow-hover-strong: var(--shadow-xl);
+  --shadow-active: var(--shadow-sm);
+  --shadow-focus: 0 0 0 var(--focus-ring-width) var(--focus-ring-color);
+
+  /* Border State Colors */
+  --border-hover: var(--color-border-hover);
+  --border-active: var(--color-border-active);
+  --border-focus: var(--color-border-focus);
+  --border-disabled: var(--color-border-disabled);
+
+  /* Background State Colors */
+  --bg-hover-subtle: rgba(255, 255, 255, 0.05);
+  --bg-hover-moderate: rgba(255, 255, 255, 0.1);
+  --bg-hover-strong: rgba(255, 255, 255, 0.15);
+  --bg-active: rgba(0, 0, 0, 0.1);
+  --bg-disabled: var(--color-surface-disabled);
+
+  /* Text State Colors */
+  --text-hover: var(--color-on-surface-variant);
+  --text-active: var(--color-on-surface);
+  --text-disabled: var(--color-on-surface-disabled);
+  --text-focus: var(--color-primary);
 }
 
 /* ===== LIGHT MODE THEME ===== */
@@ -1345,3 +1477,19 @@
     transform: none;
   }
 }
+
+/* Content Container System */
+.hero-content,
+.music-content,
+.dev-content,
+.about-content,
+.contact-content {
+  max-width: var(--container-max-width-xl);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--space-32);
+  z-index: 1;
+  position: relative;
+  box-sizing: border-box;
+}
+
