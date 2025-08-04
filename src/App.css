@@ -6,6 +6,7 @@
 /* Import additional styles */
 @import './styles/loading.css';
 @import './styles/contact-form.css';
+@import './styles/contact-section.css';
 @import './styles/hero.css';
 @import './styles/navigation.css';
 @import './styles/interactive-elements.css';
@@ -341,7 +342,307 @@
   text-align: center;
 }
 
-/* Center-align all skill category headings */
+/* Enhanced Skill Category Headings with Dim Glass Aesthetic & 4D Animations */
+.skill-category-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3); /* 12px spacing between icon and text */
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.01); /* Ultra-low opacity glass background */
+  border: 1px solid rgba(255, 255, 255, 0.03); /* Subtle glass border */
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  will-change: transform, box-shadow, background;
+  cursor: pointer;
+
+  /* Glass-appropriate box shadow */
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+
+  /* Initial 3D positioning */
+  transform: translateZ(0) rotateX(0deg) rotateY(0deg);
+}
+
+/* Subtle glass shimmer overlay */
+.skill-category-heading::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.02) 50%, /* Reduced opacity for glass aesthetic */
+    transparent 70%
+  );
+  opacity: 0;
+  transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+/* Subtle glass glow effect */
+.skill-category-heading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: var(--radius-md);
+  background: linear-gradient(45deg, transparent, currentColor, transparent);
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+  /* Removed blur filter for clean glass aesthetic */
+}
+
+/* Glass-Enhanced 4D Hover Effects */
+.skill-category-heading:hover {
+  background: rgba(255, 255, 255, 0.02); /* Subtle transparency increase */
+  border: 1px solid rgba(255, 255, 255, 0.05); /* Enhanced glass border */
+  transform: translateZ(20px) rotateX(5deg) rotateY(-5deg) scale(1.02);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.08), /* Reduced shadow intensity for glass */
+    0 10px 20px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset; /* Glass inner highlight */
+}
+
+.skill-category-heading:hover::before {
+  opacity: 0.3; /* Reduced shimmer intensity for glass */
+  transform: translateX(100%) translateY(100%) rotate(45deg);
+  animation: shimmerSweep 2s ease-in-out infinite;
+}
+
+.skill-category-heading:hover::after {
+  opacity: 0.1; /* Very subtle glow for glass aesthetic */
+  transform: scale(1.1);
+  animation: pulseGlow 2s ease-in-out infinite alternate;
+}
+
+.skill-category-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.skill-category-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.skill-category-text {
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  position: relative;
+  z-index: 2;
+}
+
+/* 4D Keyframe Animations */
+@keyframes shimmerSweep {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+@keyframes pulseGlow {
+  0% {
+    transform: scale(1.1);
+    opacity: 0.05; /* Glass-appropriate subtle glow */
+  }
+  100% {
+    transform: scale(1.3);
+    opacity: 0.1; /* Reduced intensity for glass aesthetic */
+  }
+}
+
+@keyframes floatingMotion {
+  0%, 100% {
+    transform: translateZ(20px) rotateX(5deg) rotateY(-5deg) scale(1.02);
+  }
+  25% {
+    transform: translateZ(25px) rotateX(3deg) rotateY(-3deg) scale(1.03);
+  }
+  50% {
+    transform: translateZ(30px) rotateX(7deg) rotateY(-7deg) scale(1.02);
+  }
+  75% {
+    transform: translateZ(25px) rotateX(3deg) rotateY(-3deg) scale(1.03);
+  }
+}
+
+@keyframes colorShift {
+  0%, 100% {
+    filter: hue-rotate(0deg) brightness(1);
+  }
+  25% {
+    filter: hue-rotate(5deg) brightness(1.1);
+  }
+  50% {
+    filter: hue-rotate(-5deg) brightness(1.05);
+  }
+  75% {
+    filter: hue-rotate(3deg) brightness(1.08);
+  }
+}
+
+/* Enhanced hover state with continuous animations */
+.skill-category-heading:hover {
+  animation:
+    floatingMotion 3s ease-in-out infinite,
+    colorShift 4s ease-in-out infinite;
+}
+
+/* Category-specific glass color themes */
+.skill-category-frontend {
+  color: #61dafb; /* React blue */
+  border-color: rgba(97, 218, 251, 0.25); /* Glass-appropriate border opacity */
+  background: rgba(97, 218, 251, 0.005); /* Ultra-low background tint */
+}
+
+.skill-category-frontend .skill-category-icon {
+  color: #61dafb;
+}
+
+.skill-category-frontend:hover {
+  border-color: rgba(97, 218, 251, 0.3); /* Subtle border enhancement */
+  background: rgba(97, 218, 251, 0.01); /* Minimal background increase */
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.08), /* Reduced shadow for glass */
+    0 10px 20px rgba(0, 0, 0, 0.05),
+    0 0 12px rgba(97, 218, 251, 0.05), /* Subtle category glow */
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset; /* Glass inner highlight */
+}
+
+.skill-category-frontend:hover::after {
+  background: linear-gradient(45deg, transparent, rgba(97, 218, 251, 0.1), transparent);
+}
+
+.skill-category-backend {
+  color: #68d391; /* Green for server/backend */
+  border-color: rgba(104, 211, 145, 0.25); /* Glass-appropriate border opacity */
+  background: rgba(104, 211, 145, 0.005); /* Ultra-low background tint */
+}
+
+.skill-category-backend .skill-category-icon {
+  color: #68d391;
+}
+
+.skill-category-backend:hover {
+  border-color: rgba(104, 211, 145, 0.3); /* Subtle border enhancement */
+  background: rgba(104, 211, 145, 0.01); /* Minimal background increase */
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.08), /* Reduced shadow for glass */
+    0 10px 20px rgba(0, 0, 0, 0.05),
+    0 0 12px rgba(104, 211, 145, 0.05), /* Subtle category glow */
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset; /* Glass inner highlight */
+}
+
+.skill-category-backend:hover::after {
+  background: linear-gradient(45deg, transparent, rgba(104, 211, 145, 0.1), transparent);
+}
+
+.skill-category-cloud {
+  color: #fbb040; /* Orange/amber for cloud */
+  border-color: rgba(251, 176, 64, 0.25); /* Glass-appropriate border opacity */
+  background: rgba(251, 176, 64, 0.005); /* Ultra-low background tint */
+}
+
+.skill-category-cloud .skill-category-icon {
+  color: #fbb040;
+}
+
+.skill-category-cloud:hover {
+  border-color: rgba(251, 176, 64, 0.3); /* Subtle border enhancement */
+  background: rgba(251, 176, 64, 0.01); /* Minimal background increase */
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.08), /* Reduced shadow for glass */
+    0 10px 20px rgba(0, 0, 0, 0.05),
+    0 0 12px rgba(251, 176, 64, 0.05), /* Subtle category glow */
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset; /* Glass inner highlight */
+}
+
+.skill-category-cloud:hover::after {
+  background: linear-gradient(45deg, transparent, rgba(251, 176, 64, 0.1), transparent);
+}
+
+.skill-category-audio {
+  color: #ed64a6; /* Pink/magenta for audio */
+  border-color: rgba(237, 100, 166, 0.25); /* Glass-appropriate border opacity */
+  background: rgba(237, 100, 166, 0.005); /* Ultra-low background tint */
+}
+
+.skill-category-audio .skill-category-icon {
+  color: #ed64a6;
+}
+
+.skill-category-audio:hover {
+  border-color: rgba(237, 100, 166, 0.3); /* Subtle border enhancement */
+  background: rgba(237, 100, 166, 0.01); /* Minimal background increase */
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.08), /* Reduced shadow for glass */
+    0 10px 20px rgba(0, 0, 0, 0.05),
+    0 0 12px rgba(237, 100, 166, 0.05), /* Subtle category glow */
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset; /* Glass inner highlight */
+}
+
+.skill-category-audio:hover::after {
+  background: linear-gradient(45deg, transparent, rgba(237, 100, 166, 0.1), transparent);
+}
+
+/* Accessibility: Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .skill-category-heading {
+    animation: none !important;
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .skill-category-heading:hover {
+    transform: none !important;
+    animation: none !important;
+  }
+
+  .skill-category-heading::before,
+  .skill-category-heading::after {
+    animation: none !important;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+}
+
+/* Performance optimization for animations */
+.skill-category-heading,
+.skill-category-heading::before,
+.skill-category-heading::after {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Legacy support for existing selectors */
 .skill-group h4,
 [id^="skill-category-"] {
   text-align: center;
@@ -391,6 +692,59 @@
   margin: 0 auto;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+/* Skill List Container */
+.skill-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3); /* 12px spacing between skill items */
+  margin-top: var(--space-4); /* 16px spacing from category heading */
+}
+
+/* Individual Skill Item */
+.skill-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--space-3); /* 12px spacing between icon and text */
+  padding: var(--space-2) var(--space-3); /* 8px 12px padding */
+  border-radius: var(--radius-sm);
+  transition: all var(--duration-fast) var(--ease-out);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.skill-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateX(4px);
+}
+
+/* Skill Icon Styling */
+.skill-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0; /* Prevent icon from shrinking */
+  color: var(--color-primary);
+}
+
+.skill-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Skill Name Text */
+.skill-name {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  line-height: 1.4;
+  flex: 1; /* Take remaining space */
 }
 
 
@@ -610,10 +964,48 @@
     text-align: left;
     margin-bottom: 0.875rem;
   }
-  
+
   .skill-tag {
     font-size: 0.95rem;
     padding: var(--space-3) var(--space-4-5); /* 12px 18px - Apple grid system */
+  }
+
+  /* Responsive skill item adjustments for mobile */
+  .skill-item {
+    padding: var(--space-2-5) var(--space-3); /* 10px 12px */
+    gap: var(--space-3-5); /* 14px spacing */
+  }
+
+  .skill-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .skill-name {
+    font-size: 0.9rem;
+  }
+
+  /* Mobile category heading adjustments */
+  .skill-category-heading {
+    font-size: 1.1rem;
+    padding: var(--space-2-5) var(--space-3);
+    gap: var(--space-2-5);
+    perspective: 800px;
+  }
+
+  .skill-category-heading:hover {
+    background: rgba(255, 255, 255, 0.015); /* Glass hover enhancement for mobile */
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    transform: translateZ(15px) rotateX(3deg) rotateY(-3deg) scale(1.01);
+    box-shadow:
+      0 15px 30px rgba(0, 0, 0, 0.06),
+      0 5px 15px rgba(0, 0, 0, 0.04),
+      0 0 0 1px rgba(255, 255, 255, 0.025) inset;
+  }
+
+  .skill-category-icon {
+    width: 20px;
+    height: 20px;
   }
 }
 
@@ -642,6 +1034,48 @@
   .skill-tag {
     font-size: var(--font-size-base); /* Using design system font size */
     padding: var(--space-3) var(--space-5); /* 12px 20px - Apple grid system */
+  }
+
+  /* Tablet skill item styling */
+  .skill-list {
+    gap: var(--space-3-5); /* 14px spacing */
+  }
+
+  .skill-item {
+    padding: var(--space-3) var(--space-4); /* 12px 16px */
+    gap: var(--space-4); /* 16px spacing */
+  }
+
+  .skill-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .skill-name {
+    font-size: var(--font-size-base);
+  }
+
+  /* Tablet category heading adjustments */
+  .skill-category-heading {
+    font-size: 1.3rem;
+    padding: var(--space-3) var(--space-4);
+    gap: var(--space-3);
+    perspective: 900px;
+  }
+
+  .skill-category-heading:hover {
+    background: rgba(255, 255, 255, 0.018); /* Glass hover enhancement for tablet */
+    border: 1px solid rgba(255, 255, 255, 0.045);
+    transform: translateZ(18px) rotateX(4deg) rotateY(-4deg) scale(1.015);
+    box-shadow:
+      0 18px 35px rgba(0, 0, 0, 0.07),
+      0 8px 18px rgba(0, 0, 0, 0.045),
+      0 0 0 1px rgba(255, 255, 255, 0.028) inset;
+  }
+
+  .skill-category-icon {
+    width: 22px;
+    height: 22px;
   }
 }
 
@@ -677,6 +1111,49 @@
     font-size: var(--font-size-base); /* Using design system font size */
     padding: var(--space-3-5) var(--space-5-5); /* 14px 22px - Apple grid system */
   }
+
+  /* Desktop skill item styling */
+  .skill-list {
+    gap: var(--space-4); /* 16px spacing */
+  }
+
+  .skill-item {
+    padding: var(--space-3-5) var(--space-4); /* 14px 16px */
+    gap: var(--space-4); /* 16px spacing */
+  }
+
+  .skill-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .skill-name {
+    font-size: var(--font-size-base);
+    font-weight: 500;
+  }
+
+  /* Desktop category heading adjustments */
+  .skill-category-heading {
+    font-size: 1.4rem;
+    padding: var(--space-3-5) var(--space-5);
+    gap: var(--space-4);
+    perspective: 1000px;
+  }
+
+  .skill-category-heading:hover {
+    background: rgba(255, 255, 255, 0.02); /* Glass hover enhancement for desktop */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transform: translateZ(20px) rotateX(5deg) rotateY(-5deg) scale(1.02);
+    box-shadow:
+      0 20px 40px rgba(0, 0, 0, 0.08),
+      0 10px 20px rgba(0, 0, 0, 0.05),
+      0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+  }
+
+  .skill-category-icon {
+    width: 26px;
+    height: 26px;
+  }
 }
 
 /* Large Desktop - 1200px and up */
@@ -688,6 +1165,49 @@
 
   .skill-tag {
     padding: var(--space-4) var(--space-6); /* 16px 24px - Apple grid system */
+  }
+
+  /* Large desktop skill item styling */
+  .skill-list {
+    gap: var(--space-5); /* 20px spacing */
+  }
+
+  .skill-item {
+    padding: var(--space-4) var(--space-5); /* 16px 20px */
+    gap: var(--space-5); /* 20px spacing */
+  }
+
+  .skill-icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .skill-name {
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+
+  /* Large desktop category heading adjustments */
+  .skill-category-heading {
+    font-size: 1.5rem;
+    padding: var(--space-4) var(--space-6);
+    gap: var(--space-5);
+    perspective: 1200px;
+  }
+
+  .skill-category-heading:hover {
+    background: rgba(255, 255, 255, 0.022); /* Glass hover enhancement for large desktop */
+    border: 1px solid rgba(255, 255, 255, 0.055);
+    transform: translateZ(25px) rotateX(6deg) rotateY(-6deg) scale(1.025);
+    box-shadow:
+      0 25px 45px rgba(0, 0, 0, 0.09),
+      0 12px 25px rgba(0, 0, 0, 0.055),
+      0 0 0 1px rgba(255, 255, 255, 0.035) inset;
+  }
+
+  .skill-category-icon {
+    width: 28px;
+    height: 28px;
   }
 }
 

@@ -220,32 +220,42 @@ function DevelopmentSection() {
 
           {/* Skills Grid - Organized by technology categories with icons */}
           <div className="skills-grid" role="group" aria-labelledby="skills-heading">
-            {skills.map((skillGroup, index) => (
-              <div
-                key={index}
-                className="skill-group"
-                role="group"
-                aria-labelledby={`skill-category-${index}`}
-              >
-                <h4 id={`skill-category-${index}`}>{skillGroup.category}</h4>
-                <div className="skill-list">
-                  {/* Individual skills with icons and names */}
-                  {skillGroup.items.map((skill, skillIndex) => {
-                    const IconComponent = iconMap[skill.icon as keyof typeof iconMap];
-                    return (
-                      <div key={skillIndex} className="skill-item">
-                        {IconComponent && (
-                          <span className="skill-icon">
-                            <IconComponent />
-                          </span>
-                        )}
-                        <span className="skill-name">{skill.name}</span>
-                      </div>
-                    );
-                  })}
+            {skills.map((skillGroup, index) => {
+              const CategoryIconComponent = iconMap[skillGroup.icon as keyof typeof iconMap];
+              return (
+                <div
+                  key={index}
+                  className="skill-group"
+                  role="group"
+                  aria-labelledby={`skill-category-${index}`}
+                >
+                  <h4 id={`skill-category-${index}`} className={`skill-category-heading skill-category-${skillGroup.category.toLowerCase()}`}>
+                    {CategoryIconComponent && (
+                      <span className="skill-category-icon">
+                        <CategoryIconComponent />
+                      </span>
+                    )}
+                    <span className="skill-category-text">{skillGroup.category}</span>
+                  </h4>
+                  <div className="skill-list">
+                    {/* Individual skills with icons and names */}
+                    {skillGroup.items.map((skill, skillIndex) => {
+                      const IconComponent = iconMap[skill.icon as keyof typeof iconMap];
+                      return (
+                        <div key={skillIndex} className="skill-item">
+                          {IconComponent && (
+                            <span className="skill-icon">
+                              <IconComponent />
+                            </span>
+                          )}
+                          <span className="skill-name">{skill.name}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
