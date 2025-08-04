@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
+import { IconType } from 'react-icons';
 
 interface SkillProgressBarProps {
   skill: string;
@@ -9,6 +10,7 @@ interface SkillProgressBarProps {
   showPercentage?: boolean;
   color?: string;
   className?: string;
+  icon?: IconType;
 }
 
 function SkillProgressBar({
@@ -18,7 +20,8 @@ function SkillProgressBar({
   delay = 0,
   showPercentage = false,
   color = 'var(--color-primary)',
-  className = ''
+  className = '',
+  icon
 }: SkillProgressBarProps) {
   const [animatedLevel, setAnimatedLevel] = useState(0);
   
@@ -82,6 +85,7 @@ function SkillProgressBar({
     >
       <div className="skill-header">
         <div className="skill-info">
+          {icon && <span className="skill-icon">{React.createElement(icon)}</span>}
           <span className="skill-name">{skill}</span>
           {category && <span className="skill-category">{category}</span>}
         </div>
@@ -122,6 +126,9 @@ function SkillProgressBar({
 }
 
 export default SkillProgressBar;
+
+
+
 
 
 

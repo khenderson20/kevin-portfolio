@@ -34,12 +34,12 @@ function MusicSection() {
   ];
 
   const audioSkills = [
-    { name: "Digital Signal Processing (DSP)", level: 85 },
-    { name: "Audio Plugin Development", level: 75 },
-    { name: "Ableton Live Integration", level: 90 },
-    { name: "MIDI Programming", level: 80 },
-    { name: "Web Audio API", level: 85 },
-    { name: "FFmpeg Processing", level: 80 }
+    { name: "Digital Signal Processing (DSP)", level: 35 },
+    { name: "Audio Plugin Development", level: 35 },
+    { name: "Ableton Live", level: 90 },
+    { name: "MIDI Programming", level: 100 },
+    
+    { name: "FFmpeg Processing", level: 20 }
   ];
 
   const audioStats = [
@@ -66,17 +66,26 @@ function MusicSection() {
           {/* Audio Stats Section */}
           <div className="stats-grid" role="region" aria-label="Audio engineering statistics">
             {audioStats.map((stat, index) => (
-              <div key={index} className="stat-item">
-                <div className="stat-value">
-                  <AnimatedCounter
-                    end={stat.value}
-                    suffix={stat.suffix}
-                    duration={2500}
-                    delay={index * 300}
-                  />
+              <InteractiveCard
+                key={index}
+                glowEffect={true}
+                tiltEffect={false}
+                scaleOnHover={true}
+                shadowIntensity="low"
+                className="stat-card-wrapper"
+              >
+                <div className="stat-item">
+                  <div className="stat-value">
+                    <AnimatedCounter
+                      end={stat.value}
+                      suffix={stat.suffix}
+                      duration={2500}
+                      delay={index * 300}
+                    />
+                  </div>
+                  <div className="stat-label">{stat.label}</div>
                 </div>
-                <div className="stat-label">{stat.label}</div>
-              </div>
+              </InteractiveCard>
             ))}
           </div>
         </header>
@@ -106,9 +115,7 @@ function MusicSection() {
                 skill={skill.name}
                 level={skill.level}
                 category="Audio"
-                delay={index * 100}
                 showPercentage={true}
-                color="var(--color-secondary)"
               />
             ))}
           </div>
@@ -119,5 +126,7 @@ function MusicSection() {
 }
 
 export default MusicSection;
+
+
 
 
