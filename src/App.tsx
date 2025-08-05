@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { ProgressiveNavigation } from './components/ProgressiveNavigation';
 import { useActiveSection } from './hooks/useActiveSection';
 import HomeSection from './components/HomeSection';

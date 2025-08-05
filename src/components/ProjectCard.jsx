@@ -29,3 +29,6 @@ const ProjectCard = ({ project }) => {
     </article>
   );
 };
+
+export default ProjectCard;
+
