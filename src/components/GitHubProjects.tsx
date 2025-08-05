@@ -1,50 +1,25 @@
-import { useState, useEffect } from 'react';
-import { GitHubService } from '../services/githubService';
 import { FaGithub, FaExternalLinkAlt, FaStar, FaCodeBranch } from 'react-icons/fa';
 import { Project } from '../types/portfolio';
 
 interface GitHubProjectsProps {
-  showAll?: boolean;
-  limit?: number;
+  projects: Project[];
+  loading: boolean;
+  error: string | null;
+  hasMore?: boolean;
 }
 
-export default function GitHubProjects({ showAll = false, limit = 6 }: GitHubProjectsProps) {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export default function GitHubProjects({
+  projects,
+  loading,
+  error,
+  hasMore = false
+}: GitHubProjectsProps) {
 
-  useEffect(() => {
-    const loadGitHubProjects = async () => {
-      try {
-        setLoading(true);
-        const repos = showAll 
-          ? await GitHubService.getUserRepos()
-          : await GitHubService.getSpecificRepos();
-        
-        const projectsWithLanguages = await Promise.all(
-          repos.slice(0, limit).map(async (repo) => {
-            const languages = await GitHubService.getRepoLanguages(repo.name);
-            return GitHubService.transformToPortfolioProject(repo, languages);
-          })
-        );
-        
-        setProjects(projectsWithLanguages);
-      } catch (err) {
-        setError('Failed to load GitHub projects');
-        console.error('Error loading GitHub projects:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadGitHubProjects();
-  }, [showAll, limit]);
-
-  if (loading) {
+  if (loading && projects.length === 0) {
     return <div className="loading-skeleton">Loading GitHub projects...</div>;
   }
 
-  if (error) {
+  if (error && projects.length === 0) {
     return <div className="error-message">{error}</div>;
   }
 
@@ -112,6 +87,28 @@ export default function GitHubProjects({ showAll = false, limit = 6 }: GitHubPro
           </div>
         ))}
       </div>
+
+      {/* Loading indicator for pagination */}
+      {loading && projects.length > 0 && (
+        <div className="loading-more">
+          <div className="loading-spinner"></div>
+          <span>Loading more repositories...</span>
+        </div>
+      )}
+
+      {/* Error indicator for pagination */}
+      {error && projects.length > 0 && (
+        <div className="error-message-inline">
+          <span>Failed to load more repositories. Please try again.</span>
+        </div>
+      )}
+
+      {/* End of results indicator */}
+      {!loading && !error && projects.length > 0 && !hasMore && (
+        <div className="end-of-results">
+          <span>All repositories loaded</span>
+        </div>
+      )}
     </div>
   );
 }

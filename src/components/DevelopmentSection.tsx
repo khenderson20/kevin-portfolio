@@ -5,6 +5,7 @@ import GitHubProjects from './GitHubProjects';
 import { PortfolioService } from '../services/portfolioService';
 import { Project } from '../types/portfolio';
 import { GitHubService } from '../services/githubService';
+import { GitHubRepo } from '../types/github';
 
 // Memoize ProjectCard to prevent unnecessary re-renders
 const MemoizedProjectCard = memo(ProjectCard);
@@ -47,9 +48,15 @@ function DevelopmentSection() {
   const categories = ['All', 'Frontend', 'Backend', 'Full-Stack', 'Mobile', 'Data Structures & Algorithms'];
   const [selectedCategory, setSelectedCategory] = useState('All');
 
-  // Add pagination for GitHub projects
-  const [githubPage, setGithubPage] = useState(1);
+  // GitHub repository count for display
   const [githubRepoCount, setGithubRepoCount] = useState(0);
+
+  // GitHub projects state for incremental loading
+  const [githubProjects, setGithubProjects] = useState<Project[]>([]);
+  const [githubLoading, setGithubLoading] = useState(false);
+  const [githubError, setGithubError] = useState<string | null>(null);
+  const [allGithubRepos, setAllGithubRepos] = useState<GitHubRepo[]>([]);
+  const [hasMoreGithubProjects, setHasMoreGithubProjects] = useState(true);
 
   // Add caching and error retry logic
   const [cache, setCache] = useState<Map<string, Project[]>>(new Map());
@@ -138,20 +145,102 @@ function DevelopmentSection() {
     loadProjectsWithCache();
   }, [loadProjectsWithCache]);
 
-  // Load GitHub repository count
+  // Load GitHub repository count and initial repos
   useEffect(() => {
-    const loadGithubCount = async () => {
+    const loadGithubData = async () => {
       try {
         const repos = await GitHubService.getUserRepos();
         setGithubRepoCount(repos.length);
+        setAllGithubRepos(repos);
       } catch (error) {
         console.error('Error loading GitHub repo count:', error);
         setGithubRepoCount(0);
+        setAllGithubRepos([]);
       }
     };
 
-    loadGithubCount();
+    loadGithubData();
   }, []);
+
+  // Function to load initial GitHub projects
+  const loadInitialGithubProjects = useCallback(async () => {
+    if (githubLoading || allGithubRepos.length === 0) return;
+
+    try {
+      setGithubLoading(true);
+      setGithubError(null);
+
+      const initialRepos = allGithubRepos.slice(0, PROJECTS_PER_PAGE);
+      const projectsWithLanguages = await Promise.all(
+        initialRepos.map(async (repo) => {
+          const languages = await GitHubService.getRepoLanguages(repo.name);
+          return GitHubService.transformToPortfolioProject(repo, languages);
+        })
+      );
+
+      setGithubProjects(projectsWithLanguages);
+      setHasMoreGithubProjects(allGithubRepos.length > PROJECTS_PER_PAGE);
+    } catch (error) {
+      console.error('Error loading initial GitHub projects:', error);
+      setGithubError('Failed to load GitHub projects');
+    } finally {
+      setGithubLoading(false);
+    }
+  }, [allGithubRepos, githubLoading]);
+
+  // Function to load more GitHub projects
+  const loadMoreGithubProjects = useCallback(async () => {
+    if (githubLoading || !hasMoreGithubProjects) return;
+
+    console.log('🔄 Loading more GitHub projects...', {
+      currentCount: githubProjects.length,
+      totalAvailable: allGithubRepos.length
+    });
+
+    try {
+      setGithubLoading(true);
+      setGithubError(null);
+
+      const startIndex = githubProjects.length;
+      const endIndex = startIndex + PROJECTS_PER_PAGE;
+      const newRepos = allGithubRepos.slice(startIndex, endIndex);
+
+      if (newRepos.length === 0) {
+        setHasMoreGithubProjects(false);
+        return;
+      }
+
+      const newProjectsWithLanguages = await Promise.all(
+        newRepos.map(async (repo) => {
+          const languages = await GitHubService.getRepoLanguages(repo.name);
+          return GitHubService.transformToPortfolioProject(repo, languages);
+        })
+      );
+
+      setGithubProjects(prev => {
+        const updated = [...prev, ...newProjectsWithLanguages];
+        console.log('✅ GitHub projects updated:', {
+          previousCount: prev.length,
+          newCount: updated.length,
+          addedCount: newProjectsWithLanguages.length
+        });
+        return updated;
+      });
+      setHasMoreGithubProjects(endIndex < allGithubRepos.length);
+    } catch (error) {
+      console.error('Error loading more GitHub projects:', error);
+      setGithubError('Failed to load more GitHub projects');
+    } finally {
+      setGithubLoading(false);
+    }
+  }, [allGithubRepos, githubProjects.length, githubLoading, hasMoreGithubProjects]);
+
+  // Load initial GitHub projects when tab becomes active
+  useEffect(() => {
+    if (activeTab === 'github' && allGithubRepos.length > 0 && githubProjects.length === 0) {
+      loadInitialGithubProjects();
+    }
+  }, [activeTab, allGithubRepos, githubProjects.length, loadInitialGithubProjects]);
 
   // Add filter logic
   const filteredProjects = useMemo(() => {
@@ -195,10 +284,10 @@ function DevelopmentSection() {
   // Intersection observer for GitHub pagination
   const loadMoreRef = useIntersectionObserver(
     useCallback(() => {
-      if (activeTab === 'github' && !loading) {
-        setGithubPage(prev => prev + 1);
+      if (activeTab === 'github' && !githubLoading && hasMoreGithubProjects) {
+        loadMoreGithubProjects();
       }
-    }, [activeTab, loading])
+    }, [activeTab, githubLoading, hasMoreGithubProjects, loadMoreGithubProjects])
   );
 
   return (
@@ -363,7 +452,12 @@ function DevelopmentSection() {
               aria-labelledby="github-tab"
               hidden={activeTab !== 'github'}
             >
-              <GitHubProjects showAll={true} limit={githubPage * PROJECTS_PER_PAGE} />
+              <GitHubProjects
+                projects={githubProjects}
+                loading={githubLoading}
+                error={githubError}
+                hasMore={hasMoreGithubProjects}
+              />
               <div ref={loadMoreRef} className="load-more-trigger" style={{ height: '20px' }} />
             </div>
           )}

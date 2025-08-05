@@ -1003,6 +1003,46 @@
   color: var(--color-primary-variant);
 }
 
+/* ===== LOADING INDICATORS ===== */
+
+.loading-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  margin-top: var(--space-4);
+  color: var(--color-on-surface-variant);
+  font-size: var(--font-size-sm);
+}
+
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(96, 165, 250, 0.2);
+  border-top: 2px solid rgba(96, 165, 250, 0.8);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-message-inline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  margin-top: var(--space-4);
+  color: var(--color-error);
+  font-size: var(--font-size-sm);
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: var(--radius-md);
+}
+
 /* ===== RESPONSIVE DESIGN ===== */
 
 /* Tablet Styles */
