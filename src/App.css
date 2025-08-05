@@ -268,13 +268,130 @@
 
 .project-card,
 .track-card {
+  /* Base styling - enhanced for Apple design */
   background: var(--color-surface-container);
   border: var(--card-border-width) solid var(--color-border);
-  border-radius: var(--card-border-radius);
-  padding: var(--card-padding);
+  border-radius: var(--card-border-radius-xl); /* Apple-style 16px rounded corners */
+  padding: var(--card-padding-xl); /* Generous padding following Apple guidelines */
   backdrop-filter: blur(10px);
-  box-shadow: var(--shadow-md);
-  transition: all var(--duration-normal) var(--ease-in-out);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.06),
+    0 1px 4px rgba(0, 0, 0, 0.04); /* Enhanced Apple-style shadows */
+
+  /* Interactive behaviors - leveraging the interactive system */
+  cursor: pointer;
+  transition: var(--transition-hover);
+  transform-style: preserve-3d;
+  position: relative;
+  overflow: hidden;
+
+  /* Ensure compatibility with interactive states and 3D effects */
+  will-change: transform, box-shadow;
+
+  /* Support for 3D custom properties (fallback) */
+  --card-rotate-x: 0deg;
+  --card-rotate-y: 0deg;
+  --card-translate-z: 0px;
+  --card-scale: 1;
+}
+
+/* Enhanced interactive states for Apple-style cards */
+.project-card:hover:not(.disabled),
+.track-card:hover:not(.disabled) {
+  transform: var(--hover-lift-moderate) var(--hover-scale-subtle);
+  box-shadow: var(--shadow-hover-strong);
+  border-color: var(--border-hover);
+}
+
+.project-card:active:not(.disabled),
+.track-card:active:not(.disabled) {
+  transform: var(--active-press-subtle);
+  box-shadow: var(--shadow-active);
+  transition: var(--transition-active);
+}
+
+.project-card:focus-visible:not(.disabled),
+.track-card:focus-visible:not(.disabled) {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* Enhanced visual effects from interactive-card system */
+/* Note: Using data attributes to add glow overlay without conflicting with development-section.css */
+.project-card[data-glow]::before,
+.track-card[data-glow]::before {
+  background: radial-gradient(circle at 50% 50%,
+    rgba(var(--color-primary-rgb), 0.05) 0%,
+    transparent 50%);
+}
+
+/* Fallback glow effect for cards without specific styling */
+.project-card:not([class*="github"]):hover,
+.track-card:hover {
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.06),
+    0 1px 4px rgba(0, 0, 0, 0.04),
+    0 0 20px rgba(var(--color-primary-rgb), 0.1);
+}
+
+/* Enhanced border glow on hover for interactive feedback */
+.project-card:hover:not(.github-project-card),
+.track-card:hover {
+  border-color: rgba(var(--color-primary-rgb), 0.3);
+  background:
+    var(--color-surface-container),
+    radial-gradient(circle at 50% 50%,
+      rgba(var(--color-primary-rgb), 0.02) 0%,
+      transparent 70%);
+}
+
+/* Disabled state support */
+.project-card.disabled,
+.track-card.disabled {
+  opacity: var(--disabled-opacity);
+  cursor: var(--disabled-cursor);
+  pointer-events: none;
+  transform: none !important;
+  transition: var(--transition-disabled);
+}
+
+/* Disabled cards lose interactive effects */
+.project-card.disabled,
+.track-card.disabled {
+  border-color: var(--border-disabled) !important;
+  background: var(--bg-disabled) !important;
+  box-shadow: none !important;
+}
+
+/* Accessibility: Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .project-card,
+  .track-card {
+    transition: none !important;
+  }
+
+  .project-card:hover,
+  .project-card:active,
+  .track-card:hover,
+  .track-card:active {
+    transform: none !important;
+  }
+
+  .project-card:hover,
+  .track-card:hover {
+    border-color: var(--color-border) !important;
+    background: var(--color-surface-container) !important;
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.06),
+      0 1px 4px rgba(0, 0, 0, 0.04) !important;
+  }
+}
+
+/* Ensure content appears above overlay effects */
+.project-card > *,
+.track-card > * {
+  position: relative;
+  z-index: 3;
 }
 
 .project-card h3,
@@ -284,8 +401,11 @@
   font-weight: var(--typography-h3-weight);
   line-height: var(--typography-h3-line-height);
   letter-spacing: var(--typography-h3-letter-spacing);
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
   color: var(--color-on-surface);
+  text-align: center; /* Center project titles following Apple design */
+  position: relative;
+  z-index: 3;
 }
 
 .project-card p,

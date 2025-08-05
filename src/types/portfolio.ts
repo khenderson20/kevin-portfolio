@@ -1,3 +1,5 @@
+export type ProjectCategory = 'frontend' | 'backend' | 'fullstack' | 'mobile' | 'audio';
+
 export interface Project {
   id: string;
   title: string;
@@ -8,6 +10,9 @@ export interface Project {
   demo?: string;
   image?: string;
   featured?: boolean;
+  category?: ProjectCategory;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface SkillGroup {
