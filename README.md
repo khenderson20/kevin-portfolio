@@ -4,7 +4,9 @@ This repository provides a starter template for creating applications using Reac
 
 ## Overview
 
-This template equips you with a foundational React application integrated with AWS Amplify, streamlined for scalability and performance. It is ideal for developers looking to jumpstart their project with pre-configured AWS services like Cognito, AppSync, and DynamoDB.
+This repository equips you with a foundational React application integrated with AWS Amplify, streamlined for scalability and performance. It is ideal for developers looking to jumpstart their project with pre-configured AWS services like Cognito, AppSync, and DynamoDB.
+
+This project is a React application integrated with AWS Amplify, designed for scalability and performance. It provides a robust foundation for developers to build and deploy their own AWS-powered web applications with modern design standards, authentication, GraphQL Backend API, and real-time database features out of the box. It is ideal for developers looking to jumpstart their project with pre-configured AWS services like Cognito, AppSync, and DynamoDB.
 
 ## Features
 
