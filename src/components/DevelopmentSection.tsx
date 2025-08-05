@@ -4,6 +4,7 @@ import ProjectCard from './ProjectCard';
 import GitHubProjects from './GitHubProjects';
 import { PortfolioService } from '../services/portfolioService';
 import { Project } from '../types/portfolio';
+import { GitHubService } from '../services/githubService';
 
 // Memoize ProjectCard to prevent unnecessary re-renders
 const MemoizedProjectCard = memo(ProjectCard);
@@ -43,11 +44,12 @@ function DevelopmentSection() {
   const [sortBy, setSortBy] = useState<'recent' | 'stars' | 'name'>('recent');
 
   // Add category-based filtering
-  const categories = ['All', 'Frontend', 'Backend', 'Full-Stack', 'Mobile', 'DevOps'];
+  const categories = ['All', 'Frontend', 'Backend', 'Full-Stack', 'Mobile', 'Data Structures & Algorithms'];
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   // Add pagination for GitHub projects
   const [githubPage, setGithubPage] = useState(1);
+  const [githubRepoCount, setGithubRepoCount] = useState(0);
 
   // Add caching and error retry logic
   const [cache, setCache] = useState<Map<string, Project[]>>(new Map());
@@ -65,16 +67,32 @@ function DevelopmentSection() {
     try {
       setLoading(true);
       setError(null);
-      const data = await PortfolioService.getFeaturedProjects();
       
-      // Add null/undefined check
-      if (!data || !Array.isArray(data)) {
+      // Get both database projects and GitHub showcase repos
+      const [dbProjects, githubShowcaseRepos] = await Promise.all([
+        PortfolioService.getFeaturedProjects(),
+        GitHubService.getSpecificRepos() // This already filters for showcase/portfolio topics
+      ]);
+      
+      // Transform GitHub repos to Project format (without code snippets)
+      const githubProjects = await Promise.all(
+        githubShowcaseRepos.map(async (repo) => {
+          const languages = await GitHubService.getRepoLanguages(repo.name);
+          return GitHubService.transformToPortfolioProject(repo, languages);
+        })
+      );
+      
+      // Combine both sources
+      const allProjects = [...dbProjects, ...githubProjects];
+      
+      if (!allProjects || !Array.isArray(allProjects)) {
         console.warn('No project data received or data is not an array');
         setProjects([]);
         return;
       }
 
-      const transformedData: Project[] = data.map(project => {
+      // Transform and filter data
+      const transformedData = allProjects.map(project => {
         // Add null check for project
         if (!project) return null;
 
@@ -119,6 +137,21 @@ function DevelopmentSection() {
   useEffect(() => {
     loadProjectsWithCache();
   }, [loadProjectsWithCache]);
+
+  // Load GitHub repository count
+  useEffect(() => {
+    const loadGithubCount = async () => {
+      try {
+        const repos = await GitHubService.getUserRepos();
+        setGithubRepoCount(repos.length);
+      } catch (error) {
+        console.error('Error loading GitHub repo count:', error);
+        setGithubRepoCount(0);
+      }
+    };
+
+    loadGithubCount();
+  }, []);
 
   // Add filter logic
   const filteredProjects = useMemo(() => {
@@ -208,25 +241,27 @@ function DevelopmentSection() {
           >
             <GitBranch className="tab-icon" size={16} />
             GitHub Repositories
-            <span className="tab-count">6+</span>
+            <span className="tab-count">{githubRepoCount || '6+'}</span>
           </button>
         </div>
 
-        {/* Category Filters - Full Width */}
-        <div className="category-filters-container">
-          <div className="category-filters">
-            {categories.map(category => (
-              <button
-                key={category}
-                className={`category-filter ${selectedCategory === category ? 'active' : ''}`}
-                onClick={() => setSelectedCategory(category)}
-                aria-pressed={selectedCategory === category}
-              >
-                {category}
-              </button>
-            ))}
+        {/* Category Filters - Only show for Featured Projects */}
+        {activeTab === 'featured' && (
+          <div className="category-filters-container">
+            <div className="category-filters">
+              {categories.map(category => (
+                <button
+                  key={category}
+                  className={`category-filter ${selectedCategory === category ? 'active' : ''}`}
+                  onClick={() => setSelectedCategory(category)}
+                  aria-pressed={selectedCategory === category}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Search and Controls */}
         <div className="projects-filter-bar">
@@ -328,7 +363,7 @@ function DevelopmentSection() {
               aria-labelledby="github-tab"
               hidden={activeTab !== 'github'}
             >
-              <GitHubProjects showAll={false} limit={githubPage * PROJECTS_PER_PAGE} />
+              <GitHubProjects showAll={true} limit={githubPage * PROJECTS_PER_PAGE} />
               <div ref={loadMoreRef} className="load-more-trigger" style={{ height: '20px' }} />
             </div>
           )}

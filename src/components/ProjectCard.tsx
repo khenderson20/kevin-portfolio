@@ -20,6 +20,25 @@ function ProjectCard({ project }: ProjectCardProps) {
       .replace('angularjs', 'angular');
   };
 
+  const getCategoryDisplayName = (category: string): string => {
+    switch (category.toLowerCase()) {
+      case 'dsa':
+        return 'Data Structures & Algorithms';
+      case 'frontend':
+        return 'Frontend';
+      case 'backend':
+        return 'Backend';
+      case 'fullstack':
+        return 'Full-Stack';
+      case 'mobile':
+        return 'Mobile';
+      case 'audio':
+        return 'Audio';
+      default:
+        return category;
+    }
+  };
+
   return (
     <Card3D
       className="project-card"
@@ -32,6 +51,9 @@ function ProjectCard({ project }: ProjectCardProps) {
         role="article"
         aria-labelledby={`project-${project.title.replace(/\s+/g, '-').toLowerCase()}`}
       >
+      {project.image && (
+        <img src={project.image} alt={`${project.title} preview`} className="project-image" />
+      )}
       <header>
         <div className="project-header-top">
           <h3 id={`project-${project.title.replace(/\s+/g, '-').toLowerCase()}`}>
@@ -39,7 +61,7 @@ function ProjectCard({ project }: ProjectCardProps) {
           </h3>
           {project.category && (
             <span className="project-category-badge" data-category={project.category}>
-              {project.category}
+              {getCategoryDisplayName(project.category)}
             </span>
           )}
         </div>

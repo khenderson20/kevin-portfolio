@@ -19,7 +19,7 @@ export default function GitHubProjects({ showAll = false, limit = 6 }: GitHubPro
         setLoading(true);
         const repos = showAll 
           ? await GitHubService.getUserRepos()
-          : await GitHubService.getFeaturedRepos();
+          : await GitHubService.getSpecificRepos();
         
         const projectsWithLanguages = await Promise.all(
           repos.slice(0, limit).map(async (repo) => {

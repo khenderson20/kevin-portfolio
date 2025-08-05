@@ -1,4 +1,4 @@
-export type ProjectCategory = 'frontend' | 'backend' | 'fullstack' | 'mobile' | 'audio';
+export type ProjectCategory = 'frontend' | 'backend' | 'fullstack' | 'mobile' | 'audio' | 'dsa';
 
 export interface Project {
   id: string;
@@ -27,4 +27,10 @@ export enum SectionId {
   DEVELOPMENT = 'development',
   ABOUT = 'about',
   CONTACT = 'contact'
+}
+
+export interface CodeSnippet {
+  content: string;
+  language: string;
+  filename: string;
 }
