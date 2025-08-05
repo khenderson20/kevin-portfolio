@@ -1,4 +1,4 @@
-import { ExternalLink, Github, BarChart3 } from 'lucide-react';
+import { ExternalLink, GitBranch, BarChart3 } from 'lucide-react';
 import { Project } from '../types/portfolio';
 import Card3D from './Card3D';
 
@@ -46,7 +46,7 @@ function ProjectCard({ project }: ProjectCardProps) {
         <div className="tech-stack" aria-label="Technologies used">
           <div className="tech-stack-label">Tech Stack:</div>
           <div className="tech-badges">
-            {project.tech.map((tech, index) => (
+            {(project.tech || []).map((tech, index) => (
               <span
                 key={index}
                 className="tech-badge"
@@ -95,7 +95,7 @@ function ProjectCard({ project }: ProjectCardProps) {
             className="btn-link"
             aria-label={`View source code for ${project.title} on GitHub`}
           >
-            <Github size={14} />
+            <GitBranch size={14} />
             GitHub
           </a>
         )}

@@ -8,6 +8,7 @@ import DevelopmentSection from './components/DevelopmentSection';
 import AboutSection from './components/AboutSection';
 import ContactSection from './components/ContactSection';
 import ScrollIndicator from './components/ScrollIndicator';
+import DatabaseSeeder from './components/DatabaseSeeder';
 import './App.css';
 import './styles/progressive-navigation.css';
 
@@ -50,32 +51,33 @@ function App() {
   return (
     <div className="App">
       <ProgressiveNavigation />
-      
+
       <main className="main-content">
         <Suspense fallback={<div className="section-loading">Loading...</div>}>
           <section id="home" className="section-container">
             <HomeSection onNavigateToSection={navigateToSection} />
           </section>
-          
+
           <section id="music" className="section-container">
             <MusicSection />
           </section>
-          
+
           <section id="development" className="section-container">
             <DevelopmentSection />
           </section>
-          
+
           <section id="about" className="section-container">
             <AboutSection />
           </section>
-          
+
           <section id="contact" className="section-container">
             <ContactSection />
           </section>
         </Suspense>
       </main>
-      
+
       {hasScrollableContent && <ScrollIndicator />}
+      <DatabaseSeeder />
     </div>
   );
 }

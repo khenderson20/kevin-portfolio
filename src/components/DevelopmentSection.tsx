@@ -77,7 +77,7 @@ function DevelopmentSection() {
       const transformedData: Project[] = data.map(project => {
         // Add null check for project
         if (!project) return null;
-        
+
         const techArray = Array.isArray(project.tech)
           ? project.tech.filter((t): t is string => typeof t === 'string' && t !== null)
           : [];
@@ -212,7 +212,23 @@ function DevelopmentSection() {
           </button>
         </div>
 
-        {/* Filters and Search */}
+        {/* Category Filters - Full Width */}
+        <div className="category-filters-container">
+          <div className="category-filters">
+            {categories.map(category => (
+              <button
+                key={category}
+                className={`category-filter ${selectedCategory === category ? 'active' : ''}`}
+                onClick={() => setSelectedCategory(category)}
+                aria-pressed={selectedCategory === category}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Search and Controls */}
         <div className="projects-filter-bar">
           <div className="search-container">
             <Search size={16} />
@@ -226,42 +242,30 @@ function DevelopmentSection() {
             />
           </div>
 
-          <div className="category-filters">
-            {categories.map(category => (
-              <button
-                key={category}
-                className={`category-filter ${selectedCategory === category ? 'active' : ''}`}
-                onClick={() => setSelectedCategory(category)}
-                aria-pressed={selectedCategory === category}
-              >
-                {category}
-              </button>
-            ))}
+          <div className="filter-controls">
+            <select
+              value={selectedTech}
+              onChange={(e) => setSelectedTech(e.target.value)}
+              className="tech-filter-select"
+              aria-label="Filter by technology"
+            >
+              <option value="">All Technologies</option>
+              {Array.from(new Set(projects.flatMap(p => p.tech))).sort().map(tech => (
+                <option key={tech} value={tech}>{tech}</option>
+              ))}
+            </select>
+
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as 'recent' | 'stars' | 'name')}
+              className="sort-select"
+              aria-label="Sort projects"
+            >
+              <option value="recent">Most Recent</option>
+              <option value="stars">Most Stars</option>
+              <option value="name">Alphabetical</option>
+            </select>
           </div>
-
-          {/* Tech Filter */}
-          <select
-            value={selectedTech}
-            onChange={(e) => setSelectedTech(e.target.value)}
-            className="tech-filter-select"
-            aria-label="Filter by technology"
-          >
-            <option value="">All Technologies</option>
-            {Array.from(new Set(projects.flatMap(p => p.tech))).sort().map(tech => (
-              <option key={tech} value={tech}>{tech}</option>
-            ))}
-          </select>
-
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as 'recent' | 'stars' | 'name')}
-            className="sort-select"
-            aria-label="Sort projects"
-          >
-            <option value="recent">Most Recent</option>
-            <option value="stars">Most Stars</option>
-            <option value="name">Alphabetical</option>
-          </select>
         </div>
 
         {/* Project Content */}
