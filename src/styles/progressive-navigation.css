@@ -1,0 +1,509 @@
+/* Progressive Navigation Base Styles */
+.progressive-nav {
+  /* Match "Available for projects" button styling */
+  --nav-primary-color: rgba(120, 219, 226, 0.9);
+  --nav-bg: rgba(120, 219, 226, 0.1);
+  --nav-border: rgba(120, 219, 226, 0.2);
+  --nav-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --nav-backdrop: blur(10px);
+
+  position: fixed;
+  z-index: 1000;
+}
+
+/* Desktop Navigation - Flexbox Container */
+.progressive-nav--desktop {
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--nav-bg);
+  border: 1px solid var(--nav-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  box-shadow: var(--nav-shadow);
+  max-width: 90vw;
+  width: auto;
+  min-width: 0;
+  display: flex;
+  overflow: hidden;
+  box-sizing: border-box;
+  backdrop-filter: var(--nav-backdrop);
+  -webkit-backdrop-filter: var(--nav-backdrop);
+}
+
+.progressive-nav--desktop .nav-sections {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  flex-wrap: nowrap;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: var(--space-1);
+}
+
+/* Mobile Navigation */
+.progressive-nav--mobile {
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
+}
+
+.progressive-nav--mobile .nav-sections {
+  background: var(--nav-bg);
+  border: 1px solid var(--nav-border);
+  border-radius: var(--radius-3xl);
+  padding: var(--space-5);
+  box-shadow: var(--nav-shadow);
+  transform: translateY(100%);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  display: grid;
+  gap: var(--space-3);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.progressive-nav--mobile .nav-sections--visible {
+  transform: translateY(0);
+  opacity: 1;
+  backdrop-filter: var(--nav-backdrop);
+  -webkit-backdrop-filter: var(--nav-backdrop);
+}
+
+/* Navigation Toggle (Mobile) */
+.nav-toggle {
+  position: absolute;
+  bottom: 0;
+  right: 1rem;
+  width: 56px;
+  height: 56px;
+  background: var(--nav-bg);
+  border: 1px solid var(--nav-border);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--nav-shadow);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: var(--nav-backdrop);
+  -webkit-backdrop-filter: var(--nav-backdrop);
+  z-index: 1001; /* Ensure toggle stays above navigation sections */
+}
+
+.nav-toggle:hover {
+  background: rgba(120, 219, 226, 0.15);
+  border-color: rgba(120, 219, 226, 0.3);
+  box-shadow: 0 4px 12px rgba(120, 219, 226, 0.1);
+}
+
+.nav-toggle:active {
+  transform: translateY(0);
+  background: rgba(120, 219, 226, 0.2);
+}
+
+.nav-toggle-icon {
+  font-size: 1.25rem;
+  color: var(--nav-primary-color);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Navigation Sections - Constrained but Readable */
+.nav-section {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--nav-primary-color);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  text-align: left;
+  min-height: var(--button-height-md);
+  font-family: var(--typography-body-family);
+  font-weight: var(--font-weight-medium);
+  text-rendering: optimizeLegibility;
+  flex: 1 1 0;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.nav-section:hover {
+  background: rgba(120, 219, 226, 0.15);
+  border-color: rgba(120, 219, 226, 0.3);
+  box-shadow: 0 4px 12px rgba(120, 219, 226, 0.1);
+}
+
+.nav-section--active {
+  background: var(--nav-bg);
+  border-color: var(--nav-border);
+  color: var(--nav-primary-color);
+  box-shadow: 0 2px 8px rgba(120, 219, 226, 0.15);
+}
+
+.nav-section--scrolling {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Navigation Section Content */
+.nav-section-icon {
+  font-size: var(--font-size-lg);
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+/* Material Design compliant content container */
+.nav-section-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  justify-content: center;
+  align-items: inherit;
+}
+
+/* Material Design Body 2 - Primary navigation text */
+.nav-section-label {
+  display: block;
+  font-weight: 500; /* Material Medium */
+  font-size: 0.875rem; /* 14sp - Material Body 2 */
+  line-height: 1.43; /* Material Body 2 line height */
+  letter-spacing: 0.01071em; /* Material Body 2 letter spacing */
+  color: inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+/* Material Design Caption - Secondary navigation text */
+.nav-section-description {
+  display: block;
+  font-weight: 400; /* Material Regular */
+  font-size: 0.75rem; /* 12sp - Material Caption */
+  line-height: 1.33; /* Material Caption line height */
+  letter-spacing: 0.03333em; /* Material Caption letter spacing */
+  opacity: 0.6; /* Material medium emphasis */
+  margin-top: 0.25rem; /* 4dp Material spacing */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Active Indicator */
+.nav-section-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--nav-primary-color);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  flex-shrink: 0;
+}
+
+.nav-section--active .nav-section-indicator {
+  opacity: 1;
+}
+
+/* Mobile Overlay - Only visible when navigation is expanded */
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: -1;
+  opacity: 1;
+  transition: opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Material Design Tablet Layout (768px+) - Readable & Constrained */
+@media (min-width: 768px) {
+  .progressive-nav--desktop .nav-section-description {
+    display: none; /* Hide descriptions in compact layout */
+  }
+
+  .progressive-nav--desktop .nav-section {
+    flex-direction: column;
+    text-align: center;
+    padding: 0.5rem 0.75rem; /* 8dp 12dp - Compact but readable */
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 48px; /* Material minimum touch target */
+    gap: 0.25rem; /* 4dp */
+    white-space: normal;
+  }
+
+  .progressive-nav--desktop .nav-section-content {
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .progressive-nav--desktop .nav-section-label {
+    font-size: 0.75rem; /* 12sp - Compact but readable */
+    line-height: 1.33;
+    font-weight: 500;
+    white-space: normal;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-word;
+    hyphens: auto;
+    max-width: 100%;
+  }
+
+  .progressive-nav--desktop .nav-section-indicator {
+    position: absolute;
+    bottom: 0.25rem; /* 4dp */
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* Material Design Desktop Layout (1024px+) - Readable & Constrained */
+@media (min-width: 1024px) {
+  .progressive-nav--desktop .nav-section {
+    flex-direction: row;
+    text-align: left;
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 0.5rem 1rem; /* 8dp 16dp - Balanced spacing */
+    gap: 0.5rem; /* 8dp */
+  }
+
+  .progressive-nav--desktop .nav-section-content {
+    align-items: flex-start;
+    text-align: left;
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .progressive-nav--desktop .nav-section-label {
+    font-size: 0.8125rem; /* 13sp - Readable but compact */
+    line-height: 1.38;
+    font-weight: 500;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 100%;
+  }
+
+  .progressive-nav--desktop .nav-section-description {
+    display: block;
+    font-size: 0.6875rem; /* 11sp - Compact but readable */
+    line-height: 1.27;
+    font-weight: 400;
+    opacity: 0.6; /* Material medium emphasis */
+    margin-top: 0.125rem; /* 2dp */
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 100%;
+  }
+
+  .progressive-nav--desktop .nav-section-indicator {
+    position: static;
+    transform: none;
+    flex-shrink: 0;
+    align-self: center;
+  }
+}
+
+/* Material Design Mobile Layout (< 768px) */
+@media (max-width: 767px) {
+  .progressive-nav--mobile .nav-section {
+    padding: 1rem 1.25rem; /* 16dp 20dp - Material comfortable spacing */
+    min-height: 48px; /* Material minimum touch target */
+    white-space: normal;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .progressive-nav--mobile .nav-section-content {
+    width: 100%;
+    overflow: visible;
+    align-items: flex-start;
+  }
+
+  .progressive-nav--mobile .nav-section-label {
+    font-size: 1rem; /* 16sp - Material Body 1 for mobile */
+    line-height: 1.5; /* Material Body 1 line height */
+    font-weight: 500; /* Material Medium */
+    letter-spacing: 0.00938em; /* Material Body 1 letter spacing */
+    white-space: normal;
+    text-overflow: unset;
+    overflow: visible;
+    word-break: break-word;
+  }
+
+  .progressive-nav--mobile .nav-section-description {
+    font-size: 0.875rem; /* 14sp - Material Body 2 for mobile */
+    line-height: 1.43; /* Material Body 2 line height */
+    font-weight: 400; /* Material Regular */
+    letter-spacing: 0.01071em; /* Material Body 2 letter spacing */
+    opacity: 0.6; /* Material medium emphasis */
+    margin-top: 0.25rem; /* 4dp Material spacing */
+    white-space: normal;
+    text-overflow: unset;
+    overflow: visible;
+    word-break: break-word;
+  }
+
+  .progressive-nav--mobile .nav-section-icon {
+    font-size: 1.5rem; /* 24dp - Material icon size */
+    flex-shrink: 0;
+    line-height: 1;
+  }
+}
+
+/* Accessibility Improvements */
+@media (prefers-reduced-motion: reduce) {
+  .progressive-nav *,
+  .progressive-nav *::before,
+  .progressive-nav *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus States */
+.nav-section:focus-visible {
+  outline: 2px solid var(--nav-primary-color);
+  outline-offset: 2px;
+  background: rgba(120, 219, 226, 0.15);
+  border-color: rgba(120, 219, 226, 0.4);
+}
+
+/* Material Design High Contrast and Accessibility */
+@media (prefers-contrast: high) {
+  .nav-section-description {
+    opacity: 0.87; /* Material high emphasis for high contrast */
+    font-weight: 500; /* Material Medium for better visibility */
+  }
+
+  .nav-section-label {
+    font-weight: 600; /* Material Semi-bold for high contrast */
+  }
+
+  .nav-section {
+    border-color: rgba(120, 219, 226, 0.3);
+  }
+
+  .nav-section--active {
+    border-color: rgba(120, 219, 226, 0.6);
+    background: rgba(120, 219, 226, 0.2);
+  }
+
+  .nav-toggle {
+    border-color: rgba(120, 219, 226, 0.4);
+  }
+}
+
+/* Material Design Text Rendering Optimizations */
+.nav-section-label,
+.nav-section-description {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Material Design Focus States */
+.nav-section:focus-visible .nav-section-label {
+  font-weight: 600; /* Enhance label on focus */
+}
+
+.nav-section:focus-visible .nav-section-description {
+  opacity: 0.87; /* Enhance description visibility on focus */
+}
+
+/* Subtle pulse animation for active navigation */
+@keyframes navPulse {
+  0%, 100% {
+    box-shadow: 0 2px 8px rgba(120, 219, 226, 0.15);
+  }
+  50% {
+    box-shadow: 0 2px 12px rgba(120, 219, 226, 0.25);
+  }
+}
+
+.nav-section--active {
+  animation: navPulse 3s ease-in-out infinite;
+}
+
+/* Material Design Small Screen Fallback (< 480px) - Minimal but Readable */
+@media (max-width: 480px) {
+  .progressive-nav--desktop {
+    max-width: 95vw;
+    left: 2.5vw;
+    transform: none;
+  }
+
+  .progressive-nav--desktop .nav-sections {
+    gap: 0.125rem; /* 2dp - Minimal spacing for very small screens */
+  }
+
+  .progressive-nav--desktop .nav-section {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 0.375rem 0.5rem; /* 6dp 8dp - Minimal but usable */
+  }
+
+  .progressive-nav--desktop .nav-section-label {
+    font-size: 0.6875rem; /* 11sp - Small but readable */
+    line-height: 1.27;
+    letter-spacing: 0.025em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}
+
+/* Material Design Large Desktop Layout (1440px+) - Optimal Readability */
+@media (min-width: 1440px) {
+  .progressive-nav--desktop .nav-section {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 0.75rem 1.5rem; /* 12dp 24dp - Comfortable spacing */
+  }
+
+  .progressive-nav--desktop .nav-sections {
+    gap: 0.5rem; /* 8dp - Balanced spacing */
+  }
+
+  .progressive-nav--desktop .nav-section-label {
+    font-size: 0.875rem; /* 14sp - Material Body 2 for optimal reading */
+    line-height: 1.43;
+    letter-spacing: 0.01071em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .progressive-nav--desktop .nav-section-description {
+    font-size: 0.75rem; /* 12sp - Material Caption */
+    line-height: 1.33;
+    letter-spacing: 0.03333em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}
+
+.nav-toggle:focus-visible {
+  outline: 2px solid var(--color-on-primary, white);
+  outline-offset: 2px;
+}

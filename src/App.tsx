@@ -1,84 +1,82 @@
 
-import { useEffect, useState, lazy, Suspense } from 'react';
-import ErrorBoundary from './components/ErrorBoundary';
-import Navbar from './components/Navbar';
-import ScrollIndicator from './components/ScrollIndicator';
+import React, { useEffect, useState, Suspense } from 'react';
+import { ProgressiveNavigation } from './components/ProgressiveNavigation';
 import { useActiveSection } from './hooks/useActiveSection';
+import HomeSection from './components/HomeSection';
+import MusicSection from './components/MusicSection';
+import DevelopmentSection from './components/DevelopmentSection';
+import AboutSection from './components/AboutSection';
+import ContactSection from './components/ContactSection';
+import ScrollIndicator from './components/ScrollIndicator';
 import './App.css';
-import SectionErrorBoundary from './components/SectionErrorBoundary';
-
-// Lazy load heavy components
-const HomeSection = lazy(() => import('./components/HomeSection'));
-const MusicSection = lazy(() => import('./components/MusicSection'));
-const DevelopmentSection = lazy(() => import('./components/DevelopmentSection'));
-const AboutSection = lazy(() => import('./components/AboutSection'));
-const ContactSection = lazy(() => import('./components/ContactSection'));
+import './styles/progressive-navigation.css';
 
 function App() {
-  const { activeSection, navigateToSection } = useActiveSection();
-  
-  // Custom logic to determine if content is scrollable
+  const { navigateToSection } = useActiveSection();
   const [hasScrollableContent, setHasScrollableContent] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
     const checkScrollable = () => {
       const isScrollable = document.documentElement.scrollHeight > window.innerHeight;
       setHasScrollableContent(isScrollable);
-      
     };
     
-    checkScrollable();
+    // Initialize app
+    const initializeApp = () => {
+      checkScrollable();
+      setIsLoading(false);
+    };
+    
+    // Add small delay to ensure proper rendering
+    const timer = setTimeout(initializeApp, 100);
+    
     window.addEventListener('resize', checkScrollable);
-    return () => window.removeEventListener('resize', checkScrollable);
+    
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', checkScrollable);
+    };
   }, []);
 
-  const sections = [
-    { id: 'home', label: 'Home' },
-    { id: 'music', label: 'Music' },
-    { id: 'development', label: 'Development' },
-    { id: 'about', label: 'About' },
-    { id: 'contact', label: 'Contact' }
-  ];
-
+  if (isLoading) {
+    return (
+      <div className="app-loading">
+        <div className="loading-spinner" />
+      </div>
+    );
+  }
 
   return (
-    <ErrorBoundary>
-      <div className="portfolio">
-        {hasScrollableContent && (
-          <ScrollIndicator
-            position="bottom"
-            thickness={5}
-            showPercentage={true}
-            color="var(--color-secondary)"
-          />
-        )}
-        <Navbar
-          key="navbar"
-          sections={sections}
-          activeSection={activeSection}
-          setActiveSection={navigateToSection}
-        />
-        <main className="main-content">
-          <Suspense fallback={<div className="loading-skeleton">Loading...</div>}>
-            <SectionErrorBoundary sectionName="Home">
-              <HomeSection onNavigateToSection={navigateToSection} />
-            </SectionErrorBoundary>
-            <SectionErrorBoundary sectionName="Music">
-              <MusicSection />
-            </SectionErrorBoundary>
-            <SectionErrorBoundary sectionName="Development">
-              <DevelopmentSection />
-            </SectionErrorBoundary>
-            <SectionErrorBoundary sectionName="About">
-              <AboutSection />
-            </SectionErrorBoundary>
-            <SectionErrorBoundary sectionName="Contact">
-              <ContactSection />
-            </SectionErrorBoundary>
-          </Suspense>
-        </main>
-      </div>
-    </ErrorBoundary>
+    <div className="App">
+      <ProgressiveNavigation />
+      
+      <main className="main-content">
+        <Suspense fallback={<div className="section-loading">Loading...</div>}>
+          <section id="home" className="section-container">
+            <HomeSection onNavigateToSection={navigateToSection} />
+          </section>
+          
+          <section id="music" className="section-container">
+            <MusicSection />
+          </section>
+          
+          <section id="development" className="section-container">
+            <DevelopmentSection />
+          </section>
+          
+          <section id="about" className="section-container">
+            <AboutSection />
+          </section>
+          
+          <section id="contact" className="section-container">
+            <ContactSection />
+          </section>
+        </Suspense>
+      </main>
+      
+      {hasScrollableContent && <ScrollIndicator />}
+    </div>
   );
 }
 

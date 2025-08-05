@@ -82,23 +82,47 @@
   box-shadow: var(--shadow-sm);
 }
 
-/* Main Content - Enhanced for Smooth Scrolling */
+/* Main App Layout Updates */
+.App {
+  min-height: 100vh;
+  background: var(--color-surface, #0a0a0a);
+  color: var(--color-on-surface, #ffffff);
+  position: relative;
+}
+
+/* Main Content Adjustments */
 .main-content {
-  flex: 1;
   width: 100%;
   max-width: 100%;
-  margin: 0 auto;
-  margin-top: 80px; /* Add top margin to account for fixed navbar */
-  background:
-    linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.9) 100%),
+  margin: 0;
+  background: linear-gradient(135deg, 
+    rgba(0, 0, 0, 0.8) 0%, 
+    rgba(0, 0, 0, 0.9) 100%),
     url('assets/modular-background.jpg');
   background-size: cover;
   background-position: center;
-  background-attachment: scroll;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-xl);
-  backdrop-filter: blur(8px);
-  box-sizing: border-box;
+  background-attachment: fixed;
+  position: relative;
+}
+
+/* Remove conflicting navbar margin */
+.main-content {
+  margin-top: 0;
+}
+
+/* Ensure sections are properly spaced */
+.main-content section {
+  scroll-margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    background-attachment: scroll;
+  }
+  
+  .main-content section {
+    scroll-margin-top: 1rem;
+  }
 }
 
 /* Page Sections for Smooth Scrolling */
