@@ -66,17 +66,27 @@ function DevelopmentSection() {
       setLoading(true);
       setError(null);
       const data = await PortfolioService.getFeaturedProjects();
+      
+      // Add null/undefined check
+      if (!data || !Array.isArray(data)) {
+        console.warn('No project data received or data is not an array');
+        setProjects([]);
+        return;
+      }
+
       const transformedData: Project[] = data.map(project => {
-        // Ensure tech is a proper string array
+        // Add null check for project
+        if (!project) return null;
+        
         const techArray = Array.isArray(project.tech)
           ? project.tech.filter((t): t is string => typeof t === 'string' && t !== null)
           : [];
 
         return {
           id: project.id,
-          title: project.title,
+          title: project.title || 'Untitled Project',
           tech: techArray,
-          description: project.description,
+          description: project.description || 'No description available',
           metrics: project.metrics || undefined,
           github: project.github || undefined,
           demo: project.demo || undefined,
@@ -86,7 +96,7 @@ function DevelopmentSection() {
           createdAt: project.createdAt || undefined,
           updatedAt: project.updatedAt || undefined,
         } as Project;
-      });
+      }).filter(Boolean) as Project[]; // Remove null entries
 
       setProjects(transformedData);
       setCache(prev => new Map(prev).set(cacheKey, transformedData));
@@ -94,6 +104,7 @@ function DevelopmentSection() {
     } catch (err) {
       console.error('Error loading projects:', err);
       setError('Failed to load projects');
+      setProjects([]); // Set empty array on error
       if (retryCount < 3) {
         setTimeout(() => {
           setRetryCount(prev => prev + 1);
