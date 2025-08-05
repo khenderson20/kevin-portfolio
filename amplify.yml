@@ -13,6 +13,7 @@ frontend:
         - nvm use 18
         - node --version
         - npm --version
+        # No NODE_ENV needed - Vite handles this automatically
     build:
       commands:
         - npm run build
