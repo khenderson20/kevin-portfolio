@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import ParticleBackground from './ParticleBackground';
+import { GitHubStatsService } from '../services/githubStatsService';
 
 interface HomeSectionProps {
   onNavigateToSection?: (section: string) => void;
@@ -7,6 +8,12 @@ interface HomeSectionProps {
 
 function HomeSection({ onNavigateToSection }: HomeSectionProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const [githubStats, setGithubStats] = useState({
+    yearsExperience: 8,
+    repositoryCount: 11,
+    languageCount: 6,
+    followerCount: 16
+  });
 
   useEffect(() => {
     // Trigger animations after component mounts
@@ -14,14 +21,31 @@ function HomeSection({ onNavigateToSection }: HomeSectionProps) {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleMusicClick = () => {
-    if (onNavigateToSection) {
-      onNavigateToSection('music');
-    } else {
-      // Fallback for direct navigation
-      window.location.hash = 'music';
-    }
-  };
+  useEffect(() => {
+    // Load real GitHub stats
+    const loadGitHubStats = async () => {
+      try {
+        const [years, repos, languages, followers] = await Promise.all([
+          GitHubStatsService.getYearsExperience(),
+          GitHubStatsService.getRepositoryCount(),
+          GitHubStatsService.getLanguageCount(),
+          GitHubStatsService.getFollowerCount()
+        ]);
+
+        setGithubStats({
+          yearsExperience: years,
+          repositoryCount: repos,
+          languageCount: languages,
+          followerCount: followers
+        });
+      } catch (error) {
+        console.error('Error loading GitHub stats:', error);
+        // Keep fallback values
+      }
+    };
+
+    loadGitHubStats();
+  }, []);
 
   const handleCodeClick = () => {
     if (onNavigateToSection) {
@@ -53,22 +77,23 @@ function HomeSection({ onNavigateToSection }: HomeSectionProps) {
           </h1>
 
           <p className="hero-subtitle">
+            Synth enthusiast, developer, and creative from USA.
             Crafting digital experiences through code and sound,
-            bridging the gap between technical innovation and creative expression
+            bridging technical innovation with creative expression.
           </p>
 
           <div className="hero-stats">
             <div className="stat">
-              <span className="stat-number">5+</span>
+              <span className="stat-number">{githubStats.yearsExperience}+</span>
               <span className="stat-label">Years Experience</span>
             </div>
             <div className="stat">
-              <span className="stat-number">20+</span>
-              <span className="stat-label">Projects Completed</span>
+              <span className="stat-number">{githubStats.repositoryCount}</span>
+              <span className="stat-label">Public Repos</span>
             </div>
             <div className="stat">
-              <span className="stat-number">100%</span>
-              <span className="stat-label">Client Satisfaction</span>
+              <span className="stat-number">{githubStats.languageCount}</span>
+              <span className="stat-label">Languages Used</span>
             </div>
           </div>
         </div>
@@ -77,16 +102,6 @@ function HomeSection({ onNavigateToSection }: HomeSectionProps) {
           <div className="hero-buttons">
             <button
               className="btn-primary hero-cta"
-              onClick={handleMusicClick}
-              aria-label="Listen to my music projects"
-            >
-              <span className="btn-icon">🎧</span>
-              <span className="btn-text">Listen to My Music</span>
-              <span className="btn-arrow">→</span>
-            </button>
-
-            <button
-              className="btn-secondary hero-cta"
               onClick={handleCodeClick}
               aria-label="View my development projects"
             >
@@ -97,10 +112,10 @@ function HomeSection({ onNavigateToSection }: HomeSectionProps) {
           </div>
 
           <div className="hero-social-proof">
-            <p className="social-proof-text">Trusted by startups and enterprises</p>
+            <p className="social-proof-text">Computer Science • University of Texas at San Antonio</p>
             <div className="social-proof-logos">
-              <span className="company-logo">IBM</span>
-              <span className="company-logo">University Research</span>
+              <span className="company-logo">{githubStats.followerCount} Followers</span>
+              <span className="company-logo">UTSA Alumni</span>
               <span className="company-logo">Open Source</span>
             </div>
           </div>
