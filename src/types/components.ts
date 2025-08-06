@@ -22,10 +22,6 @@ export interface NavigationSection {
   description?: string;
 }
 
-export interface ProgressiveNavigationProps {
-  className?: string;
-}
-
 export interface NavbarProps {
   sections: NavigationSection[];
   activeSection: string;
