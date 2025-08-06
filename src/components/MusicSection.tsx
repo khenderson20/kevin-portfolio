@@ -14,40 +14,40 @@ interface Track {
 
 function MusicSection() {
   const audioProjects: Track[] = [
-    { 
-      title: "Interactive Audio Visualizer", 
-      duration: "Web App", 
-      genre: "React + Web Audio API",
-      description: "Real-time frequency analysis with custom DSP algorithms and responsive visual feedback"
+    {
+      title: "RINGS 2022",
+      duration: "2022",
+      genre: "Ambient Electronic",
+      description: "Atmospheric electronic composition featuring layered synthesizers and evolving soundscapes"
     },
-    { 
-      title: "Podcast Processing Pipeline", 
-      duration: "Production Tool", 
-      genre: "Node.js + FFmpeg",
-      description: "Automated audio enhancement and normalization system for 50+ podcast episodes"
+    {
+      title: "Experiment with modular",
+      duration: "2022",
+      genre: "Modular Synthesis",
+      description: "Exploration of modular synthesizer techniques with complex patch routing and generative sequences"
     },
-    { 
-      title: "MIDI Controller Interface", 
-      duration: "Hardware Integration", 
-      genre: "JavaScript + WebMIDI",
-      description: "Browser-based DAW controller with sub-20ms latency for professional music production"
+    {
+      title: "garage 09",
+      duration: "2020",
+      genre: "UK Garage",
+      description: "UK garage-influenced track with syncopated rhythms and bass-heavy production"
     }
   ];
 
   const audioSkills = [
-    { name: "Digital Signal Processing (DSP)", level: 35 },
-    { name: "Audio Plugin Development", level: 35 },
-    { name: "Ableton Live", level: 90 },
-    { name: "MIDI Programming", level: 100 },
-    
-    { name: "FFmpeg Processing", level: 20 }
+    { name: "Modular Synthesis", level: 85 },
+    { name: "Electronic Music Production", level: 90 },
+    { name: "Synthesizer Programming", level: 80 },
+    { name: "MIDI Sequencing", level: 85 },
+    { name: "Sound Design", level: 75 },
+    { name: "Ambient Composition", level: 80 }
   ];
 
   const audioStats = [
-    { label: "Audio Projects", value: 15, suffix: "+" },
-    { label: "Podcast Episodes", value: 50, suffix: "+" },
-    { label: "Audio Plugins", value: 8, suffix: "" },
-    { label: "Processing Speed", value: 20, suffix: "ms" }
+    { label: "Monthly Listeners", value: 4, suffix: "" },
+    { label: "Spotify Followers", value: 10, suffix: "" },
+    { label: "Published Tracks", value: 10, suffix: "+" },
+    { label: "Albums Released", value: 6, suffix: "" }
   ];
 
   return (
@@ -60,9 +60,9 @@ function MusicSection() {
           interactive={true}
         />
         <header>
-          <h2 id="music-heading">Audio Engineering Projects</h2>
+          <h2 id="music-heading">Music Production & Audio Projects</h2>
           <p className="section-intro">
-            Bridging the gap between creative audio production and modern web technology
+            Electronic music production featuring synth compositions, modular synthesis, and experimental audio
           </p>
 
           {/* Music Streaming Call-to-Action */}
@@ -152,7 +152,7 @@ function MusicSection() {
         <div className="music-links-section" role="region" aria-label="Music streaming links">
           <h3>Listen to My Music</h3>
           <p className="music-links-intro">
-            Explore my creative audio work and music production projects across platforms
+            Stream my electronic music, synth compositions, and experimental audio across platforms
           </p>
           <div className="music-platforms-grid">
             {/* Spotify Card */}
@@ -207,7 +207,7 @@ function MusicSection() {
                       <FaSpotify className="platform-icon" />
                       <span className="platform-name">Spotify</span>
                     </div>
-                    <p className="platform-description parallax-layer" data-speed="0.8">Released tracks and albums</p>
+                    <p className="platform-description parallax-layer" data-speed="0.8">Albums, singles, and synth music releases</p>
                     <div className="platform-cta parallax-layer" data-speed="0.6">
                       <span>Listen Now</span>
                       <span className="cta-arrow">→</span>
