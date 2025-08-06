@@ -1,4 +1,3 @@
-
 /* ===== DEVELOPMENT SECTION STYLES ===== */
 /* Optimized Glass Aesthetic with Clean Design */
 
@@ -18,7 +17,7 @@
 
 .dev-content {
   width: 100%;
-  max-width: var(--container-max-width-xl);
+  max-width: var(--container-max-width-md);
   margin: 0 auto;
   position: relative;
   z-index: 2;
@@ -570,31 +569,91 @@
 
 .projects-content {
   position: relative;
-  min-height: 400px;
+  
 }
 
 /* ===== PROJECTS GRID ===== */
 
+.projects-container {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+/* Subtle fade effect at edges */
+.projects-container::before,
+.projects-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.projects-container::before {
+  left: 0;
+  background: linear-gradient(to right, var(--color-surface), transparent);
+}
+
+.projects-container::after {
+  right: 0;
+  background: linear-gradient(to left, var(--color-surface), transparent);
+}
+
 .projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  padding-bottom: 8px;
+  animation: conveyor-belt 30s linear infinite;
+  width: max-content;
+}
+
+/* Pause animation on hover for better UX */
+.projects-container:hover .projects-grid {
+  animation-play-state: paused;
+}
+
+@keyframes conveyor-belt {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .projects-grid {
+    animation: none;
+  }
+
+  .projects-container {
+    overflow-x: auto;
+  }
 }
 
 /* ===== PROJECT CARD ===== */
 
-.project-card {
+.dev-section .project-card {
   position: relative;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.005));
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 8px;
-  padding: 12px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.005)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 8px !important;
+  padding: 12px !important;
   backdrop-filter: blur(20px);
   transition: all 0.3s ease;
-  overflow: hidden;
+  overflow: visible;
   display: flex;
   flex-direction: column;
-  min-height: 120px;
+  justify-content: flex-start;
+  gap: 8px;
+  flex: 0 0 280px;
+  min-height: 200px;
+  height: auto;
 }
 
 .project-card::before {
@@ -618,39 +677,41 @@
 .project-card[data-category="dsa"] { border-left: 3px solid rgba(220, 20, 60, 0.4); }
 
 /* ===== HOVER EFFECTS ===== */
-.project-card:hover {
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  transform: translateY(-4px) scale(1.02);
+.dev-section .project-card:hover {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+  transform: translateY(-4px) scale(1.02) !important;
 }
 
-.project-card:hover::before {
+.dev-section .project-card:hover::before {
   opacity: 0.5;
 }
 
 /* Category hover effects */
-.project-card[data-category="frontend"]:hover { border-left-color: rgba(100, 255, 218, 0.8); box-shadow: 0 8px 32px rgba(100, 255, 218, 0.1); }
-.project-card[data-category="backend"]:hover { border-left-color: rgba(34, 197, 94, 0.8); box-shadow: 0 8px 32px rgba(34, 197, 94, 0.1); }
-.project-card[data-category="fullstack"]:hover { border-left-color: rgba(168, 85, 247, 0.8); box-shadow: 0 8px 32px rgba(168, 85, 247, 0.1); }
-.project-card[data-category="mobile"]:hover { border-left-color: rgba(59, 130, 246, 0.8); box-shadow: 0 8px 32px rgba(59, 130, 246, 0.1); }
-.project-card[data-category="audio"]:hover { border-left-color: rgba(245, 158, 11, 0.8); box-shadow: 0 8px 32px rgba(245, 158, 11, 0.1); }
-.project-card[data-category="dsa"]:hover { border-left-color: rgba(220, 20, 60, 0.8); box-shadow: 0 8px 32px rgba(220, 20, 60, 0.1); }
+.dev-section .project-card[data-category="frontend"]:hover { border-left-color: rgba(100, 255, 218, 0.8) !important; box-shadow: 0 8px 32px rgba(100, 255, 218, 0.1) !important; }
+.dev-section .project-card[data-category="backend"]:hover { border-left-color: rgba(34, 197, 94, 0.8) !important; box-shadow: 0 8px 32px rgba(34, 197, 94, 0.1) !important; }
+.dev-section .project-card[data-category="fullstack"]:hover { border-left-color: rgba(168, 85, 247, 0.8) !important; box-shadow: 0 8px 32px rgba(168, 85, 247, 0.1) !important; }
+.dev-section .project-card[data-category="mobile"]:hover { border-left-color: rgba(59, 130, 246, 0.8) !important; box-shadow: 0 8px 32px rgba(59, 130, 246, 0.1) !important; }
+.dev-section .project-card[data-category="audio"]:hover { border-left-color: rgba(245, 158, 11, 0.8) !important; box-shadow: 0 8px 32px rgba(245, 158, 11, 0.1) !important; }
+.dev-section .project-card[data-category="dsa"]:hover { border-left-color: rgba(220, 20, 60, 0.8) !important; box-shadow: 0 8px 32px rgba(220, 20, 60, 0.1) !important; }
 
 /* ===== PROJECT CARD CONTENT ===== */
 
 .project-card header {
   position: relative;
   z-index: 2;
-  margin-bottom: var(--space-4);
+  margin-bottom: 6px;
+  flex-shrink: 0;
 }
 
 .project-header-top {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  margin-bottom: 8px;
+  gap: 2px;
+  margin-bottom: 4px;
   text-align: center;
+  flex-shrink: 0;
 }
 
 .project-category-badge {
@@ -676,24 +737,30 @@
 .project-category-badge[data-category="dsa"] { background: rgba(220, 20, 60, 0.1); color: rgba(220, 20, 60, 0.9); border-color: rgba(220, 20, 60, 0.2); }
 
 .project-card h3 {
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--color-on-surface);
-  margin-bottom: 6px;
-  line-height: 1.2;
+  margin: 0 0 4px 0;
+  line-height: 1.3;
   letter-spacing: -0.01em;
   text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+  flex-shrink: 0;
 }
 
 /* ===== TECH STACK ===== */
 
 .tech-stack {
-  margin-bottom: 6px;
+  margin: 0 0 6px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 3px;
   text-align: center;
+  flex-shrink: 0;
 }
 
 .tech-stack-label {
@@ -710,7 +777,9 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 3px;
+  gap: 2px;
+  max-height: 40px;
+  overflow: hidden;
 }
 
 .tech-badge {
@@ -748,36 +817,48 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  gap: 4px;
+  
+  padding: 0;
+  overflow: hidden;
 }
 
-.project-description {
-  font-size: 12px;
-  color: var(--color-on-surface-variant);
-  margin-bottom: 8px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  line-height: 1.3;
-  opacity: 0.85;
-  font-weight: 400;
-  text-align: center;
-  flex: 1;
+.dev-section .project-card .project-description {
+  font-size: 12px !important;
+  color: var(--color-on-surface) !important;
+  margin: 8px 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  line-height: 1.4 !important;
+  opacity: 1 !important;
+  font-weight: 400 !important;
+  overflow: visible !important;
+  text-align: left !important;
+  word-wrap: break-word !important;
+  hyphens: auto !important;
+  flex: 1 !important;
+  min-height: auto !important;
+  max-height: none !important;
+  visibility: visible !important;
+  z-index: 10 !important;
 }
 
 /* ===== PROJECT METRICS ===== */
 
 .project-metrics {
-  margin-bottom: 6px;
-  padding: 4px 8px;
+  margin-bottom: 4px;
+  padding: 3px 6px;
   background: rgba(100, 255, 218, 0.02);
   border: 1px solid rgba(100, 255, 218, 0.1);
   border-radius: 4px;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 500;
   color: var(--color-on-surface-variant);
   text-align: center;
   letter-spacing: 0.3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* ===== PROJECT LINKS ===== */
@@ -787,9 +868,11 @@
   z-index: 2;
   display: flex;
   justify-content: center;
-  gap: 6px;
+  gap: 4px;
   margin-top: auto;
-  padding-top: 6px;
+  padding-top: 4px;
+  flex-shrink: 0;
+  min-height: 28px;
 }
 
 /* ===== ACTION BUTTONS ===== */
@@ -901,17 +984,17 @@
   gap: 12px;
 }
 
-.github-project-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.005));
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-left: 3px solid rgba(96, 165, 250, 0.5);
-  border-radius: 8px;
-  padding: 12px;
+.dev-section .github-project-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.005)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-left: 3px solid rgba(96, 165, 250, 0.5) !important;
+  border-radius: 8px !important;
+  padding: 8px !important;
   backdrop-filter: blur(20px);
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
-  min-height: 120px;
+  min-height: 100px !important;
 }
 
 .github-project-card:hover {
@@ -922,25 +1005,28 @@
 }
 
 .github-project-card h4 {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--color-on-surface);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   line-height: 1.2;
   letter-spacing: -0.01em;
 }
 
 .github-project-card .project-description {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--color-on-surface-variant);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   line-height: 1.3;
   opacity: 0.85;
   font-weight: 400;
+  word-wrap: break-word;
+  hyphens: auto;
+  flex-shrink: 1;
 }
 
 .github-project-card .tech-tag {
@@ -1069,17 +1155,26 @@
   }
 
   .projects-grid {
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 16px;
+    gap: 20px;
   }
 
-  .project-card {
-    padding: 16px;
-    min-height: 140px;
+  .dev-section .project-card {
+    padding: 14px !important;
+    gap: 10px;
+    flex: 0 0 300px;
+    min-height: 200px;
+    height: auto;
   }
 
-  .project-card h3 { font-size: 18px; }
-  .project-description { font-size: 13px; }
+  .dev-section .project-card h3 {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  .dev-section .project-card .project-description {
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+    overflow: visible !important;
+  }
   .tech-badge { font-size: 10px; padding: 3px 6px; }
   .btn-link { font-size: 11px; padding: 5px 10px; }
 
@@ -1088,12 +1183,12 @@
     gap: 16px;
   }
 
-  .github-project-card {
-    padding: 16px;
-    min-height: 140px;
+  .dev-section .github-project-card {
+    padding: 12px !important;
+    min-height: 120px !important;
   }
 
-  .github-project-card h4 { font-size: 18px; }
+  .dev-section .github-project-card h4 { font-size: 16px; }
   .github-project-card .project-description { font-size: 13px; }
   .github-project-card .tech-tag { font-size: 10px; padding: 3px 6px; }
 }
@@ -1113,64 +1208,73 @@
   }
 
   .projects-grid {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
+    gap: 24px;
   }
 
-  .project-card {
-    padding: 20px;
-    min-height: 160px;
+  .dev-section .project-card {
+    padding: 16px !important;
+    gap: 12px;
+    flex: 0 0 320px;
+    min-height: 200px;
+    /* Removed fixed height for better responsiveness */
   }
 
-  .project-card h3 { font-size: 20px; margin-bottom: 8px; }
-  .project-description { font-size: 14px; line-height: 1.4; }
+  .dev-section .project-card h3 {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+  .dev-section .project-card .project-description {
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    overflow: visible !important;
+  }
   .project-category-badge { font-size: 12px; padding: 4px 10px; }
   .tech-badge { font-size: 11px; padding: 3px 7px; }
   .btn-link { font-size: 12px; padding: 6px 12px; }
 
-  .project-card:hover { transform: translateY(-3px) scale(1.02); }
+  .dev-section .project-card:hover { transform: translateY(-3px) scale(1.02) !important; }
 
   .github-projects-grid {
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 20px;
   }
 
-  .github-project-card {
-    padding: 20px;
-    min-height: 160px;
+  .dev-section .github-project-card {
+    padding: 16px !important;
+    min-height: 140px !important;
   }
 
-  .github-project-card h4 { font-size: 20px; margin-bottom: 8px; }
+  .dev-section .github-project-card h4 { font-size: 18px; margin-bottom: 6px; }
   .github-project-card .project-description { font-size: 14px; line-height: 1.4; }
   .github-project-card .tech-tag { font-size: 11px; padding: 3px 7px; }
 
-  .github-project-card:hover {
-    transform: translateY(-3px) scale(1.02);
+  .dev-section .github-project-card:hover {
+    transform: translateY(-3px) scale(1.02) !important;
   }
 }
 
 /* Large Desktop */
 @media (min-width: 1280px) {
   .projects-grid {
-    grid-template-columns: repeat(5, 1fr);
-    max-width: 1400px;
-    margin: 0 auto;
     gap: 24px;
   }
 
-  .project-card {
-    min-height: 180px;
-    padding: 24px;
+  .dev-section .project-card {
+    padding: 18px !important;
+    gap: 14px;
+    flex: 0 0 340px;
+    min-height: 220px;
+    /* Removed fixed height for better responsiveness */
   }
 
-  .project-card h3 {
-    font-size: 22px;
-    margin-bottom: 10px;
+  .dev-section .project-card h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
   }
-  .project-description {
-    font-size: 15px;
-    line-height: 1.5;
-    -webkit-line-clamp: 3;
+  .dev-section .project-card .project-description {
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+    overflow: visible !important;
   }
   .project-category-badge {
     font-size: 13px;
@@ -1187,20 +1291,20 @@
   }
 
   .github-projects-grid {
-    grid-template-columns: repeat(5, 1fr);
-    gap: 24px;
-    max-width: 1400px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    max-width: 1000px;
     margin: 0 auto;
   }
 
-  .github-project-card {
-    min-height: 180px;
-    padding: 24px;
+  .dev-section .github-project-card {
+    min-height: 160px !important;
+    padding: 20px !important;
   }
 
-  .github-project-card h4 {
-    font-size: 22px;
-    margin-bottom: 10px;
+  .dev-section .github-project-card h4 {
+    font-size: 20px;
+    margin-bottom: 8px;
   }
   .github-project-card .project-description {
     font-size: 15px;

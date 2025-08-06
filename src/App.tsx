@@ -1,6 +1,5 @@
-
 import { useEffect, useState, Suspense } from 'react';
-import { ProgressiveNavigation } from './components/ProgressiveNavigation';
+import Navbar from './components/Navbar';
 import { useActiveSection } from './hooks/useActiveSection';
 import HomeSection from './components/HomeSection';
 import MusicSection from './components/MusicSection';
@@ -10,30 +9,30 @@ import ContactSection from './components/ContactSection';
 import ScrollIndicator from './components/ScrollIndicator';
 import DatabaseSeeder from './components/DatabaseSeeder';
 import './App.css';
-import './styles/progressive-navigation.css';
 
 function App() {
   const { navigateToSection } = useActiveSection();
   const [hasScrollableContent, setHasScrollableContent] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  
+  const [activeSection, setActiveSection] = useState('home');
+
   useEffect(() => {
     const checkScrollable = () => {
       const isScrollable = document.documentElement.scrollHeight > window.innerHeight;
       setHasScrollableContent(isScrollable);
     };
-    
+
     // Initialize app
     const initializeApp = () => {
       checkScrollable();
       setIsLoading(false);
     };
-    
+
     // Add small delay to ensure proper rendering
     const timer = setTimeout(initializeApp, 100);
-    
+
     window.addEventListener('resize', checkScrollable);
-    
+
     return () => {
       clearTimeout(timer);
       window.removeEventListener('resize', checkScrollable);
@@ -48,10 +47,25 @@ function App() {
     );
   }
 
+  // Define sections for Navbar
+  const sections = [
+    { id: 'home', label: 'Home' },
+    { id: 'music', label: 'Music' },
+    { id: 'development', label: 'Development' },
+    { id: 'about', label: 'About' },
+    { id: 'contact', label: 'Contact' },
+  ];
+
   return (
     <div className="App">
-      <ProgressiveNavigation />
-
+      <Navbar
+        sections={sections}
+        activeSection={activeSection}
+        setActiveSection={(sectionId) => {
+          setActiveSection(sectionId);
+          navigateToSection(sectionId);
+        }}
+      />
       <main className="main-content">
         <Suspense fallback={<div className="section-loading">Loading...</div>}>
           <section id="home" className="section-container">
@@ -75,7 +89,6 @@ function App() {
           </section>
         </Suspense>
       </main>
-
       {hasScrollableContent && <ScrollIndicator />}
       <DatabaseSeeder />
     </div>

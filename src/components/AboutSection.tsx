@@ -94,14 +94,13 @@ function AboutSection() {
             </h3>
             <div className="summary-content">
               <p className="typography-body">
-                Computer Science student with hands-on experience in DevOps, enterprise cloud infrastructure,
-                and research-driven web development. Currently contributing to IBM's Security and Compliance Center
-                while advancing academic research through full-stack applications and data visualization.
+                I’m a passionate full-stack developer and creative technologist with a love for building elegant, user-focused digital experiences. My portfolio showcases a blend of technical depth and design sensibility, spanning web applications, interactive media, and music technology. I thrive on solving complex problems, collaborating across disciplines, and delivering polished solutions that delight users.
               </p>
               <p className="typography-body">
-                Unique blend of technical expertise spanning DevOps automation, AI platform integration,
-                and audio engineering, with proven ability to deliver scalable solutions across
-                enterprise and academic environments.
+                Previously, I contributed to innovative projects at IBM, where I worked alongside talented teams to develop scalable, enterprise-grade software. My experience there sharpened my skills in cloud technologies, agile development, and cross-functional teamwork—values I bring to every project.
+              </p>
+              <p className="typography-body">
+                Let’s build something remarkable together.
               </p>
             </div>
           </div>

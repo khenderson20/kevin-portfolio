@@ -431,16 +431,23 @@ function DevelopmentSection() {
                   ))}
                 </div>
               ) : (
-                <>
-                  {filteredProjects.map((project) => (
-                    <MemoizedProjectCard key={project.id} project={project} />
-                  ))}
+                <div className="projects-container">
+                  <div className="projects-grid">
+                    {/* First set of cards */}
+                    {filteredProjects.map((project) => (
+                      <MemoizedProjectCard key={`first-${project.id}`} project={project} />
+                    ))}
+                    {/* Duplicate set for seamless loop */}
+                    {filteredProjects.map((project) => (
+                      <MemoizedProjectCard key={`second-${project.id}`} project={project} />
+                    ))}
+                  </div>
                   {filteredProjects.length === 0 && !loading && (
                     <div className="no-results">
                       <p>No projects found matching your criteria.</p>
                     </div>
                   )}
-                </>
+                </div>
               )}
             </div>
           )}
