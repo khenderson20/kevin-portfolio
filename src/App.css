@@ -283,7 +283,6 @@
   margin-right: auto;
 }
 
-.projects-grid,
 .music-grid {
   display: flex;
   flex-direction: column;
@@ -291,7 +290,7 @@
   margin: var(--space-8) 0;
 }
 
-.project-card,
+/* Removed conflicting project-card styles - handled in development-section.css */
 .track-card {
   /* Base styling - enhanced for Apple design */
   background: var(--color-surface-container);
@@ -321,21 +320,20 @@
 }
 
 /* Enhanced interactive states for Apple-style cards */
-.project-card:hover:not(.disabled),
 .track-card:hover:not(.disabled) {
   transform: var(--hover-lift-moderate) var(--hover-scale-subtle);
   box-shadow: var(--shadow-hover-strong);
   border-color: var(--border-hover);
 }
 
-.project-card:active:not(.disabled),
+/* Removed conflicting project-card:active styles - handled in development-section.css */
 .track-card:active:not(.disabled) {
   transform: var(--active-press-subtle);
   box-shadow: var(--shadow-active);
   transition: var(--transition-active);
 }
 
-.project-card:focus-visible:not(.disabled),
+/* Removed conflicting project-card:focus-visible styles - handled in development-section.css */
 .track-card:focus-visible:not(.disabled) {
   outline: var(--focus-ring-width) solid var(--focus-ring-color);
   outline-offset: var(--focus-ring-offset);
@@ -343,7 +341,6 @@
 
 /* Enhanced visual effects from interactive-card system */
 /* Note: Using data attributes to add glow overlay without conflicting with development-section.css */
-.project-card[data-glow]::before,
 .track-card[data-glow]::before {
   background: radial-gradient(circle at 50% 50%,
     rgba(var(--color-primary-rgb), 0.05) 0%,
@@ -351,7 +348,7 @@
 }
 
 /* Fallback glow effect for cards without specific styling */
-.project-card:not([class*="github"]):hover,
+/* Removed conflicting project-card:hover styles - handled in development-section.css */
 .track-card:hover {
   box-shadow:
     0 4px 16px rgba(0, 0, 0, 0.06),
@@ -360,7 +357,7 @@
 }
 
 /* Enhanced border glow on hover for interactive feedback */
-.project-card:hover:not(.github-project-card),
+/* Removed conflicting project-card:hover styles - handled in development-section.css */
 .track-card:hover {
   border-color: rgba(var(--color-primary-rgb), 0.3);
   background:
@@ -371,7 +368,7 @@
 }
 
 /* Disabled state support */
-.project-card.disabled,
+/* Removed conflicting project-card.disabled styles - handled in development-section.css */
 .track-card.disabled {
   opacity: var(--disabled-opacity);
   cursor: var(--disabled-cursor);
@@ -381,7 +378,7 @@
 }
 
 /* Disabled cards lose interactive effects */
-.project-card.disabled,
+/* Removed conflicting project-card.disabled styles - handled in development-section.css */
 .track-card.disabled {
   border-color: var(--border-disabled) !important;
   background: var(--bg-disabled) !important;
@@ -390,19 +387,17 @@
 
 /* Accessibility: Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-  .project-card,
+  /* Removed conflicting project-card styles - handled in development-section.css */
   .track-card {
     transition: none !important;
   }
 
-  .project-card:hover,
-  .project-card:active,
+  /* Removed conflicting project-card:hover and project-card:active styles - handled in development-section.css */
   .track-card:hover,
   .track-card:active {
     transform: none !important;
   }
 
-  .project-card:hover,
   .track-card:hover {
     border-color: var(--color-border) !important;
     background: var(--color-surface-container) !important;
@@ -413,13 +408,13 @@
 }
 
 /* Ensure content appears above overlay effects */
-.project-card > *,
+/* Removed conflicting project-card > * styles - handled in development-section.css */
 .track-card > * {
   position: relative;
   z-index: 3;
 }
 
-.project-card h3,
+/* Removed conflicting project-card h3 styles - handled in development-section.css */
 .track-card h3 {
   font-family: var(--typography-h3-family);
   font-size: var(--typography-h3-size);
@@ -433,7 +428,7 @@
   z-index: 3;
 }
 
-.project-card p,
+/* Removed conflicting project-card p styles - handled in development-section.css */
 .track-card p {
   font-family: var(--typography-body-family);
   font-size: var(--typography-body-size);
@@ -443,7 +438,7 @@
   color: var(--color-on-surface-variant);
 }
 
-.project-description,
+/* Removed conflicting project-description styles - handled in development-section.css */
 .track-description {
   font-size: var(--font-size-base); /* Using design system font size */
   line-height: 1.6;
@@ -1193,7 +1188,6 @@
     font-size: 1.3rem;
   }
   
-  .projects-grid,
   .music-grid {
     gap: 2rem;
   }
@@ -1247,7 +1241,6 @@
     margin: 0 auto;
   }
 
-  .projects-grid,
   .music-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -1279,7 +1272,6 @@
     padding: 0 var(--space-12);
   }
 
-  .projects-grid,
   .music-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-10); /* 40px - Apple grid system */
@@ -1298,7 +1290,6 @@
     padding: 0 var(--space-16);
   }
 
-  .projects-grid,
   .music-grid {
     grid-template-columns: repeat(3, 1fr);
   }
