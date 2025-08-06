@@ -47,15 +47,6 @@ function HomeSection({ onNavigateToSection }: HomeSectionProps) {
     loadGitHubStats();
   }, []);
 
-  const handleMusicClick = () => {
-    if (onNavigateToSection) {
-      onNavigateToSection('music');
-    } else {
-      // Fallback for direct navigation
-      window.location.hash = 'music';
-    }
-  };
-
   const handleCodeClick = () => {
     if (onNavigateToSection) {
       onNavigateToSection('development');
@@ -111,16 +102,6 @@ function HomeSection({ onNavigateToSection }: HomeSectionProps) {
           <div className="hero-buttons">
             <button
               className="btn-primary hero-cta"
-              onClick={handleMusicClick}
-              aria-label="Listen to my music projects"
-            >
-              <span className="btn-icon">🎧</span>
-              <span className="btn-text">Listen to My Music</span>
-              <span className="btn-arrow">→</span>
-            </button>
-
-            <button
-              className="btn-secondary hero-cta"
               onClick={handleCodeClick}
               aria-label="View my development projects"
             >

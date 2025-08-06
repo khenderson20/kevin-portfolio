@@ -899,6 +899,224 @@
   padding: var(--space-8) 0; /* 32px - Apple grid system */
 }
 
+/* Music CTA Buttons */
+.music-cta-container {
+  margin: var(--space-6) 0;
+  text-align: center;
+  display: flex;
+  gap: var(--space-4);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.music-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  transition: all var(--duration-normal) var(--ease-out);
+  min-width: 160px;
+  justify-content: center;
+  border: 1px solid transparent;
+}
+
+/* Music Links Section */
+.music-links-section {
+  margin-top: var(--space-12);
+  padding: var(--space-8) 0;
+  text-align: center;
+}
+
+.music-links-intro {
+  margin: var(--space-4) 0 var(--space-8) 0;
+  color: var(--color-text-secondary);
+}
+
+/* Platform-themed Music Cards */
+.music-platforms-grid {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  padding: var(--space-4);
+}
+
+.music-platform-card {
+  width: 200px;
+  height: 140px;
+  border-radius: var(--radius-lg);
+  overflow: visible;
+  transition: all var(--duration-normal) var(--ease-out);
+  position: relative;
+  box-shadow: var(--shadow-md);
+  border: none;
+  
+}
+
+/* Spotify Card Theming */
+.spotify-card {
+  background: linear-gradient(135deg, #1DB954 0%, #1ed760 100%);
+  color: white;
+}
+
+.spotify-card .card-3d-front {
+  background: inherit;
+  color: inherit;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.spotify-card:hover {
+  box-shadow: var(--shadow-lg), 0 0 20px rgba(29, 185, 84, 0.3);
+}
+
+/* SoundCloud Card Theming */
+.soundcloud-card {
+  background: linear-gradient(135deg, #ff5500 0%, #ff7700 100%);
+  color: white;
+}
+
+.soundcloud-card .card-3d-front {
+  background: inherit;
+  color: inherit;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.soundcloud-card:hover {
+  box-shadow: var(--shadow-lg), 0 0 20px rgba(255, 85, 0, 0.3);
+}
+
+/* Disable floating animation for music platform cards */
+.music-platform-card.card-3d:hover {
+  animation: none;
+}
+
+/* Platform Link Styling */
+.platform-link {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: var(--space-4);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+}
+
+.platform-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.platform-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.platform-name {
+  font-size: var(--typography-h4-size);
+  font-weight: var(--typography-h4-weight);
+  margin: 0;
+}
+
+.platform-description {
+  font-size: var(--typography-body-small-size);
+  margin: 0;
+  opacity: 0.9;
+  line-height: 1.4;
+  flex: 1;
+}
+
+.platform-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--typography-caption-size);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: var(--space-2);
+}
+
+.cta-arrow {
+  font-size: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.platform-link:hover .cta-arrow {
+  transform: translateX(4px);
+}
+
+/* CTA Button Theming */
+.spotify-cta {
+  background: linear-gradient(135deg, #1DB954 0%, #1ed760 100%);
+  border-color: #1DB954;
+}
+
+.spotify-cta:hover {
+  background: linear-gradient(135deg, #1ed760 0%, #1DB954 100%);
+  box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);
+}
+
+.soundcloud-cta {
+  background: linear-gradient(135deg, #ff5500 0%, #ff7700 100%);
+  border-color: #ff5500;
+}
+
+.soundcloud-cta:hover {
+  background: linear-gradient(135deg, #ff7700 0%, #ff5500 100%);
+  box-shadow: 0 4px 12px rgba(255, 85, 0, 0.3);
+}
+
+/* Responsive Music CTA Buttons and Platform Cards */
+@media (max-width: 480px) {
+  .music-cta-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .music-cta {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .music-platforms-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .music-platform-card {
+    width: 280px;
+    height: 120px;
+    padding: var(--space-4);
+  }
+}
+
+@media (max-width: 320px) {
+  .music-platform-card {
+    width: 260px;
+    height: 110px;
+    margin: var(--space-3);
+  }
+
+  .card-3d {
+    margin: var(--space-3);
+  }
+
+  .platform-icon {
+    font-size: 1.25rem;
+  }
+
+  .platform-name {
+    font-size: 1rem;
+  }
+}
+
 .audio-skills-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1457,6 +1675,9 @@
   /* Performance optimizations */
   will-change: transform;
   contain: layout style paint;
+
+  /* Prevent clipping during 3D transformations */
+  margin: var(--space-6);
 }
 
 .card-3d-inner {

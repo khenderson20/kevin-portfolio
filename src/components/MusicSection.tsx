@@ -3,6 +3,7 @@ import SkillProgressBar from './SkillProgressBar';
 import AnimatedCounter from './AnimatedCounter';
 import InteractiveCard from './InteractiveCard';
 import ParticleBackground from './ParticleBackground';
+import { FaSpotify, FaSoundcloud } from 'react-icons/fa';
 
 interface Track {
   title: string;
@@ -63,6 +64,32 @@ function MusicSection() {
           <p className="section-intro">
             Bridging the gap between creative audio production and modern web technology
           </p>
+
+          {/* Music Streaming Call-to-Action */}
+          <div className="music-cta-container">
+            <a
+              href="https://open.spotify.com/artist/4cHJRNFfmZcx44gkmTr8mH?si=p__McSMTTbyGI3AQeVi52A"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary music-cta spotify-cta rounded-lg interactive-element"
+              aria-label="Listen to my music on Spotify"
+            >
+              <FaSpotify className="btn-icon" />
+              <span className="btn-text">Listen on Spotify</span>
+              <span className="btn-arrow">→</span>
+            </a>
+            <a
+              href="https://soundcloud.com/user-228826128"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary music-cta soundcloud-cta rounded-lg interactive-element"
+              aria-label="Listen to my music on SoundCloud"
+            >
+              <FaSoundcloud className="btn-icon" />
+              <span className="btn-text">SoundCloud</span>
+              <span className="btn-arrow">→</span>
+            </a>
+          </div>
           {/* Audio Stats Section */}
           <div className="stats-grid" role="region" aria-label="Audio engineering statistics">
             {audioStats.map((stat, index) => (
@@ -118,6 +145,165 @@ function MusicSection() {
                 showPercentage={true}
               />
             ))}
+          </div>
+        </div>
+
+        {/* Music Streaming Platforms Section */}
+        <div className="music-links-section" role="region" aria-label="Music streaming links">
+          <h3>Listen to My Music</h3>
+          <p className="music-links-intro">
+            Explore my creative audio work and music production projects across platforms
+          </p>
+          <div className="music-platforms-grid">
+            {/* Spotify Card */}
+            <div
+              className="music-platform-card spotify-card card-3d card-enhanced rounded-lg interactive-element"
+              onMouseEnter={(e) => {
+                const card = e.currentTarget;
+                card.style.setProperty('--mouse-x', '0.5');
+                card.style.setProperty('--mouse-y', '0.5');
+                card.style.setProperty('--mouse-from-center-x', '0');
+                card.style.setProperty('--mouse-from-center-y', '0');
+                card.classList.add('card-hovered');
+              }}
+              onMouseMove={(e) => {
+                const card = e.currentTarget;
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width;
+                const y = (e.clientY - rect.top) / rect.height;
+                const centerX = (x - 0.5) * 2;
+                const centerY = (y - 0.5) * 2;
+                const quadrantX = x > 0.5 ? 1 : -1;
+                const quadrantY = y > 0.5 ? 1 : -1;
+
+                card.style.setProperty('--mouse-x', x.toString());
+                card.style.setProperty('--mouse-y', y.toString());
+                card.style.setProperty('--mouse-from-center-x', centerX.toString());
+                card.style.setProperty('--mouse-from-center-y', centerY.toString());
+                card.style.setProperty('--quadrant-x', quadrantX.toString());
+                card.style.setProperty('--quadrant-y', quadrantY.toString());
+              }}
+              onMouseLeave={(e) => {
+                const card = e.currentTarget;
+                card.style.setProperty('--mouse-x', '0.5');
+                card.style.setProperty('--mouse-y', '0.5');
+                card.style.setProperty('--mouse-from-center-x', '0');
+                card.style.setProperty('--mouse-from-center-y', '0');
+                card.style.setProperty('--quadrant-x', '0');
+                card.style.setProperty('--quadrant-y', '0');
+                card.classList.remove('card-hovered');
+              }}
+            >
+              <div className="card-3d-inner">
+                <div className="card-3d-front">
+                  <a
+                    href="https://open.spotify.com/artist/4cHJRNFfmZcx44gkmTr8mH?si=p__McSMTTbyGI3AQeVi52A"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="platform-link"
+                    aria-label="Listen to my music on Spotify"
+                  >
+                    <div className="platform-header parallax-layer" data-speed="1">
+                      <FaSpotify className="platform-icon" />
+                      <span className="platform-name">Spotify</span>
+                    </div>
+                    <p className="platform-description parallax-layer" data-speed="0.8">Released tracks and albums</p>
+                    <div className="platform-cta parallax-layer" data-speed="0.6">
+                      <span>Listen Now</span>
+                      <span className="cta-arrow">→</span>
+                    </div>
+                  </a>
+
+                  {/* 3D depth indicators */}
+                  <div className="card-depth-indicator card-depth-1 parallax-layer" data-speed="0.6"></div>
+                  <div className="card-depth-indicator card-depth-2 parallax-layer" data-speed="0.4"></div>
+                  <div className="card-depth-indicator card-depth-3 parallax-layer" data-speed="0.2"></div>
+
+                  {/* Dynamic Light Sources */}
+                  <div className="light-source primary-light"></div>
+                  <div className="light-source ambient-light"></div>
+                  <div className="light-source accent-light"></div>
+
+                  {/* Glass Effect Overlay */}
+                  <div className="glass-overlay"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* SoundCloud Card */}
+            <div
+              className="music-platform-card soundcloud-card card-3d card-enhanced rounded-lg interactive-element"
+              onMouseEnter={(e) => {
+                const card = e.currentTarget;
+                card.style.setProperty('--mouse-x', '0.5');
+                card.style.setProperty('--mouse-y', '0.5');
+                card.style.setProperty('--mouse-from-center-x', '0');
+                card.style.setProperty('--mouse-from-center-y', '0');
+                card.classList.add('card-hovered');
+              }}
+              onMouseMove={(e) => {
+                const card = e.currentTarget;
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width;
+                const y = (e.clientY - rect.top) / rect.height;
+                const centerX = (x - 0.5) * 2;
+                const centerY = (y - 0.5) * 2;
+                const quadrantX = x > 0.5 ? 1 : -1;
+                const quadrantY = y > 0.5 ? 1 : -1;
+
+                card.style.setProperty('--mouse-x', x.toString());
+                card.style.setProperty('--mouse-y', y.toString());
+                card.style.setProperty('--mouse-from-center-x', centerX.toString());
+                card.style.setProperty('--mouse-from-center-y', centerY.toString());
+                card.style.setProperty('--quadrant-x', quadrantX.toString());
+                card.style.setProperty('--quadrant-y', quadrantY.toString());
+              }}
+              onMouseLeave={(e) => {
+                const card = e.currentTarget;
+                card.style.setProperty('--mouse-x', '0.5');
+                card.style.setProperty('--mouse-y', '0.5');
+                card.style.setProperty('--mouse-from-center-x', '0');
+                card.style.setProperty('--mouse-from-center-y', '0');
+                card.style.setProperty('--quadrant-x', '0');
+                card.style.setProperty('--quadrant-y', '0');
+                card.classList.remove('card-hovered');
+              }}
+            >
+              <div className="card-3d-inner">
+                <div className="card-3d-front">
+                  <a
+                    href="https://soundcloud.com/user-228826128"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="platform-link"
+                    aria-label="Visit my SoundCloud profile"
+                  >
+                    <div className="platform-header parallax-layer" data-speed="1">
+                      <FaSoundcloud className="platform-icon" />
+                      <span className="platform-name">SoundCloud</span>
+                    </div>
+                    <p className="platform-description parallax-layer" data-speed="0.8">Original music and audio experiments</p>
+                    <div className="platform-cta parallax-layer" data-speed="0.6">
+                      <span>Explore</span>
+                      <span className="cta-arrow">→</span>
+                    </div>
+                  </a>
+
+                  {/* 3D depth indicators */}
+                  <div className="card-depth-indicator card-depth-1 parallax-layer" data-speed="0.6"></div>
+                  <div className="card-depth-indicator card-depth-2 parallax-layer" data-speed="0.4"></div>
+                  <div className="card-depth-indicator card-depth-3 parallax-layer" data-speed="0.2"></div>
+
+                  {/* Dynamic Light Sources */}
+                  <div className="light-source primary-light"></div>
+                  <div className="light-source ambient-light"></div>
+                  <div className="light-source accent-light"></div>
+
+                  {/* Glass Effect Overlay */}
+                  <div className="glass-overlay"></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </main>
