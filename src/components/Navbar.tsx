@@ -55,7 +55,7 @@ function Navbar({ sections, activeSection, setActiveSection }: NavbarProps) {
 
   return (
     <nav
-      className={`navbar ${isScrolled ? 'scrolled' : ''}`}
+      className={`navbar${isScrolled ? ' shrink' : ''}`}
       role="navigation"
       aria-label="Main navigation"
     >
