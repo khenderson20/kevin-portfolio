@@ -73,14 +73,15 @@ function App() {
   ];
 
   return (
-    <div className="App">
-      <Navbar
-        sections={sections}
-        activeSection={activeSection}
-        setActiveSection={navigateToSection}
-      />
-      <main className="main-content">
-        <Suspense fallback={<SectionLoader />}>
+    <div className="App w-full max-w-[100vw] overflow-x-hidden">
+      <div className="w-full max-w-[100vw] overflow-hidden">
+        <Navbar
+          sections={sections}
+          activeSection={activeSection}
+          setActiveSection={navigateToSection}
+        />
+        <main className="main-content w-full max-w-[100vw] overflow-hidden">
+          <Suspense fallback={<SectionLoader />}>
           <section id="home" className="section-container relative min-h-[110vh] pb-24 md:pb-32 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
             <HomeSection onNavigateToSection={navigateToSection} />
           </section>
@@ -100,10 +101,11 @@ function App() {
           <section id="contact" className="section-container relative min-h-[110vh] pb-24 md:pb-32 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
             <ContactSection />
           </section>
-        </Suspense>
-      </main>
+          </Suspense>
+        </main>
+      </div>
       {hasScrollableContent && <ScrollIndicator />}
-      
+
     </div>
   );
 }

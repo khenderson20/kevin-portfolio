@@ -26,10 +26,7 @@
   /* Ensure sections touch each other without gaps */
   border: none;
   outline: none;
-  /* Fix: Prevent individual section scrollbars */
-  overflow: visible !important;
-  overflow-x: visible !important;
-  overflow-y: visible !important;
+  /* Let Tailwind utilities control overflow; avoid forcing visible */
   /* Hint smoother animations */
   will-change: opacity, transform;
   transform: translateZ(0);

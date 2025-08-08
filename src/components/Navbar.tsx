@@ -116,7 +116,7 @@ function Navbar({ sections, activeSection, setActiveSection }: NavbarProps) {
     <>
       <nav
         ref={navRef}
-        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 ${
+        className={`fixed inset-x-0 top-0 z-50 w-full max-w-[100vw] box-border overflow-x-hidden flex items-center justify-between px-4 md:px-6 py-4 ${
           isScrolled
             ? 'glass-effect backdrop-blur-xl border-b border-white/10 shadow-lg'
             : 'bg-transparent backdrop-blur-sm'
@@ -133,7 +133,7 @@ function Navbar({ sections, activeSection, setActiveSection }: NavbarProps) {
         >
           <span className="gradient-text">KEVIN</span>
           <br />
-          <span className="text-gray-300">HENDERSON</span>
+          <span className="gradient-text">HENDERSON</span>
         </button>
       </div>
 
@@ -162,8 +162,8 @@ function Navbar({ sections, activeSection, setActiveSection }: NavbarProps) {
 
       {/* Desktop Navigation */}
       {!isMobile && (
-        <div className="flex flex-row items-center gap-3 flex-shrink-0">
-          <div className="flex flex-row gap-2">
+        <div className="flex flex-row items-center gap-3 flex-shrink-0 max-w-full overflow-hidden">
+          <div className="flex flex-row gap-2 flex-wrap">
             {sections.map(section => (
               <button
                 key={section.id}
@@ -205,7 +205,7 @@ function Navbar({ sections, activeSection, setActiveSection }: NavbarProps) {
       <div
         ref={mobileMenuRef}
         id="mobile-menu"
-        className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''} fixed top-0 right-0 h-screen w-[min(320px,85vw)] glass-effect border-l border-white/20 shadow-2xl z-50 overflow-y-auto backdrop-blur-2xl`}
+        className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''} fixed top-0 right-0 h-screen w-[min(320px,85vw)] glass-effect border-l border-white/20 shadow-2xl z-50 overflow-y-auto overflow-x-hidden backdrop-blur-2xl`}
         role="menu"
         aria-labelledby="hamburger-button"
       >
