@@ -139,11 +139,11 @@ function HomeSection({ onNavigateToSection }: HomeSectionProps) {
   return (
     <div
       ref={heroRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 navbar-spacing"
+      className="relative min-h-screen flex items-center justify-center navbar-spacing"
     >
       {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 opacity-50 overflow-hidden">
+      <div className="pointer-events-none absolute -inset-x-16 -top-16 -bottom-0 md:-inset-x-24 md:-top-24 md:-bottom-0">
+        <div className="absolute inset-0 opacity-50">
           <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
           <div className="absolute top-3/4 right-1/4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-2000"></div>
           <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-4000"></div>
@@ -172,10 +172,11 @@ function HomeSection({ onNavigateToSection }: HomeSectionProps) {
           {/* Description */}
           <p
             ref={descriptionRef}
-            className="text-lg md:text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed opacity-0"
+            className="text-lg md:text-xl text-gray-400 mb-12 max-w-xl mx-auto leading-normal md:leading-relaxed opacity-0 pt-4 md:pt-6"
           >
-            Crafting digital experiences that blend cutting-edge technology with creative innovation.
-            Specializing in React, Node.js, and cloud architecture.
+            I build fast, polished web apps—where thoughtful design meets solid engineering.
+            <br />
+            Focused on React, Node.js, and cloud-first architecture.
           </p>
 
           {/* Hero Actions */}
