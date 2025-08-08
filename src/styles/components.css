@@ -1,0 +1,265 @@
+/* ===== UNIFIED COMPONENT STYLES ===== */
+/* Consolidates component-specific styles to reduce duplication */
+
+/* ===== GLASS EFFECTS ===== */
+.glass-effect {
+  @apply backdrop-blur-md bg-white/10 border border-white/20;
+}
+
+.glass-effect-strong {
+  @apply backdrop-blur-lg bg-white/15 border border-white/30;
+}
+
+[data-theme="dark"] .glass-effect {
+  @apply bg-black/30 border-white/10;
+}
+
+[data-theme="dark"] .glass-effect-strong {
+  @apply bg-black/40 border-white/20;
+}
+
+/* ===== LOADING STATES ===== */
+.skeleton-pulse {
+  @apply animate-pulse bg-gray-300;
+}
+
+[data-theme="dark"] .skeleton-pulse {
+  @apply bg-gray-700;
+}
+
+.skeleton-wave {
+  @apply relative overflow-hidden bg-gray-300;
+}
+
+.skeleton-wave::after {
+  @apply absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent;
+  content: '';
+  animation: wave 1.5s infinite;
+}
+
+[data-theme="dark"] .skeleton-wave {
+  @apply bg-gray-700;
+}
+
+[data-theme="dark"] .skeleton-wave::after {
+  @apply via-gray-500/20;
+}
+
+@keyframes wave {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ===== CARD COMPONENTS ===== */
+.card-base {
+  @apply relative rounded-lg overflow-hidden transition-all duration-300;
+}
+
+.card-interactive {
+  @apply cursor-pointer hover:shadow-lg hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2;
+}
+
+.card-3d {
+  @apply transform-gpu;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+/* ===== PROJECT CARDS ===== */
+.project-card {
+  @apply card-base glass-effect hover:border-emerald-400/50 hover:shadow-2xl hover:shadow-emerald-500/20;
+  @apply transition-all duration-300 ease-out;
+}
+
+.project-card-image {
+  @apply w-full h-48 object-cover;
+}
+
+.project-card-content {
+  @apply p-6;
+}
+
+.project-card-title {
+  @apply text-xl font-semibold text-white mb-2;
+}
+
+.project-card-description {
+  @apply text-gray-300 text-sm line-clamp-3 mb-4;
+}
+
+.project-card-tech {
+  @apply flex flex-wrap gap-2 mb-4;
+}
+
+.project-card-tech-tag {
+  @apply px-2 py-1 bg-emerald-600/20 text-emerald-300 text-xs rounded-full border border-emerald-500/30;
+}
+
+.project-card-actions {
+  @apply flex gap-3;
+}
+
+/* ===== HORIZONTAL PROJECTS ===== */
+.horizontal-projects-wrapper {
+  @apply relative w-full;
+}
+
+.horizontal-projects-container {
+  @apply relative w-full overflow-hidden;
+}
+
+.horizontal-projects-scroll {
+  @apply flex gap-6 will-change-transform;
+}
+
+.horizontal-project-card {
+  @apply relative flex-shrink-0 w-80 md:w-96 h-[500px] project-card;
+}
+
+/* ===== SECTION LAYOUTS ===== */
+.section-container {
+  @apply min-h-0 p-0 m-0 flex flex-col justify-start items-center relative;
+  @apply border-none outline-none overflow-visible;
+}
+
+.section-content-container {
+  @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  transform: scale(0.92);
+  transform-origin: center top;
+  margin-bottom: 50px;
+  box-sizing: border-box;
+  overflow: hidden;
+  contain: layout style;
+}
+
+.section-spacing {
+  @apply py-20 md:py-32;
+}
+
+/* ===== NAVIGATION COMPONENTS ===== */
+.nav-link-base {
+  @apply px-4 py-2 rounded-full font-medium transition-all duration-200;
+  @apply focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2;
+}
+
+.nav-link-active {
+  @apply bg-emerald-600 text-white;
+}
+
+.nav-link-inactive {
+  @apply text-gray-300 hover:text-white hover:bg-white/10;
+}
+
+/* ===== BUTTON COMPONENTS ===== */
+.btn-base {
+  @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium;
+  @apply transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  @apply disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-primary {
+  @apply btn-base bg-emerald-600 text-white hover:bg-emerald-700;
+  @apply focus:ring-emerald-500;
+}
+
+.btn-secondary {
+  @apply btn-base bg-gray-600 text-white hover:bg-gray-700;
+  @apply focus:ring-gray-500;
+}
+
+.btn-outline {
+  @apply btn-base border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white;
+  @apply focus:ring-emerald-500;
+}
+
+.btn-ghost {
+  @apply btn-base text-gray-300 hover:text-white hover:bg-white/10;
+  @apply focus:ring-gray-500;
+}
+
+/* ===== FORM COMPONENTS ===== */
+.form-input {
+  @apply w-full px-4 py-3 rounded-lg border border-gray-600 bg-gray-800/50;
+  @apply text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent;
+  @apply transition-all duration-200;
+}
+
+.form-textarea {
+  @apply form-input resize-none;
+}
+
+.form-label {
+  @apply block text-sm font-medium text-gray-300 mb-2;
+}
+
+.form-error {
+  @apply text-red-400 text-sm mt-1;
+}
+
+/* ===== UTILITY CLASSES ===== */
+.gradient-text {
+  @apply bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent;
+}
+
+.text-shadow {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== ANIMATION UTILITIES ===== */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+.animate-pulse-slow {
+  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ===== RESPONSIVE UTILITIES ===== */
+.container-responsive {
+  @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* ===== ACCESSIBILITY ENHANCEMENTS ===== */
+.sr-only {
+  @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+  clip: rect(0, 0, 0, 0);
+}
+
+.focus-visible:focus-visible {
+  @apply outline-none ring-2 ring-emerald-500 ring-offset-2;
+}
+
+/* ===== REDUCED MOTION SUPPORT ===== */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-slide-up,
+  .animate-pulse-slow,
+  .card-interactive,
+  .project-card {
+    animation: none !important;
+    transition: none !important;
+  }
+}

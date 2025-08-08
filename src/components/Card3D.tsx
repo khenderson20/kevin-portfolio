@@ -115,7 +115,7 @@ function Card3D({
         // Enable 3D transforms and perspective
         transformStyle: 'preserve-3d',
         perspective: '1000px',
-        transition: 'transform 0.1s ease-out',
+
         transform: `
           perspective(1000px)
           rotateX(var(--card-rotate-x, 0deg))

@@ -1,4 +1,15 @@
+import { useRef, useEffect } from 'react';
+import { DevelopmentIcons } from '../constants/icons';
+import { animations, killScrollTriggersFor, killTweensFor } from '../utils/animations';
+
 function AboutSection() {
+  // Animation refs
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const summaryRef = useRef<HTMLDivElement>(null);
+  const experienceRef = useRef<HTMLDivElement>(null);
+  const educationRef = useRef<HTMLDivElement>(null);
+
   const experience = [
     {
       role: "DevOps Developer Intern",
@@ -75,33 +86,118 @@ function AboutSection() {
     }
   };
 
+  // Animation setup
+  useEffect(() => {
+    // Optimized delay to ensure DOM elements are fully rendered after lazy loading
+    const timer = setTimeout(() => {
+      // Section entrance animation - using ScrollTrigger for smooth entrance
+      if (sectionRef.current) animations.fadeIn(sectionRef.current, {
+        duration: 1.2,
+        y: 20, // Reduced from 40 to prevent overflow
+        scrollTrigger: true,
+      });
+
+      // Header animation - with scroll trigger for better visual impact
+      if (headerRef.current) animations.fadeIn(headerRef.current, {
+        duration: 1,
+        delay: 0.2,
+        y: 30,
+        scrollTrigger: true,
+      });
+
+      // Summary animation - with scroll trigger for better UX
+      if (summaryRef.current) animations.fadeIn(summaryRef.current, {
+        duration: 0.8,
+        delay: 0.3,
+        y: 20,
+        scrollTrigger: true,
+      });
+
+      // Experience section animation - with scroll trigger for better UX
+      if (experienceRef.current) animations.fadeIn(experienceRef.current, {
+        duration: 0.8,
+        delay: 0.4,
+        y: 30,
+        scrollTrigger: true,
+      });
+
+      // Education section animation - with scroll trigger for better UX
+      if (educationRef.current) animations.fadeIn(educationRef.current, {
+        duration: 0.8,
+        delay: 0.5,
+        y: 30,
+        scrollTrigger: true,
+      });
+    }, 150); // Optimized delay for DOM readiness
+
+    return () => {
+      clearTimeout(timer);
+      // Targeted cleanup for this section only
+      killScrollTriggersFor([
+        sectionRef.current,
+        headerRef.current,
+        summaryRef.current,
+        experienceRef.current,
+        educationRef.current,
+      ]);
+      killTweensFor([
+        sectionRef.current,
+        headerRef.current,
+        summaryRef.current,
+        experienceRef.current,
+        educationRef.current,
+      ]);
+    };
+  }, []);
+
   return (
-    <section className="about-section page-section" id="about" aria-labelledby="about-heading">
-      <div className="container">
-        <header className="about-header">
-          <h2 id="about-heading" className="typography-h1">
-            Professional Background
+    <div
+      ref={sectionRef}
+      className="relative py-6 px-8 overflow-hidden bg-gradient-to-br from-slate-900 via-gray-900 to-slate-900"
+      aria-labelledby="about-heading"
+    >
+      {/* Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 opacity-30 overflow-hidden">
+          <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+          <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-2000"></div>
+          <div className="absolute top-3/4 left-1/2 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-4000"></div>
+        </div>
+      </div>
+
+      <div className="container-responsive relative z-10 section-content-container">
+        <header ref={headerRef} className="text-center mb-16">
+          <div className="inline-flex items-center gap-3 mb-6 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
+            <DevelopmentIcons.user className="w-5 h-5 text-blue-300" />
+            <span className="text-blue-200 font-medium">About Me</span>
+          </div>
+
+          <h2 id="about-heading" className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white">
+            <span className="gradient-text">Professional Background</span>
           </h2>
-          <p className="section-intro typography-body-large">
+
+          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
             Computer Science student with enterprise DevOps experience and research leadership
           </p>
         </header>
 
         <div className="about-content">
-          <div className="about-summary" role="region" aria-labelledby="summary-heading">
-            <h3 id="summary-heading" className="typography-h2 text-secondary">
+          <div ref={summaryRef} className="max-w-4xl mx-auto mb-20">
+            <h3 className="text-3xl md:text-4xl font-bold text-white mb-8 text-center">
               Professional Summary
             </h3>
-            <div className="summary-content">
-              <p className="typography-body">
+            <div className="glass-effect rounded-2xl p-8 md:p-12">
+              <div className="space-y-6 text-lg md:text-xl text-gray-300 leading-relaxed">
+              <p>
                 I’m a passionate full-stack developer and creative technologist with a love for building elegant, user-focused digital experiences. My portfolio showcases a blend of technical depth and design sensibility, spanning web applications, interactive media, and music technology. I thrive on solving complex problems, collaborating across disciplines, and delivering polished solutions that delight users.
               </p>
-              <p className="typography-body">
+              <p>
                 Previously, I contributed to innovative projects at IBM, where I worked alongside talented teams to develop scalable, enterprise-grade software. My experience there sharpened my skills in cloud technologies, agile development, and cross-functional teamwork—values I bring to every project.
               </p>
-              <p className="typography-body">
+              <p className="text-blue-300 font-semibold">
                 Let’s build something remarkable together.
               </p>
+              </div>
             </div>
           </div>
 
@@ -282,7 +378,7 @@ function AboutSection() {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 

@@ -1,20 +1,36 @@
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState, Suspense, lazy } from 'react';
 import Navbar from './components/Navbar';
 import { useActiveSection } from './hooks/useActiveSection';
-import HomeSection from './components/HomeSection';
-import MusicSection from './components/MusicSection';
-import DevelopmentSection from './components/DevelopmentSection';
-import AboutSection from './components/AboutSection';
-import ContactSection from './components/ContactSection';
 import ScrollIndicator from './components/ScrollIndicator';
-import DatabaseSeeder from './components/DatabaseSeeder';
+import SectionLoader from './components/SectionLoader';
 import './App.css';
 
+// Lazy load sections for better code splitting
+const HomeSection = lazy(() => import('./components/HomeSection').catch(err => {
+  console.error('Failed to load HomeSection:', err);
+  return { default: () => <div>Error loading Home section</div> };
+}));
+const MusicSection = lazy(() => import('./components/MusicSection').catch(err => {
+  console.error('Failed to load MusicSection:', err);
+  return { default: () => <div>Error loading Music section</div> };
+}));
+const DevelopmentSection = lazy(() => import('./components/DevelopmentSection').catch(err => {
+  console.error('Failed to load DevelopmentSection:', err);
+  return { default: () => <div>Error loading Development section</div> };
+}));
+const AboutSection = lazy(() => import('./components/AboutSection').catch(err => {
+  console.error('Failed to load AboutSection:', err);
+  return { default: () => <div>Error loading About section</div> };
+}));
+const ContactSection = lazy(() => import('./components/ContactSection').catch(err => {
+  console.error('Failed to load ContactSection:', err);
+  return { default: () => <div>Error loading Contact section</div> };
+}));
+
 function App() {
-  const { navigateToSection } = useActiveSection();
+  const { activeSection, navigateToSection } = useActiveSection();
   const [hasScrollableContent, setHasScrollableContent] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
     const checkScrollable = () => {
@@ -61,36 +77,33 @@ function App() {
       <Navbar
         sections={sections}
         activeSection={activeSection}
-        setActiveSection={(sectionId) => {
-          setActiveSection(sectionId);
-          navigateToSection(sectionId);
-        }}
+        setActiveSection={navigateToSection}
       />
       <main className="main-content">
-        <Suspense fallback={<div className="section-loading">Loading...</div>}>
-          <section id="home" className="section-container">
+        <Suspense fallback={<SectionLoader />}>
+          <section id="home" className="section-container relative min-h-[110vh] pb-24 md:pb-32 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
             <HomeSection onNavigateToSection={navigateToSection} />
           </section>
 
-          <section id="music" className="section-container">
+          <section id="music" className="section-container relative min-h-[110vh] pb-24 md:pb-32 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
             <MusicSection />
           </section>
 
-          <section id="development" className="section-container">
+          <section id="development" className="section-container relative min-h-[110vh] pb-24 md:pb-32 bg-gradient-to-br from-emerald-900 via-teal-900 to-cyan-900">
             <DevelopmentSection />
           </section>
 
-          <section id="about" className="section-container">
+          <section id="about" className="section-container relative min-h-[110vh] pb-24 md:pb-32 bg-gradient-to-br from-slate-900 via-gray-900 to-slate-900">
             <AboutSection />
           </section>
 
-          <section id="contact" className="section-container">
+          <section id="contact" className="section-container relative min-h-[110vh] pb-24 md:pb-32 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
             <ContactSection />
           </section>
         </Suspense>
       </main>
       {hasScrollableContent && <ScrollIndicator />}
-      <DatabaseSeeder />
+      
     </div>
   );
 }

@@ -26,8 +26,8 @@ function SkillProgressBar({
   const [animatedLevel, setAnimatedLevel] = useState(0);
   
   const { elementRef, isIntersecting } = useIntersectionObserver({
-    threshold: 0.3,
-    rootMargin: '0px 0px -10% 0px',
+    threshold: 0.1, // Reduced from 0.3 to 0.1 for easier triggering
+    rootMargin: '0px 0px 50px 0px', // Changed to positive margin for earlier triggering
     triggerOnce: true
   });
 

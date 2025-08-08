@@ -26,6 +26,29 @@ interface GitHubRepo {
   archived: boolean;
 }
 
+interface GitHubEvent {
+  id: string;
+  type: string;
+  created_at: string;
+  repo: {
+    name: string;
+    url: string;
+  };
+  payload: {
+    commits?: Array<{
+      message: string;
+      sha: string;
+    }>;
+  };
+}
+
+interface GitHubActivity {
+  recentCommits: number;
+  lastCommitDate: string;
+  lastActiveRepo: string;
+  totalEventsToday: number;
+}
+
 interface GitHubStats {
   user: GitHubUser;
   totalRepos: number;
@@ -36,6 +59,7 @@ interface GitHubStats {
   yearsExperience: number;
   showcaseRepos: number;
   topLanguages: { language: string; count: number }[];
+  activity: GitHubActivity;
 }
 
 export class GitHubStatsService {
@@ -73,10 +97,11 @@ export class GitHubStatsService {
     }
 
     try {
-      // Fetch user data and repositories in parallel
-      const [userResponse, reposResponse] = await Promise.all([
+      // Fetch user data, repositories, and recent activity in parallel
+      const [userResponse, reposResponse, eventsResponse] = await Promise.all([
         fetch(`${this.BASE_URL}/users/${this.USERNAME}`, { headers: this.getHeaders() }),
-        fetch(`${this.BASE_URL}/users/${this.USERNAME}/repos?sort=updated&per_page=100`, { headers: this.getHeaders() })
+        fetch(`${this.BASE_URL}/users/${this.USERNAME}/repos?sort=updated&per_page=100`, { headers: this.getHeaders() }),
+        fetch(`${this.BASE_URL}/users/${this.USERNAME}/events?per_page=30`, { headers: this.getHeaders() })
       ]);
 
       if (!userResponse.ok || !reposResponse.ok) {
@@ -85,6 +110,12 @@ export class GitHubStatsService {
 
       const user: GitHubUser = await userResponse.json();
       const repos: GitHubRepo[] = await reposResponse.json();
+
+      // Parse events for activity (fallback to empty array if events fail)
+      let events: GitHubEvent[] = [];
+      if (eventsResponse.ok) {
+        events = await eventsResponse.json();
+      }
 
       // Calculate statistics
       const originalRepos = repos.filter(repo => !repo.fork && !repo.archived);
@@ -119,6 +150,9 @@ export class GitHubStatsService {
         .sort((a, b) => b.count - a.count)
         .slice(0, 5);
 
+      // Calculate activity metrics
+      const activity = this.calculateActivity(events);
+
       const stats: GitHubStats = {
         user,
         totalRepos: repos.length,
@@ -128,7 +162,8 @@ export class GitHubStatsService {
         languages,
         yearsExperience,
         showcaseRepos,
-        topLanguages
+        topLanguages,
+        activity
       };
 
       // Cache the results
@@ -142,6 +177,44 @@ export class GitHubStatsService {
       // Return fallback data based on the real data we know
       return this.getFallbackStats();
     }
+  }
+
+  private static calculateActivity(events: GitHubEvent[]): GitHubActivity {
+    const today = new Date();
+    const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+    // Filter push events (commits) from the last 7 days
+    const recentPushEvents = events.filter(event =>
+      event.type === 'PushEvent' &&
+      new Date(event.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+    );
+
+    // Count total commits in recent push events
+    const recentCommits = recentPushEvents.reduce((total, event) => {
+      return total + (event.payload.commits?.length || 0);
+    }, 0);
+
+    // Find last commit date
+    const lastCommitDate = recentPushEvents.length > 0
+      ? recentPushEvents[0].created_at
+      : '';
+
+    // Find last active repository
+    const lastActiveRepo = recentPushEvents.length > 0
+      ? recentPushEvents[0].repo.name.split('/')[1]
+      : '';
+
+    // Count events today
+    const totalEventsToday = events.filter(event =>
+      new Date(event.created_at) >= todayStart
+    ).length;
+
+    return {
+      recentCommits,
+      lastCommitDate,
+      lastActiveRepo,
+      totalEventsToday
+    };
   }
 
   private static getFallbackStats(): GitHubStats {
@@ -172,7 +245,13 @@ export class GitHubStatsService {
         { language: 'C++', count: 1 },
         { language: 'Java', count: 1 },
         { language: 'Vue', count: 1 }
-      ]
+      ],
+      activity: {
+        recentCommits: 5,
+        lastCommitDate: new Date().toISOString(),
+        lastActiveRepo: 'kevin-portfolio',
+        totalEventsToday: 2
+      }
     };
   }
 
@@ -205,5 +284,20 @@ export class GitHubStatsService {
   static async getTopLanguages(): Promise<{ language: string; count: number }[]> {
     const stats = await this.getGitHubStats();
     return stats.topLanguages;
+  }
+
+  static async getRecentActivity(): Promise<GitHubActivity> {
+    const stats = await this.getGitHubStats();
+    return stats.activity;
+  }
+
+  static async getRecentCommitCount(): Promise<number> {
+    const stats = await this.getGitHubStats();
+    return stats.activity.recentCommits;
+  }
+
+  static async getLastActiveRepo(): Promise<string> {
+    const stats = await this.getGitHubStats();
+    return stats.activity.lastActiveRepo;
   }
 }

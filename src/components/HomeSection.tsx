@@ -1,28 +1,38 @@
-import { useEffect, useState } from 'react';
-import ParticleBackground from './ParticleBackground';
+import { useEffect, useState, useRef } from 'react';
 import { GitHubStatsService } from '../services/githubStatsService';
+import { FaArrowDown } from 'react-icons/fa';
+import { animations, killScrollTriggersFor, killTweensFor } from '../utils/animations';
+import HeroActions from './HeroActions';
 
 interface HomeSectionProps {
   onNavigateToSection?: (section: string) => void;
 }
 
+interface GitHubStats {
+  yearsExperience: number;
+  repositoryCount: number;
+  languageCount: number;
+  followerCount: number;
+}
+
 function HomeSection({ onNavigateToSection }: HomeSectionProps) {
-  const [isVisible, setIsVisible] = useState(false);
-  const [githubStats, setGithubStats] = useState({
+  const [githubStats, setGithubStats] = useState<GitHubStats>({
     yearsExperience: 8,
     repositoryCount: 11,
     languageCount: 6,
     followerCount: 16
   });
 
-  useEffect(() => {
-    // Trigger animations after component mounts
-    const timer = setTimeout(() => setIsVisible(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
+  // Refs for animations
+  const heroRef = useRef<HTMLDivElement>(null);
+  const nameRef = useRef<HTMLHeadingElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const ctaButtonsRef = useRef<HTMLDivElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
+  const scrollIndicatorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Load real GitHub stats
     const loadGitHubStats = async () => {
       try {
         const [years, repos, languages, followers] = await Promise.all([
@@ -31,7 +41,6 @@ function HomeSection({ onNavigateToSection }: HomeSectionProps) {
           GitHubStatsService.getLanguageCount(),
           GitHubStatsService.getFollowerCount()
         ]);
-
         setGithubStats({
           yearsExperience: years,
           repositoryCount: repos,
@@ -40,85 +49,174 @@ function HomeSection({ onNavigateToSection }: HomeSectionProps) {
         });
       } catch (error) {
         console.error('Error loading GitHub stats:', error);
-        // Keep fallback values
       }
     };
-
     loadGitHubStats();
   }, []);
 
-  const handleCodeClick = () => {
-    if (onNavigateToSection) {
-      onNavigateToSection('development');
-    } else {
-      // Fallback for direct navigation
-      window.location.hash = 'development';
-    }
-  };
+  useEffect(() => {
+    // Add a small delay to ensure DOM elements are fully rendered
+    const timer = setTimeout(() => {
+      // Hero entrance animations - immediate for first impression, no scroll trigger needed
+      animations.fadeIn(nameRef.current, {
+        duration: 1.2,
+        delay: 0.3,
+        y: 50,
+        scrollTrigger: false
+      });
+
+      animations.fadeIn(titleRef.current, {
+        duration: 1,
+        delay: 0.6,
+        y: 30,
+        scrollTrigger: false
+      });
+
+      animations.fadeIn(descriptionRef.current, {
+        duration: 0.8,
+        delay: 0.9,
+        y: 20,
+        scrollTrigger: false
+      });
+
+      animations.fadeIn(ctaButtonsRef.current, {
+        duration: 0.8,
+        delay: 1.2,
+        y: 20,
+        scrollTrigger: false
+      });
+
+      animations.fadeIn(statsRef.current, {
+        duration: 0.8,
+        delay: 1.5,
+        y: 30,
+        scrollTrigger: false
+      });
+
+      animations.fadeIn(scrollIndicatorRef.current, {
+        duration: 0.6,
+        delay: 2,
+        y: 20,
+        scrollTrigger: false
+      });
+    }, 100); // Small delay to ensure DOM is ready
+
+    return () => {
+      clearTimeout(timer);
+      // Targeted cleanup for this section only
+      killScrollTriggersFor([
+        heroRef.current,
+        nameRef.current,
+        titleRef.current,
+        descriptionRef.current,
+        ctaButtonsRef.current,
+        statsRef.current,
+        scrollIndicatorRef.current,
+      ]);
+      killTweensFor([
+        heroRef.current,
+        nameRef.current,
+        titleRef.current,
+        descriptionRef.current,
+        ctaButtonsRef.current,
+        statsRef.current,
+        scrollIndicatorRef.current,
+      ]);
+    };
+  }, []);
+
+
+
+
+
+  const statsData = [
+    { label: 'Years Experience', value: githubStats.yearsExperience, suffix: '+' },
+    { label: 'Projects Built', value: githubStats.repositoryCount, suffix: '+' },
+    { label: 'Technologies', value: githubStats.languageCount, suffix: '+' },
+    { label: 'GitHub Followers', value: githubStats.followerCount, suffix: '+' },
+  ];
 
   return (
-    <div className="hero">
-      <div className="hero-content">
-        <ParticleBackground
-        particleCount={150}
-        particleColor="hsla(186, 85%, 54%, 0.8)" // Primary color with alpha
-        speed={0.3}
-        interactive={true}
-      />
-        <div className={`hero-text ${isVisible ? 'animate-in' : ''}`}>
-          <div className="hero-badge">
-            <span className="badge-icon">🎵</span>
-            <span className="badge-text">Available for Projects</span>
-          </div>
+    <div
+      ref={heroRef}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 navbar-spacing"
+    >
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 opacity-50 overflow-hidden">
+          <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+          <div className="absolute top-3/4 right-1/4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-2000"></div>
+          <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-4000"></div>
+        </div>
+      </div>
 
-          <h1 className="hero-title">
-            <span className="title-line title-line-1">Musician &</span>
-            <span className="title-line title-line-2">Creative Developer</span>
+      {/* Main Content */}
+      <div className="container-responsive relative z-10 pt-20 md:pt-16">
+        <div className="text-center pb-4 max-w-4xl mx-auto">
+          {/* Name */}
+          <h1
+            ref={nameRef}
+            className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 opacity-0"
+          >
+            <span className="gradient-text">Kevin Henderson</span>
           </h1>
 
-          <p className="hero-subtitle">
-            Synth enthusiast, developer, and creative from USA.
-            Crafting digital experiences through code and sound,
-            bridging technical innovation with creative expression.
+          {/* Title */}
+          <h2
+            ref={titleRef}
+            className="text-xl md:text-2xl lg:text-3xl font-light text-gray-300 mb-6 opacity-0"
+          >
+            Full-Stack Developer & Creative Technologist
+          </h2>
+
+          {/* Description */}
+          <p
+            ref={descriptionRef}
+            className="text-lg md:text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed opacity-0"
+          >
+            Crafting digital experiences that blend cutting-edge technology with creative innovation.
+            Specializing in React, Node.js, and cloud architecture.
           </p>
 
-          <div className="hero-stats">
-            <div className="stat">
-              <span className="stat-number">{githubStats.yearsExperience}+</span>
-              <span className="stat-label">Years Experience</span>
-            </div>
-            <div className="stat">
-              <span className="stat-number">{githubStats.repositoryCount}</span>
-              <span className="stat-label">Public Repos</span>
-            </div>
-            <div className="stat">
-              <span className="stat-number">{githubStats.languageCount}</span>
-              <span className="stat-label">Languages Used</span>
-            </div>
-          </div>
-        </div>
-
-        <div className={`hero-actions ${isVisible ? 'animate-in' : ''}`}>
-          <div className="hero-buttons">
-            <button
-              className="btn-primary hero-cta"
-              onClick={handleCodeClick}
-              aria-label="View my development projects"
-            >
-              <span className="btn-icon">💻</span>
-              <span className="btn-text">View My Code</span>
-              <span className="btn-arrow">→</span>
-            </button>
+          {/* Hero Actions */}
+          <div
+            ref={ctaButtonsRef}
+            className="mb-16 opacity-0"
+          >
+            <HeroActions onNavigateToSection={onNavigateToSection} />
           </div>
 
-          <div className="hero-social-proof">
-            <p className="social-proof-text">Computer Science • University of Texas at San Antonio</p>
-            <div className="social-proof-logos">
-              <span className="company-logo">{githubStats.followerCount} Followers</span>
-              <span className="company-logo">UTSA Alumni</span>
-              <span className="company-logo">Open Source</span>
-            </div>
+          {/* GitHub Stats */}
+          <div
+            ref={statsRef}
+            className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 opacity-0"
+          >
+            {statsData.map((stat, index) => (
+              <div
+                key={index}
+                className="glass-effect rounded-xl p-6 text-center hover:bg-white/20 transition-all duration-300"
+              >
+                <div className="text-2xl md:text-3xl font-bold text-white mb-2">
+                  {stat.value}{stat.suffix}
+                </div>
+                <div className="text-sm text-gray-400 uppercase tracking-wide">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
           </div>
+
+
+          {/* Scroll Indicator */}
+          <div
+            ref={scrollIndicatorRef}
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 opacity-0 flex flex-col items-center gap-2"
+          >
+            <span className="text-gray-400 text-sm">Scroll to explore</span>
+            <FaArrowDown className="w-4 h-4 text-gray-400 animate-bounce" />
+          </div>
+
+
         </div>
       </div>
     </div>

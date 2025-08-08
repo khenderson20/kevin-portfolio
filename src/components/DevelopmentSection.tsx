@@ -1,14 +1,14 @@
-import { useState, useEffect, useMemo, useCallback, memo } from 'react';
-import { Star, GitBranch, Search } from 'lucide-react';
-import ProjectCard from './ProjectCard';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { DevelopmentIcons, ProjectIcons } from '../constants/icons';
 import GitHubProjects from './GitHubProjects';
+import HorizontalProjectsContainer from './HorizontalProjectsContainer';
 import { PortfolioService } from '../services/portfolioService';
 import { Project } from '../types/portfolio';
 import { GitHubService } from '../services/githubService';
 import { GitHubRepo } from '../types/github';
+import { animations, killScrollTriggersFor, killTweensFor } from '../utils/animations';
 
-// Memoize ProjectCard to prevent unnecessary re-renders
-const MemoizedProjectCard = memo(ProjectCard);
+
 
 // Implement intersection observer for lazy loading
 const useIntersectionObserver = (callback: () => void) => {
@@ -45,8 +45,22 @@ function DevelopmentSection() {
   const [sortBy, setSortBy] = useState<'recent' | 'stars' | 'name'>('recent');
 
   // Add category-based filtering
-  const categories = ['All', 'Frontend', 'Backend', 'Full-Stack', 'Mobile', 'Data Structures & Algorithms'];
+  const categories = [
+    { name: 'All', icon: DevelopmentIcons.layers },
+    { name: 'Frontend', icon: DevelopmentIcons.code },
+    { name: 'Backend', icon: DevelopmentIcons.database },
+    { name: 'Full-Stack', icon: DevelopmentIcons.layers },
+    { name: 'Mobile', icon: DevelopmentIcons.mobile },
+    { name: 'Data Structures & Algorithms', icon: ProjectIcons.github }
+  ];
   const [selectedCategory, setSelectedCategory] = useState('All');
+
+  // Animation refs
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const tabsRef = useRef<HTMLDivElement>(null);
+  const filtersRef = useRef<HTMLDivElement>(null);
+
 
   // GitHub repository count for display
   const [githubRepoCount, setGithubRepoCount] = useState(0);
@@ -290,64 +304,159 @@ function DevelopmentSection() {
     }, [activeTab, githubLoading, hasMoreGithubProjects, loadMoreGithubProjects])
   );
 
+  // Animation setup
+  useEffect(() => {
+    // Optimized delay to ensure DOM elements are fully rendered after lazy loading
+    const timer = setTimeout(() => {
+      // Section entrance animation - using ScrollTrigger for smooth entrance
+      animations.fadeIn(sectionRef.current, {
+        duration: 1.2,
+        y: 20, // Reduced from 40 to prevent overflow
+        scrollTrigger: true,
+      });
+
+      // Header animation - with scroll trigger for better visual impact
+      animations.fadeIn(headerRef.current, {
+        duration: 1,
+        delay: 0.2,
+        y: 30,
+        scrollTrigger: true,
+      });
+
+      // Tabs animation - with scroll trigger for better UX
+      animations.fadeIn(tabsRef.current, {
+        duration: 0.8,
+        delay: 0.3,
+        y: 20,
+        scrollTrigger: true,
+      });
+
+      // Filters animation - with scroll trigger for better UX
+      animations.fadeIn(filtersRef.current, {
+        duration: 0.8,
+        delay: 0.4,
+        y: 20,
+        scrollTrigger: true,
+      });
+    }, 150); // Optimized delay for DOM readiness
+
+    return () => {
+      clearTimeout(timer);
+      // Targeted cleanup for this section only
+      killScrollTriggersFor([
+        sectionRef.current,
+        headerRef.current,
+        tabsRef.current,
+        filtersRef.current,
+      ]);
+      killTweensFor([
+        sectionRef.current,
+        headerRef.current,
+        tabsRef.current,
+        filtersRef.current,
+      ]);
+    };
+  }, []);
+
   return (
-    <section className="dev-section" id="development">
-      <div className="dev-content">
-        <header className="section-header">
-          <h2>Technical Projects</h2>
-          <p>Showcasing full-stack applications with measurable business impact</p>
+    <div
+      ref={sectionRef}
+      className="relative py-6 px-12 overflow-hidden bg-gradient-to-br from-emerald-900 via-teal-900 to-cyan-900"
+    >
+      {/* Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 opacity-30 overflow-hidden">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-emerald-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-teal-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-2000"></div>
+          <div className="absolute top-3/4 right-1/3 w-96 h-96 bg-cyan-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-4000"></div>
+        </div>
+      </div>
+
+      <div className="container-responsive relative z-10 section-content-container">
+        <header ref={headerRef} className="text-center mb-16">
+          <div className="inline-flex items-center gap-3 mb-6 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
+            <DevelopmentIcons.code className="w-5 h-5 text-emerald-300" />
+            <span className="text-emerald-200 font-medium">Development</span>
+          </div>
+
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white">
+            <span className="gradient-text">Technical Projects</span>
+          </h2>
+
+          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+            Showcasing full-stack applications with measurable business impact and modern technologies
+          </p>
         </header>
 
         {/* Project Tabs */}
-        <div 
-          className="project-tabs" 
-          role="tablist" 
+        <div
+          ref={tabsRef}
+          className="flex justify-center mb-12"
+          role="tablist"
           aria-label="Project categories"
         >
-          <button
-            className={`tab-button ${activeTab === 'featured' ? 'active' : ''}`}
-            onClick={() => setActiveTab('featured')}
-            aria-label="View featured projects"
-            role="tab"
-            aria-selected={activeTab === 'featured'}
-            aria-controls="featured-panel"
-            id="featured-tab"
-            tabIndex={activeTab === 'featured' ? 0 : -1}
-          >
-            <Star className="tab-icon" size={16} />
-            Featured Projects
-            <span className="tab-count">{projects.length}</span>
-          </button>
-          <button
-            className={`tab-button ${activeTab === 'github' ? 'active' : ''}`}
-            onClick={() => setActiveTab('github')}
-            aria-label="View GitHub repositories"
-            role="tab"
-            aria-selected={activeTab === 'github'}
-            aria-controls="github-panel"
-            id="github-tab"
-            tabIndex={activeTab === 'github' ? 0 : -1}
-          >
-            <GitBranch className="tab-icon" size={16} />
-            GitHub Repositories
-            <span className="tab-count">{githubRepoCount || '6+'}</span>
-          </button>
+          <div className="glass-effect rounded-xl p-2 flex gap-2">
+            <button
+              className={`inline-flex items-center gap-3 px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                activeTab === 'featured'
+                  ? 'bg-emerald-600 text-white shadow-lg'
+                  : 'text-gray-300 hover:text-white hover:bg-white/10'
+              }`}
+              onClick={() => setActiveTab('featured')}
+              aria-label="View featured projects"
+              role="tab"
+              aria-selected={activeTab === 'featured'}
+              aria-controls="featured-panel"
+              id="featured-tab"
+              tabIndex={activeTab === 'featured' ? 0 : -1}
+            >
+              <ProjectIcons.star size={16} />
+              Featured Projects
+              <span className="bg-white/20 px-2 py-1 rounded-full text-xs">{projects.length}</span>
+            </button>
+            <button
+              className={`inline-flex items-center gap-3 px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                activeTab === 'github'
+                  ? 'bg-emerald-600 text-white shadow-lg'
+                  : 'text-gray-300 hover:text-white hover:bg-white/10'
+              }`}
+              onClick={() => setActiveTab('github')}
+              aria-label="View GitHub repositories"
+              role="tab"
+              aria-selected={activeTab === 'github'}
+              aria-controls="github-panel"
+              id="github-tab"
+              tabIndex={activeTab === 'github' ? 0 : -1}
+            >
+              <ProjectIcons.github size={16} />
+              GitHub Repositories
+              <span className="bg-white/20 px-2 py-1 rounded-full text-xs">{githubRepoCount || '6+'}</span>
+            </button>
+          </div>
         </div>
 
         {/* Category Filters - Only show for Featured Projects */}
         {activeTab === 'featured' && (
-          <div className="category-filters-container">
-            <div className="category-filters">
-              {categories.map(category => (
-                <button
-                  key={category}
-                  className={`category-filter ${selectedCategory === category ? 'active' : ''}`}
-                  onClick={() => setSelectedCategory(category)}
-                  aria-pressed={selectedCategory === category}
-                >
-                  {category}
-                </button>
-              ))}
+          <div ref={filtersRef} className="mb-12">
+            <div className="flex flex-wrap justify-center gap-3">
+              {categories.map(category => {
+                const Icon = category.icon;
+                return (
+                  <button
+                    key={category.name}
+                    className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
+                      selectedCategory === category.name
+                        ? 'bg-emerald-600 text-white shadow-lg'
+                        : 'bg-white/10 text-gray-300 hover:bg-white/20 hover:text-white'
+                    }`}
+                    onClick={() => setSelectedCategory(category.name)}
+                    aria-pressed={selectedCategory === category.name}
+                  >
+                    <Icon className="w-4 h-4" />
+                    {category.name}
+                  </button>
+                );
+              })}
             </div>
           </div>
         )}
@@ -355,7 +464,7 @@ function DevelopmentSection() {
         {/* Search and Controls */}
         <div className="projects-filter-bar">
           <div className="search-container">
-            <Search size={16} />
+            <DevelopmentIcons.search size={16} />
             <input
               type="text"
               placeholder="Search projects..."
@@ -431,23 +540,10 @@ function DevelopmentSection() {
                   ))}
                 </div>
               ) : (
-                <div className="projects-container">
-                  <div className="projects-grid">
-                    {/* First set of cards */}
-                    {filteredProjects.map((project) => (
-                      <MemoizedProjectCard key={`first-${project.id}`} project={project} />
-                    ))}
-                    {/* Duplicate set for seamless loop */}
-                    {filteredProjects.map((project) => (
-                      <MemoizedProjectCard key={`second-${project.id}`} project={project} />
-                    ))}
-                  </div>
-                  {filteredProjects.length === 0 && !loading && (
-                    <div className="no-results">
-                      <p>No projects found matching your criteria.</p>
-                    </div>
-                  )}
-                </div>
+                <HorizontalProjectsContainer
+                  projects={filteredProjects}
+                  loading={loading}
+                />
               )}
             </div>
           )}
@@ -470,7 +566,7 @@ function DevelopmentSection() {
           )}
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
