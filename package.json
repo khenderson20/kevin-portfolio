@@ -43,6 +43,9 @@
     "typescript": "^5.4.5",
     "vite": "^7.0.6"
   },
+  "overrides": {
+    "@parcel/watcher": "2.2.0"
+  },
   "engines": {
     "node": ">=18.0.0"
   }
