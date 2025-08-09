@@ -40,10 +40,11 @@ function ProjectCard({ project }: ProjectCardProps) {
   // Component implementation
 }
 
-function InteractiveCard({ 
-  children, 
-  glowEffect = false, 
-  tiltEffect = true 
+function InteractiveCard({
+  children,
+  tiltEffect = true,
+  scaleOnHover = true,
+  shadowIntensity = 'medium'
 }: InteractiveCardProps) {
   // Component implementation
 }

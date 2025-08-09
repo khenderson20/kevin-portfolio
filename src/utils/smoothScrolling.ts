@@ -81,7 +81,7 @@ export function smoothScrollTo(
   options: SmoothScrollOptions = {}
 ): Promise<void> {
   const {
-    duration = 800,
+    duration = 450,
     easing = 'easeInOutCubic',
     offset = 0,
     callback,

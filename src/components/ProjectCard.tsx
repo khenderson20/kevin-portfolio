@@ -1,4 +1,4 @@
-import { ExternalLink, GitBranch, BarChart3 } from 'lucide-react';
+import { ProjectIcons } from '../constants/icons';
 import { Project } from '../types/portfolio';
 import Card3D from './Card3D';
 
@@ -89,7 +89,7 @@ function ProjectCard({ project }: ProjectCardProps) {
         {project.metrics && (
           <div className="project-metrics" role="region" aria-label="Project impact metrics">
             <p>
-              <BarChart3 size={16} className="metrics-icon" aria-label="Metrics" />
+              <ProjectIcons.stats size={16} className="metrics-icon" aria-label="Metrics" />
               <strong>Impact:</strong> {project.metrics}
             </p>
           </div>
@@ -105,7 +105,7 @@ function ProjectCard({ project }: ProjectCardProps) {
             className="btn-link"
             aria-label={`View live demo of ${project.title}`}
           >
-            <ExternalLink size={14} />
+            <ProjectIcons.external size={14} />
             Live Demo
           </a>
         )}
@@ -117,7 +117,7 @@ function ProjectCard({ project }: ProjectCardProps) {
             className="btn-link"
             aria-label={`View source code for ${project.title} on GitHub`}
           >
-            <GitBranch size={14} />
+            <ProjectIcons.github size={14} />
             GitHub
           </a>
         )}
