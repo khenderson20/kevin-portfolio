@@ -30,7 +30,7 @@ export function useActiveSection(options: UseActiveSectionOptions = {}) {
   // Enhanced smooth scroll with custom easing
   const smoothScrollTo = useCallback((targetPosition: number, options: SmoothScrollOptions = {}) => {
     const {
-      duration = 800,
+      duration = 450,
       easing = (t: number) => t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1, // easeInOutCubic
       offset = 0
     } = { ...smoothScrollOptions, ...options };
@@ -39,7 +39,7 @@ export function useActiveSection(options: UseActiveSectionOptions = {}) {
     const distance = targetPosition - startPosition - offset;
     const startTime = performance.now();
 
-    setIsScrolling(true);
+    // Don't set isScrolling here - it's managed by navigateToSection
 
     const animateScroll = (currentTime: number) => {
       const elapsed = currentTime - startTime;
@@ -50,9 +50,8 @@ export function useActiveSection(options: UseActiveSectionOptions = {}) {
 
       if (progress < 1) {
         requestAnimationFrame(animateScroll);
-      } else {
-        setIsScrolling(false);
       }
+      // Don't set isScrolling to false here - let the timeout handle it
     };
 
     requestAnimationFrame(animateScroll);
@@ -70,7 +69,7 @@ export function useActiveSection(options: UseActiveSectionOptions = {}) {
     if (!element) return;
 
     let targetPosition;
-    
+
     if (section === 'home') {
       targetPosition = 0;
     } else {
@@ -88,9 +87,22 @@ export function useActiveSection(options: UseActiveSectionOptions = {}) {
       return;
     }
 
-    // Update URL and state
+    // Immediately update state and URL to prevent observer conflicts
     setActiveSection(section);
     window.history.pushState(null, '', `#${section}`);
+
+    // Set scrolling state with extended timeout to prevent observer interference
+    setIsScrolling(true);
+
+    // Clear any existing timeout
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+    }
+
+    // Set timeout to reset scrolling state after animation completes + buffer
+    scrollTimeoutRef.current = setTimeout(() => {
+      setIsScrolling(false);
+    }, 600); // 450ms animation + 150ms buffer
 
     // Perform smooth scroll
     smoothScrollTo(targetPosition);

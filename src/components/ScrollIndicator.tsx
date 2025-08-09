@@ -17,15 +17,10 @@ function ScrollIndicator({
   thickness = 3,
   color = 'var(--color-secondary)'
 }: ScrollIndicatorProps) {
-  console.log('ScrollIndicator component mounted with props:', {
-    position, thickness, color, showPercentage
-  });
-  
   const [progress, setProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    console.log('ScrollIndicator useEffect running');
     
     let ticking = false;
     
@@ -60,7 +55,7 @@ function ScrollIndicator({
     const baseStyle: React.CSSProperties = {
       position: 'fixed',
       backgroundColor: color,
-      zIndex: 10, // Use --z-index-docked value (below navbar)
+      zIndex: 1000, // Above most content but below navbar
       transition: 'all 0.3s ease',
       opacity: isVisible ? 1 : 0,
     };

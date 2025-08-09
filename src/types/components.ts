@@ -37,11 +37,9 @@ export interface Card3DProps extends BaseComponentProps {
 }
 
 export interface InteractiveCardProps extends BaseComponentProps {
-  glowEffect?: boolean;
   tiltEffect?: boolean;
   scaleOnHover?: boolean;
   shadowIntensity?: 'low' | 'medium' | 'high';
-  borderGlow?: boolean;
   onClick?: () => void;
   disabled?: boolean;
 }
