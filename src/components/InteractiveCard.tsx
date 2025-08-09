@@ -3,11 +3,9 @@ import { useState, useRef, ReactNode } from 'react';
 interface InteractiveCardProps {
   children: ReactNode;
   className?: string;
-  glowEffect?: boolean;
   tiltEffect?: boolean;
   scaleOnHover?: boolean;
   shadowIntensity?: 'low' | 'medium' | 'high';
-  borderGlow?: boolean;
   onClick?: () => void;
   disabled?: boolean;
 }
@@ -15,11 +13,9 @@ interface InteractiveCardProps {
 function InteractiveCard({
   children,
   className = '',
-  glowEffect = true,
   tiltEffect = true,
   scaleOnHover = true,
   shadowIntensity = 'medium',
-  borderGlow = false,
   onClick,
   disabled = false
 }: InteractiveCardProps) {
@@ -92,24 +88,22 @@ function InteractiveCard({
     };
   };
 
-  // Calculate glow position
-  const getGlowStyle = () => {
-    if (!glowEffect || (!isHovered && !isFocused) || disabled) return {};
+  // Get shadow and styling classes using Tailwind
+  const getCardClasses = () => {
+    const baseClasses = 'relative overflow-hidden rounded-lg';
 
-    return {
-      background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, 
-        rgba(var(--color-primary-rgb), 0.1) 0%, 
-        transparent 50%)`,
+    // Shadow intensity mapping to Tailwind classes
+    const shadowClasses = {
+      low: 'shadow-sm hover:shadow-md',
+      medium: 'shadow-md hover:shadow-lg',
+      high: 'shadow-lg hover:shadow-xl'
     };
-  };
 
-  // Get shadow intensity class
-  const getShadowClass = () => {
-    const baseClass = 'interactive-card';
-    const intensityClass = `shadow-${shadowIntensity}`;
-    const stateClass = isHovered || isFocused ? 'elevated' : '';
-    
-    return `${baseClass} ${intensityClass} ${stateClass}`;
+    const shadowClass = shadowClasses[shadowIntensity];
+    const disabledClass = disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer';
+    const hoverClass = !disabled && (isHovered || isFocused) ? 'shadow-2xl' : '';
+
+    return `${baseClasses} ${shadowClass} ${disabledClass} ${hoverClass}`;
   };
 
   const isInteractive = !!onClick;
@@ -117,9 +111,7 @@ function InteractiveCard({
   return (
     <div
       ref={cardRef}
-      className={`${getShadowClass()} ${className} ${disabled ? 'disabled' : ''} ${
-        borderGlow && (isHovered || isFocused) ? 'border-glow' : ''
-      }`}
+      className={`${getCardClasses()} ${className}`}
       style={getTiltStyle()}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
@@ -132,30 +124,21 @@ function InteractiveCard({
       role={isInteractive ? 'button' : undefined}
       aria-disabled={disabled}
     >
-      {/* Glow overlay */}
-      {glowEffect && (
-        <div 
-          className="card-glow-overlay"
-          style={getGlowStyle()}
-          aria-hidden="true"
-        />
-      )}
-      
       {/* Content */}
-      <div className="card-content">
+      <div className="w-full h-full">
         {children}
       </div>
-      
-      {/* Shine effect on hover */}
+
+      {/* Subtle shine effect on hover */}
       {(isHovered || isFocused) && !disabled && (
-        <div 
-          className="card-shine"
+        <div
+          className="absolute inset-0 pointer-events-none opacity-20"
           style={{
-            background: `linear-gradient(135deg, 
-              transparent 30%, 
-              rgba(255, 255, 255, 0.1) 50%, 
+            background: `linear-gradient(135deg,
+              transparent 30%,
+              rgba(255, 255, 255, 0.1) 50%,
               transparent 70%)`,
-            transform: `translateX(${mousePosition.x * 0.1}px) translateY(${mousePosition.y * 0.1}px)`
+            transform: `translateX(${mousePosition.x * 0.05}px) translateY(${mousePosition.y * 0.05}px)`
           }}
           aria-hidden="true"
         />
@@ -165,3 +148,4 @@ function InteractiveCard({
 }
 
 export default InteractiveCard;
+

@@ -1,15 +1,18 @@
 import TrackCard from './TrackCard';
-import SkillProgressBar from './SkillProgressBar';
-import AnimatedCounter from './AnimatedCounter';
 import InteractiveCard from './InteractiveCard';
-import ParticleBackground from './ParticleBackground';
-import { FaSpotify, FaSoundcloud } from 'react-icons/fa';
+import MusicStatCard from './MusicStatCard';
+import { FaSpotify, FaSoundcloud, FaUsers, FaMusic, FaCompactDisc } from 'react-icons/fa';
+import { useEffect, useRef } from 'react';
+import { animations, killScrollTriggersFor, killTweensFor } from '../utils/animations';
+import { Typography } from '@material-tailwind/react';
+
 
 interface Track {
   title: string;
   duration: string;
   genre: string;
   description?: string;
+  soundCloudUrl?: string;
 }
 
 function MusicSection() {
@@ -18,29 +21,23 @@ function MusicSection() {
       title: "RINGS 2022",
       duration: "2022",
       genre: "Ambient Electronic",
-      description: "Atmospheric electronic composition featuring layered synthesizers and evolving soundscapes"
+      description: "Atmospheric electronic composition featuring layered synthesizers and evolving soundscapes",
+      soundCloudUrl: "https://soundcloud.com/user-228826128/rings-2022"
     },
     {
       title: "Experiment with modular",
       duration: "2022",
       genre: "Modular Synthesis",
-      description: "Exploration of modular synthesizer techniques with complex patch routing and generative sequences"
+      description: "Exploration of modular synthesizer techniques with complex patch routing and generative sequences",
+      soundCloudUrl: "https://soundcloud.com/user-228826128/big-bass-mastered"
     },
     {
       title: "garage 09",
       duration: "2020",
       genre: "UK Garage",
-      description: "UK garage-influenced track with syncopated rhythms and bass-heavy production"
+      description: "UK garage-influenced track with syncopated rhythms and bass-heavy production",
+      soundCloudUrl: "https://soundcloud.com/user-228826128/garage-09"
     }
-  ];
-
-  const audioSkills = [
-    { name: "Modular Synthesis", level: 85 },
-    { name: "Electronic Music Production", level: 90 },
-    { name: "Synthesizer Programming", level: 80 },
-    { name: "MIDI Sequencing", level: 85 },
-    { name: "Sound Design", level: 75 },
-    { name: "Ambient Composition", level: 80 }
   ];
 
   const audioStats = [
@@ -50,268 +47,217 @@ function MusicSection() {
     { label: "Albums Released", value: 6, suffix: "" }
   ];
 
-  return (
-    <section className="music-section" id="music" aria-labelledby="music-heading">
-      <main className="music-content">
-        <ParticleBackground
-          particleCount={25}
-          particleColor="rgba(var(--color-secondary-rgb), 0.1)"
-          speed={0.4}
-          interactive={true}
-        />
-        <header>
-          <h2 id="music-heading">Music Production & Audio Projects</h2>
-          <p className="section-intro">
-            Electronic music production featuring synth compositions, modular synthesis, and experimental audio
-          </p>
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const statCardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const trackCardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-          {/* Music Streaming Call-to-Action */}
-          <div className="music-cta-container">
+  useEffect(() => {
+    // Optimized delay to ensure DOM elements are fully rendered after lazy loading
+    const timer = setTimeout(() => {
+      // Section entrance animation - using ScrollTrigger for smooth entrance
+      animations.fadeIn(sectionRef.current, {
+        duration: 1.2,
+        y: 20,
+        scrollTrigger: true,
+      });
+
+      // Heading animation - with scroll trigger for better visual impact
+      animations.textReveal(headingRef.current, {
+        duration: 1.5,
+        delay: 0.2,
+        scrollTrigger: true,
+      });
+
+      // Staggered stat cards animation - with scroll trigger for better UX
+      animations.staggerFadeIn(statCardRefs.current, {
+        duration: 0.8,
+        stagger: 0.1,
+        delay: 0.3,
+        y: 30,
+        scrollTrigger: true,
+      });
+
+      // Staggered track cards animation - with scroll trigger for consistency
+      animations.staggerFadeIn(trackCardRefs.current, {
+        duration: 0.8,
+        stagger: 0.15,
+        delay: 0.4,
+        y: 40,
+        scrollTrigger: true,
+      });
+    }, 150); // Optimized delay for DOM readiness
+
+    return () => {
+      clearTimeout(timer);
+      // Targeted cleanup for this section only
+      killScrollTriggersFor([
+        sectionRef.current,
+        headingRef.current,
+        statCardRefs.current,
+        trackCardRefs.current,
+      ]);
+      killTweensFor([
+        sectionRef.current,
+        headingRef.current,
+        statCardRefs.current,
+        trackCardRefs.current,
+      ]);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={sectionRef}
+      aria-labelledby="music-heading"
+      className="relative py-6 px-8"
+    >
+      {/* Background Elements */}
+      <div className="pointer-events-none absolute -inset-x-16 -top-16 -bottom-0 md:-inset-x-24 md:-top-24 md:-bottom-0">
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+          <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-2000"></div>
+          <div className="absolute top-3/4 left-1/2 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-4000"></div>
+        </div>
+      </div>
+
+      <div className="container-responsive relative z-10 section-content-container">
+        <header className="text-center mb-16">
+          <div className="inline-flex items-center gap-3 mb-6 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
+            <span className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></span>
+            <span className="text-purple-200 font-medium">Music & Audio</span>
+          </div>
+
+          <h1
+            ref={headingRef}
+            id="music-heading"
+            className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white"
+            tabIndex={-1}
+          >
+            <span className="gradient-text">Music Production</span>
+            
+            <span className="text-gray-300 text-3xl md:text-4xl lg:text-5xl font-light"> & Audio Projects</span>
+          </h1>
+
+          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+            Electronic music production featuring synth compositions, modular synthesis, and experimental audio design
+          </p>
+          {/* Streaming Platforms */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <a
               href="https://open.spotify.com/artist/4cHJRNFfmZcx44gkmTr8mH?si=p__McSMTTbyGI3AQeVi52A"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary music-cta spotify-cta rounded-lg interactive-element"
+              className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg hover:shadow-green-500/25 transition-all duration-300 transform hover:scale-105"
               aria-label="Listen to my music on Spotify"
             >
-              <FaSpotify className="btn-icon" />
-              <span className="btn-text">Listen on Spotify</span>
-              <span className="btn-arrow">→</span>
+              <FaSpotify className="w-6 h-6" />
+              <span>Listen on Spotify</span>
+              <span className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true">→</span>
             </a>
             <a
               href="https://soundcloud.com/user-228826128"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-secondary music-cta soundcloud-cta rounded-lg interactive-element"
+              className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-semibold shadow-lg hover:shadow-orange-500/25 transition-all duration-300 transform hover:scale-105"
               aria-label="Listen to my music on SoundCloud"
             >
-              <FaSoundcloud className="btn-icon" />
-              <span className="btn-text">SoundCloud</span>
-              <span className="btn-arrow">→</span>
+              <FaSoundcloud className="w-6 h-6" />
+              <span>SoundCloud</span>
+              <span className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true">→</span>
             </a>
           </div>
-          {/* Audio Stats Section */}
-          <div className="stats-grid" role="region" aria-label="Audio engineering statistics">
-            {audioStats.map((stat, index) => (
-              <InteractiveCard
-                key={index}
-                glowEffect={true}
-                tiltEffect={false}
-                scaleOnHover={true}
-                shadowIntensity="low"
-                className="stat-card-wrapper"
-              >
-                <div className="stat-item">
-                  <div className="stat-value">
-                    <AnimatedCounter
-                      end={stat.value}
-                      suffix={stat.suffix}
-                      duration={2500}
-                      delay={index * 300}
-                    />
-                  </div>
-                  <div className="stat-label">{stat.label}</div>
+          {/* Audio Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16" role="region" aria-label="Audio engineering statistics">
+            {audioStats.map((stat, index) => {
+              const Icon =
+                stat.label === 'Monthly Listeners' ? FaUsers :
+                stat.label === 'Spotify Followers' ? FaSpotify :
+                stat.label === 'Published Tracks' ? FaMusic :
+                FaCompactDisc;
+              return (
+                <div key={index} ref={el => (statCardRefs.current[index] = el)}>
+                  <MusicStatCard
+                    label={stat.label}
+                    value={stat.value}
+                    suffix={stat.suffix}
+                    Icon={Icon}
+                    delayMs={index * 300}
+                  />
                 </div>
-              </InteractiveCard>
-            ))}
+              );
+            })}
           </div>
         </header>
-        <div className="music-grid" role="region" aria-label="Audio engineering projects">
+        <Typography type="h2" id="audio-projects-heading" variant="h3" className="mb-6 text-center sm:text-left bg-gradient-to-r from-indigo-300 via-purple-300 to-blue-300 bg-clip-text text-transparent [@supports(not(background-clip:text))]:text-indigo-200">
+          Featured Audio Projects
+        </Typography>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12" role="region" aria-labelledby="audio-projects-heading">
           {audioProjects.map((project, index) => (
             <InteractiveCard
               key={index}
-              glowEffect={true}
               tiltEffect={true}
               scaleOnHover={true}
               shadowIntensity="medium"
               className="track-card-wrapper"
             >
-              <TrackCard track={project} />
+              <div
+                ref={(el) => (trackCardRefs.current[index] = el)}
+                className="h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                tabIndex={0}
+              >
+                <TrackCard track={project} />
+              </div>
             </InteractiveCard>
           ))}
         </div>
-        <div className="audio-skills" role="region" aria-labelledby="audio-skills-heading">
-          <h3 id="audio-skills-heading">Audio Technology Skills</h3>
-          <p className="skills-intro">
-            Professional audio tools and technologies for modern digital production
-          </p>
-          <div className="audio-skills-grid">
-            {audioSkills.map((skill, index) => (
-              <SkillProgressBar
-                key={index}
-                skill={skill.name}
-                level={skill.level}
-                category="Audio"
-                showPercentage={true}
-              />
-            ))}
+        
+        <Typography type="h4" id="music-links-heading" className="mb-2 text-center sm:text-left bg-gradient-to-r from-indigo-300 via-purple-300 to-blue-300 bg-clip-text text-transparent [@supports(not(background-clip:text))]:text-indigo-200">
+          Listen to My Music
+        </Typography>
+        <Typography type="p" className="mb-4 max-w-2xl mx-auto text-neutral-200 sm:text-base text-sm">
+          Stream my electronic music, synth compositions, and experimental audio across platforms
+        </Typography>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6" role="region" aria-labelledby="music-links-heading">
+          {/* Spotify Card */}
+          <div className="music-platform-card spotify-card bg-green-600 hover:bg-green-700 rounded-lg shadow-md p-6 flex flex-col items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400 transition" tabIndex={0}>
+            <a
+              href="https://open.spotify.com/artist/4cHJRNFfmZcx44gkmTr8mH?si=p__McSMTTbyGI3AQeVi52A"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center gap-2 text-white font-semibold hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
+              aria-label="Listen to my music on Spotify"
+            >
+              <FaSpotify className="w-8 h-8 mb-2" />
+              <span className="text-lg">Spotify</span>
+              <span className="text-sm">Albums, singles, and synth music releases</span>
+              <span className="inline-block mt-2 text-base font-bold">Listen Now →</span>
+            </a>
+          </div>
+          {/* SoundCloud Card */}
+          <div className="music-platform-card soundcloud-card bg-orange-600 hover:bg-orange-700 rounded-lg shadow-md p-6 flex flex-col items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300 transition" tabIndex={0}>
+            <a
+              href="https://soundcloud.com/user-228826128"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center gap-2 text-white font-semibold hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300"
+              aria-label="Visit my SoundCloud profile"
+            >
+              <FaSoundcloud className="w-8 h-8 mb-2" />
+              <span className="text-lg">SoundCloud</span>
+              <span className="text-sm">Original music and audio experiments</span>
+              <span className="inline-block mt-2 text-base font-bold">Explore →</span>
+            </a>
           </div>
         </div>
-
-        {/* Music Streaming Platforms Section */}
-        <div className="music-links-section" role="region" aria-label="Music streaming links">
-          <h3>Listen to My Music</h3>
-          <p className="music-links-intro">
-            Stream my electronic music, synth compositions, and experimental audio across platforms
-          </p>
-          <div className="music-platforms-grid">
-            {/* Spotify Card */}
-            <div
-              className="music-platform-card spotify-card card-3d card-enhanced rounded-lg interactive-element"
-              onMouseEnter={(e) => {
-                const card = e.currentTarget;
-                card.style.setProperty('--mouse-x', '0.5');
-                card.style.setProperty('--mouse-y', '0.5');
-                card.style.setProperty('--mouse-from-center-x', '0');
-                card.style.setProperty('--mouse-from-center-y', '0');
-                card.classList.add('card-hovered');
-              }}
-              onMouseMove={(e) => {
-                const card = e.currentTarget;
-                const rect = card.getBoundingClientRect();
-                const x = (e.clientX - rect.left) / rect.width;
-                const y = (e.clientY - rect.top) / rect.height;
-                const centerX = (x - 0.5) * 2;
-                const centerY = (y - 0.5) * 2;
-                const quadrantX = x > 0.5 ? 1 : -1;
-                const quadrantY = y > 0.5 ? 1 : -1;
-
-                card.style.setProperty('--mouse-x', x.toString());
-                card.style.setProperty('--mouse-y', y.toString());
-                card.style.setProperty('--mouse-from-center-x', centerX.toString());
-                card.style.setProperty('--mouse-from-center-y', centerY.toString());
-                card.style.setProperty('--quadrant-x', quadrantX.toString());
-                card.style.setProperty('--quadrant-y', quadrantY.toString());
-              }}
-              onMouseLeave={(e) => {
-                const card = e.currentTarget;
-                card.style.setProperty('--mouse-x', '0.5');
-                card.style.setProperty('--mouse-y', '0.5');
-                card.style.setProperty('--mouse-from-center-x', '0');
-                card.style.setProperty('--mouse-from-center-y', '0');
-                card.style.setProperty('--quadrant-x', '0');
-                card.style.setProperty('--quadrant-y', '0');
-                card.classList.remove('card-hovered');
-              }}
-            >
-              <div className="card-3d-inner">
-                <div className="card-3d-front">
-                  <a
-                    href="https://open.spotify.com/artist/4cHJRNFfmZcx44gkmTr8mH?si=p__McSMTTbyGI3AQeVi52A"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="platform-link"
-                    aria-label="Listen to my music on Spotify"
-                  >
-                    <div className="platform-header parallax-layer" data-speed="1">
-                      <FaSpotify className="platform-icon" />
-                      <span className="platform-name">Spotify</span>
-                    </div>
-                    <p className="platform-description parallax-layer" data-speed="0.8">Albums, singles, and synth music releases</p>
-                    <div className="platform-cta parallax-layer" data-speed="0.6">
-                      <span>Listen Now</span>
-                      <span className="cta-arrow">→</span>
-                    </div>
-                  </a>
-
-                  {/* 3D depth indicators */}
-                  <div className="card-depth-indicator card-depth-1 parallax-layer" data-speed="0.6"></div>
-                  <div className="card-depth-indicator card-depth-2 parallax-layer" data-speed="0.4"></div>
-                  <div className="card-depth-indicator card-depth-3 parallax-layer" data-speed="0.2"></div>
-
-                  {/* Dynamic Light Sources */}
-                  <div className="light-source primary-light"></div>
-                  <div className="light-source ambient-light"></div>
-                  <div className="light-source accent-light"></div>
-
-                  {/* Glass Effect Overlay */}
-                  <div className="glass-overlay"></div>
-                </div>
-              </div>
-            </div>
-
-            {/* SoundCloud Card */}
-            <div
-              className="music-platform-card soundcloud-card card-3d card-enhanced rounded-lg interactive-element"
-              onMouseEnter={(e) => {
-                const card = e.currentTarget;
-                card.style.setProperty('--mouse-x', '0.5');
-                card.style.setProperty('--mouse-y', '0.5');
-                card.style.setProperty('--mouse-from-center-x', '0');
-                card.style.setProperty('--mouse-from-center-y', '0');
-                card.classList.add('card-hovered');
-              }}
-              onMouseMove={(e) => {
-                const card = e.currentTarget;
-                const rect = card.getBoundingClientRect();
-                const x = (e.clientX - rect.left) / rect.width;
-                const y = (e.clientY - rect.top) / rect.height;
-                const centerX = (x - 0.5) * 2;
-                const centerY = (y - 0.5) * 2;
-                const quadrantX = x > 0.5 ? 1 : -1;
-                const quadrantY = y > 0.5 ? 1 : -1;
-
-                card.style.setProperty('--mouse-x', x.toString());
-                card.style.setProperty('--mouse-y', y.toString());
-                card.style.setProperty('--mouse-from-center-x', centerX.toString());
-                card.style.setProperty('--mouse-from-center-y', centerY.toString());
-                card.style.setProperty('--quadrant-x', quadrantX.toString());
-                card.style.setProperty('--quadrant-y', quadrantY.toString());
-              }}
-              onMouseLeave={(e) => {
-                const card = e.currentTarget;
-                card.style.setProperty('--mouse-x', '0.5');
-                card.style.setProperty('--mouse-y', '0.5');
-                card.style.setProperty('--mouse-from-center-x', '0');
-                card.style.setProperty('--mouse-from-center-y', '0');
-                card.style.setProperty('--quadrant-x', '0');
-                card.style.setProperty('--quadrant-y', '0');
-                card.classList.remove('card-hovered');
-              }}
-            >
-              <div className="card-3d-inner">
-                <div className="card-3d-front">
-                  <a
-                    href="https://soundcloud.com/user-228826128"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="platform-link"
-                    aria-label="Visit my SoundCloud profile"
-                  >
-                    <div className="platform-header parallax-layer" data-speed="1">
-                      <FaSoundcloud className="platform-icon" />
-                      <span className="platform-name">SoundCloud</span>
-                    </div>
-                    <p className="platform-description parallax-layer" data-speed="0.8">Original music and audio experiments</p>
-                    <div className="platform-cta parallax-layer" data-speed="0.6">
-                      <span>Explore</span>
-                      <span className="cta-arrow">→</span>
-                    </div>
-                  </a>
-
-                  {/* 3D depth indicators */}
-                  <div className="card-depth-indicator card-depth-1 parallax-layer" data-speed="0.6"></div>
-                  <div className="card-depth-indicator card-depth-2 parallax-layer" data-speed="0.4"></div>
-                  <div className="card-depth-indicator card-depth-3 parallax-layer" data-speed="0.2"></div>
-
-                  {/* Dynamic Light Sources */}
-                  <div className="light-source primary-light"></div>
-                  <div className="light-source ambient-light"></div>
-                  <div className="light-source accent-light"></div>
-
-                  {/* Glass Effect Overlay */}
-                  <div className="glass-overlay"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    </section>
+      </div>
+    </div>
   );
 }
 
 export default MusicSection;
+
+
 
 
 

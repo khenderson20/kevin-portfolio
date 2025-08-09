@@ -4,26 +4,97 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- Preload critical resources -->
-    <link rel="preload" href="/src/styles/design-system.css" as="style" />
-    <link rel="preload" href="/assets/modular-background.jpg" as="image" fetchpriority="low" />
+
+    <!-- Performance optimizations -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-    
-    <!-- SEO improvements -->
+    <link rel="dns-prefetch" href="//api.github.com" />
+    <link rel="dns-prefetch" href="//open.spotify.com" />
+    <link rel="dns-prefetch" href="//soundcloud.com" />
+
+    <!-- Theme and PWA -->
+    <meta name="theme-color" content="#0ea5e9" />
+    <meta name="color-scheme" content="dark" />
+
+    <!-- SEO and Social Media -->
     <meta name="robots" content="index, follow" />
-    <meta name="author" content="Your Name" />
-    <meta name="keywords" content="full stack developer, react, typescript, aws, portfolio" />
-    
-    <title>Your Name - Full Stack Developer Portfolio</title>
-    <meta name="description" content="Full Stack Developer specializing in React, TypeScript, and AWS. View my projects and technical expertise." />
-    <meta property="og:title" content="Your Name - Developer Portfolio" />
-    <meta property="og:description" content="Full Stack Developer Portfolio" />
+    <meta name="author" content="Kevin Henderson" />
+    <meta name="keywords" content="full stack developer, react, typescript, aws, portfolio, web developer, software engineer, music producer, san antonio" />
+    <meta name="language" content="en" />
+
+    <title>Kevin Henderson - Full Stack Developer & Creative Technologist</title>
+    <meta name="description" content="Full Stack Developer & Creative Technologist specializing in React, TypeScript, AWS, and music production. Computer Science student at UTSA with enterprise DevOps experience at IBM." />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://kevinhenderson.dev/" />
+    <meta property="og:title" content="Kevin Henderson - Full Stack Developer & Creative Technologist" />
+    <meta property="og:description" content="Full Stack Developer & Creative Technologist specializing in React, TypeScript, AWS, and music production. View my projects and technical expertise." />
     <meta property="og:image" content="/og-image.jpg" />
-    <link rel="canonical" href="https://yourportfolio.com" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="Kevin Henderson Portfolio" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://kevinhenderson.dev/" />
+    <meta property="twitter:title" content="Kevin Henderson - Full Stack Developer & Creative Technologist" />
+    <meta property="twitter:description" content="Full Stack Developer & Creative Technologist specializing in React, TypeScript, AWS, and music production." />
+    <meta property="twitter:image" content="/og-image.jpg" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://kevinhenderson.dev/" />
+
+    <!-- Accessibility -->
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- Security -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
   </head>
   <body>
+    <!-- Accessibility: Skip to main content -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded">
+      Skip to main content
+    </a>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Kevin Henderson",
+      "jobTitle": "Full Stack Developer & Creative Technologist",
+      "description": "Computer Science student at UTSA with enterprise DevOps experience at IBM",
+      "url": "https://kevinhenderson.dev/",
+      "sameAs": [
+        "https://github.com/khenderson20",
+        "https://www.linkedin.com/in/kevin-h-cs/",
+        "https://open.spotify.com/artist/4cHJRNFfmZcx44gkmTr8mH",
+        "https://soundcloud.com/user-228826128"
+      ],
+      "knowsAbout": [
+        "React",
+        "TypeScript",
+        "AWS",
+        "Node.js",
+        "Python",
+        "DevOps",
+        "Music Production",
+        "Web Development"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "University of Texas at San Antonio"
+      },
+      "worksFor": {
+        "@type": "Organization",
+        "name": "IBM",
+        "jobTitle": "DevOps Developer Intern"
+      }
+    }
+    </script>
   </body>
 </html>
