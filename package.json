@@ -44,7 +44,7 @@
     "vite": "^7.0.6"
   },
   "overrides": {
-    "@parcel/watcher": "2.2.0"
+    "@parcel/watcher": "2.1.0"
   },
   "engines": {
     "node": ">=18.0.0"
