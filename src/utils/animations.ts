@@ -310,20 +310,25 @@ export const animations = {
 
     if (handleReducedMotion(element, { opacity: 1, y: 0 })) return;
 
-    // Split text into words for animation
-    const words = (element as Element).textContent?.split(' ') || [];
-    const wordElements = words.map((word, index) => {
+    // Split text into words for animation (collapse any whitespace to single spaces)
+    const words = (element as Element).textContent?.trim().split(/\s+/) || [];
+    const wordElements = words.map((word) => {
       const span = document.createElement('span');
-      span.textContent = word + (index < words.length - 1 ? ' ' : '');
+      span.textContent = word;
       span.style.display = 'inline-block';
       span.style.opacity = '0';
       span.style.transform = 'translateY(20px)';
       return span;
     });
 
-    // Replace original text with spans
+    // Replace original text with spans and explicit space nodes between them
     (element as Element).innerHTML = '';
-    wordElements.forEach(span => (element as Element).appendChild(span));
+    wordElements.forEach((span, index) => {
+      (element as Element).appendChild(span);
+      if (index < wordElements.length - 1) {
+        (element as Element).appendChild(document.createTextNode(' '));
+      }
+    });
 
     const baseProps = createBaseProps({ ...options, duration });
     const animationProps: gsap.TweenVars = {

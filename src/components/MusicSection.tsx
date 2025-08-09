@@ -135,8 +135,8 @@ function MusicSection() {
             tabIndex={-1}
           >
             <span className="gradient-text">Music Production</span>
-            <br />
-            <span className="text-gray-300 text-3xl md:text-4xl lg:text-5xl font-light">& Audio Projects</span>
+            
+            <span className="text-gray-300 text-3xl md:text-4xl lg:text-5xl font-light"> & Audio Projects</span>
           </h1>
 
           <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
