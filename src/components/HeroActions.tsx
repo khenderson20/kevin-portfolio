@@ -1,11 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
-import { Button } from "@material-tailwind/react";
+
 import {
   FaGithub,
   FaLinkedin,
-  FaDownload,
-  FaExternalLinkAlt,
-  FaCode,
+
+
+
   FaCalendarAlt,
   FaFire
 } from 'react-icons/fa';
@@ -23,7 +23,7 @@ interface GitHubActivity {
   totalEventsToday: number;
 }
 
-function HeroActions({ onNavigateToSection }: HeroActionsProps) {
+function HeroActions({}: HeroActionsProps) {
   const [activity, setActivity] = useState<GitHubActivity>({
     recentCommits: 0,
     lastCommitDate: '',
@@ -33,7 +33,7 @@ function HeroActions({ onNavigateToSection }: HeroActionsProps) {
   const [loading, setLoading] = useState(true);
 
   // Refs for animations
-  const ctaRef = useRef<HTMLButtonElement>(null);
+
   const activityRef = useRef<HTMLDivElement>(null);
   const socialRef = useRef<HTMLDivElement>(null);
 
@@ -59,12 +59,7 @@ function HeroActions({ onNavigateToSection }: HeroActionsProps) {
   // Animation effect
   useEffect(() => {
     const timer = setTimeout(() => {
-      animations.fadeIn(ctaRef.current, {
-        duration: 0.6,
-        delay: 0.1,
-        y: 20,
-        scrollTrigger: false
-      });
+
 
       animations.fadeIn(activityRef.current, {
         duration: 0.8,
@@ -84,13 +79,7 @@ function HeroActions({ onNavigateToSection }: HeroActionsProps) {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleNavigation = (section: string) => {
-    if (onNavigateToSection) {
-      onNavigateToSection(section);
-    } else {
-      window.location.hash = section;
-    }
-  };
+
 
   const formatLastCommitDate = (dateString: string) => {
     if (!dateString) return 'No recent activity';
@@ -115,29 +104,14 @@ function HeroActions({ onNavigateToSection }: HeroActionsProps) {
     {
       label: 'LinkedIn',
       icon: FaLinkedin,
-      url: 'https://linkedin.com/in/kevin-h-cs',
+      url: 'https://www.linkedin.com/in/kevin-h-cs/',
       color: 'hover:text-blue-400'
     },
-    {
-      label: 'Resume',
-      icon: FaDownload,
-      url: '/resume.pdf',
-      color: 'hover:text-green-400'
-    }
   ];
 
   return (
     <div className="flex flex-col items-center gap-8 max-w-2xl mx-auto">
-      {/* Primary CTA */}
-      <Button
-        ref={ctaRef}
-        onClick={() => handleNavigation('development')}
-        className="flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl opacity-0"
-      >
-        <FaCode className="w-6 h-6" />
-        Explore My Work
-        <FaExternalLinkAlt className="w-5 h-5" />
-      </Button>
+
 
       {/* GitHub Activity Display */}
       <div ref={activityRef} className="glass-effect rounded-2xl p-6 w-full max-w-md border border-white/20 opacity-0">

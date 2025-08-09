@@ -6,7 +6,7 @@ import {
   LuMail,
   LuLinkedin,
   LuGithub,
-  LuFileText,
+
   LuCalendar,
   LuSend,
   LuCheck,
@@ -22,7 +22,7 @@ const ContactIcons = {
   email: LuMail,
   linkedin: LuLinkedin,
   github: LuGithub,
-  resume: LuFileText,
+
   calendar: LuCalendar,
   send: LuSend,
   success: LuCheck,
@@ -37,7 +37,7 @@ function ContactSection() {
   const linksRef = useRef<HTMLDivElement>(null);
 
   const contactInfo = {
-    email: "kevin.henderson@example.com",
+    email: "primary-email@kevinhenderson.dev",
     phone: "+1 (555) 123-4567",
     location: "San Antonio, TX",
     availability: "Available for full-time opportunities"
@@ -45,14 +45,14 @@ function ContactSection() {
 
   const professionalLinks = [
     {
-      href: "mailto:kevin.henderson@example.com",
+      href: "mailto:primary-email@kevinhenderson.dev",
       icon: "email",
       label: "Email",
       description: "Send me a message",
       primary: true
     },
     {
-      href: "https://linkedin.com/in/kevinhenderson",
+      href: "https://www.linkedin.com/in/kevin-h-cs/",
       icon: "linkedin",
       label: "LinkedIn",
       description: "Professional network",
@@ -66,16 +66,9 @@ function ContactSection() {
       primary: true
     },
     {
-      href: "/resume.pdf",
-      icon: "resume",
-      label: "Resume",
-      description: "Download PDF",
-      primary: false
-    },
-    {
-      href: "https://calendly.com/kevinhenderson",
+      href: "https://calendly.com/primary-email-kevinhenderson/one-on-one",
       icon: "calendar",
-      label: "Schedule Call",
+      label: "Schedule a Meeting",
       description: "Book a meeting",
       primary: false
     }
@@ -248,17 +241,6 @@ function ContactSection() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-pink-600 rounded-lg flex items-center justify-center">
-                  <ContactIcons.phone className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <span className="block text-sm text-gray-400 uppercase tracking-wide">Phone</span>
-                  <a href={`tel:${contactInfo.phone}`} className="text-lg text-white font-medium hover:text-pink-300 transition-colors">
-                    {contactInfo.phone}
-                  </a>
-                </div>
-              </div>
 
               <div className="mt-8 p-6 bg-white/5 rounded-xl border border-white/10">
                 <p className="text-gray-300 leading-relaxed">

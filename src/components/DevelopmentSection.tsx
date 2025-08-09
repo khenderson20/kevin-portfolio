@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { DevelopmentIcons, ProjectIcons } from '../constants/icons';
 import GitHubProjects from './GitHubProjects';
 import HorizontalProjectsContainer from './HorizontalProjectsContainer';
@@ -40,9 +40,6 @@ function DevelopmentSection() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'featured' | 'github'>('featured');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedTech, setSelectedTech] = useState<string>('');
-  const [sortBy, setSortBy] = useState<'recent' | 'stars' | 'name'>('recent');
 
   // Add category-based filtering
   const categories = [
@@ -256,27 +253,6 @@ function DevelopmentSection() {
     }
   }, [activeTab, allGithubRepos, githubProjects.length, loadInitialGithubProjects]);
 
-  // Add filter logic
-  const filteredProjects = useMemo(() => {
-    return projects.filter(project => {
-      const matchesSearch = project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           project.description.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesTech = !selectedTech || project.tech.includes(selectedTech);
-      const matchesCategory = selectedCategory === 'All' ||
-                             (project.category && project.category.toLowerCase() === selectedCategory.toLowerCase()) ||
-                             (selectedCategory === 'Full-Stack' && project.category === 'fullstack');
-      return matchesSearch && matchesTech && matchesCategory;
-    }).sort((a, b) => {
-      if (sortBy === 'stars') {
-        const aStars = parseInt(a.metrics?.split(' ')[0] || '0');
-        const bStars = parseInt(b.metrics?.split(' ')[0] || '0');
-        return bStars - aStars;
-      }
-      if (sortBy === 'name') return a.title.localeCompare(b.title);
-      return new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime();
-    });
-  }, [projects, searchTerm, selectedTech, selectedCategory, sortBy]);
-
   // Add keyboard navigation
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
@@ -461,45 +437,7 @@ function DevelopmentSection() {
           </div>
         )}
 
-        {/* Search and Controls */}
-        <div className="projects-filter-bar">
-          <div className="search-container">
-            <DevelopmentIcons.search size={16} />
-            <input
-              type="text"
-              placeholder="Search projects..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="search-input"
-              aria-label="Search projects"
-            />
-          </div>
-
-          <div className="filter-controls">
-            <select
-              value={selectedTech}
-              onChange={(e) => setSelectedTech(e.target.value)}
-              className="tech-filter-select"
-              aria-label="Filter by technology"
-            >
-              <option value="">All Technologies</option>
-              {Array.from(new Set(projects.flatMap(p => p.tech))).sort().map(tech => (
-                <option key={tech} value={tech}>{tech}</option>
-              ))}
-            </select>
-
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as 'recent' | 'stars' | 'name')}
-              className="sort-select"
-              aria-label="Sort projects"
-            >
-              <option value="recent">Most Recent</option>
-              <option value="stars">Most Stars</option>
-              <option value="name">Alphabetical</option>
-            </select>
-          </div>
-        </div>
+        
 
         {/* Project Content */}
         <div className="projects-content">
@@ -541,7 +479,7 @@ function DevelopmentSection() {
                 </div>
               ) : (
                 <HorizontalProjectsContainer
-                  projects={filteredProjects}
+                  projects={projects}
                   loading={loading}
                 />
               )}

@@ -27,6 +27,12 @@ const ContactSection = lazy(() => import('./components/ContactSection').catch(er
   return { default: () => <div>Error loading Contact section</div> };
 }));
 
+const Footer = lazy(() => import('./components/Footer').catch(err => {
+  console.error('Failed to load Footer:', err);
+  return { default: () => <div>Error loading footer</div> };
+}));
+
+
 function App() {
   const { activeSection, navigateToSection } = useActiveSection();
   const [hasScrollableContent, setHasScrollableContent] = useState(false);
@@ -75,6 +81,10 @@ function App() {
   return (
     <div className="App w-full max-w-[100vw] overflow-x-hidden">
       <div className="w-full max-w-[100vw] overflow-hidden">
+        {/* Accessible skip link for keyboard users */}
+        <a href="#music-heading" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-white focus:text-black focus:px-3 focus:py-2 focus:rounded">
+          Skip to Music content
+        </a>
         <Navbar
           sections={sections}
           activeSection={activeSection}
@@ -104,6 +114,11 @@ function App() {
           </Suspense>
         </main>
       </div>
+
+      <Suspense fallback={<SectionLoader sectionName="footer" />}>
+        <Footer />
+      </Suspense>
+
       {hasScrollableContent && <ScrollIndicator />}
 
     </div>

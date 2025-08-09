@@ -1,6 +1,5 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Project } from '../types/portfolio';
 import HorizontalProjectCard from './HorizontalProjectCard';
 import { animations } from '../utils/animations';
@@ -14,6 +13,48 @@ function HorizontalProjectsContainer({ projects, loading }: HorizontalProjectsCo
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const tweenRef = useRef<gsap.core.Tween | null>(null);
+
+  // Helper to destroy current tween safely
+  const killTween = useCallback(() => {
+    if (tweenRef.current) {
+      tweenRef.current.kill();
+      tweenRef.current = null;
+    }
+  }, []);
+
+  const setupAutoScroll = useCallback(() => {
+    const container = containerRef.current;
+    const scroller = scrollContainerRef.current;
+    if (!container || !scroller) return;
+
+    // Ensure horizontal scrolling is enabled on the container
+    container.style.overflowX = 'auto';
+    container.style.overflowY = 'hidden';
+
+    // Calculate the scrollable distance
+    const maxScrollLeft = container.scrollWidth - container.clientWidth;
+
+    // If nothing to scroll, just make sure position is reset and exit
+    if (maxScrollLeft <= 0) {
+      killTween();
+      container.scrollLeft = 0;
+      return;
+    }
+
+    // Duration scaled by distance for consistent speed (~100px/sec)
+    const duration = Math.max(8, Math.min(45, maxScrollLeft / 100));
+
+    // Create or replace the tween that animates scrollLeft
+    killTween();
+    tweenRef.current = gsap.to(container, {
+      scrollLeft: maxScrollLeft,
+      duration,
+      ease: 'none',
+      repeat: -1,
+      yoyo: true, // ping-pong for readability
+    });
+  }, [killTween]);
 
   useEffect(() => {
     if (!containerRef.current || !scrollContainerRef.current || loading || projects.length === 0) {
@@ -21,68 +62,52 @@ function HorizontalProjectsContainer({ projects, loading }: HorizontalProjectsCo
     }
 
     const container = containerRef.current;
-    const scrollContainer = scrollContainerRef.current;
 
-    // Calculate total scroll width based on screen size
-    const isMobile = window.innerWidth < 768;
-    const cardWidth = isMobile ? 320 : 384; // w-80 on mobile, w-96 on desktop
-    const gap = 24; // gap-6 = 24px
-    const totalWidth = (cardWidth + gap) * projects.length;
-    const viewportWidth = window.innerWidth;
-    const scrollDistance = totalWidth - viewportWidth + 100; // Add some padding
+    // Initial setup
+    setupAutoScroll();
 
-    console.log('🔍 Scroll Debug:', {
-      projects: projects.length,
-      isMobile,
-      cardWidth,
-      totalWidth,
-      viewportWidth,
-      scrollDistance,
-      shouldScroll: scrollDistance > 0
-    });
+    // Pause on hover/focus for usability
+    const pause = () => tweenRef.current?.pause();
+    const resume = () => tweenRef.current?.resume();
 
-    // Create horizontal scroll if content overflows (remove mobile restriction)
-    if (scrollDistance > 0) {
-      // Create horizontal scroll animation
-      const horizontalScroll = gsap.to(scrollContainer, {
-        x: -scrollDistance,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: container,
-          start: 'top 20%',
-          end: `+=${scrollDistance}`,
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      });
+    container.addEventListener('mouseenter', pause);
+    container.addEventListener('mouseleave', resume);
+    container.addEventListener('focusin', pause);
+    container.addEventListener('focusout', resume);
 
-      // Animate title on scroll
-      if (titleRef.current) {
-        gsap.to(titleRef.current, {
-          y: -50,
-          opacity: 0.3,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: container,
-            start: 'top 20%',
-            end: 'bottom 20%',
-            scrub: true,
-          },
-        });
-      }
+    // Recalculate on resize
+    const handleResize = () => {
+      // Let layout settle before recalculating
+      requestAnimationFrame(setupAutoScroll);
+    };
+    window.addEventListener('resize', handleResize);
 
-      return () => {
-        horizontalScroll.kill();
-        ScrollTrigger.getAll().forEach(trigger => {
-          if (trigger.trigger === container) {
-            trigger.kill();
-          }
-        });
-      };
+    return () => {
+      container.removeEventListener('mouseenter', pause);
+      container.removeEventListener('mouseleave', resume);
+      container.removeEventListener('focusin', pause);
+      container.removeEventListener('focusout', resume);
+      window.removeEventListener('resize', handleResize);
+      killTween();
+    };
+  }, [projects, loading, setupAutoScroll, killTween]);
+
+  // Keyboard navigation (left/right arrows) for accessibility
+  const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const step = Math.max(120, Math.round(container.clientWidth * 0.2));
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      container.scrollLeft = Math.min(container.scrollLeft + step, container.scrollWidth - container.clientWidth);
+      tweenRef.current?.pause();
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      container.scrollLeft = Math.max(container.scrollLeft - step, 0);
+      tweenRef.current?.pause();
     }
-  }, [projects, loading]);
+  }, []);
 
   // Initial entrance animation for the container
   useEffect(() => {
@@ -140,23 +165,32 @@ function HorizontalProjectsContainer({ projects, loading }: HorizontalProjectsCo
   return (
     <div className="horizontal-projects-wrapper">
       {/* Section Title */}
-      <h3 
+      <h3
         ref={titleRef}
         className="text-2xl md:text-3xl font-bold text-center mb-12 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent"
       >
         Featured Projects
       </h3>
 
-      {/* Horizontal Scroll Container */}
+      {/* Horizontal Auto-Scroll Container */}
       <div
         ref={containerRef}
-        className="horizontal-projects-container relative overflow-hidden"
+        className="horizontal-projects-container relative overflow-x-auto overflow-y-hidden focus:outline-none"
         style={{ minHeight: '600px' }}
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="Featured projects carousel"
+        tabIndex={0}
+        onKeyDown={onKeyDown}
       >
+        <p id="projects-carousel-instructions" className="sr-only">
+          Auto-scrolling list of project cards. Use left and right arrow keys to navigate. Hover or focus to pause.
+        </p>
         <div
           ref={scrollContainerRef}
-          className="horizontal-projects-scroll flex gap-6 will-change-transform"
+          className="horizontal-projects-scroll flex gap-6 pr-4"
           style={{ width: 'max-content' }}
+          aria-describedby="projects-carousel-instructions"
         >
           {projects.map((project, index) => (
             <HorizontalProjectCard
@@ -168,9 +202,9 @@ function HorizontalProjectsContainer({ projects, loading }: HorizontalProjectsCo
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-2 text-emerald-400 text-sm font-medium opacity-70">
+        <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 text-emerald-400 text-sm font-medium opacity-70">
           <div className="w-6 h-1 bg-gradient-to-r from-emerald-400 to-transparent rounded-full animate-pulse" />
-          <span>Scroll to explore</span>
+          <span>Auto-scrolling — hover or focus to pause</span>
           <div className="w-6 h-1 bg-gradient-to-l from-emerald-400 to-transparent rounded-full animate-pulse" />
         </div>
       </div>

@@ -1,16 +1,18 @@
 import TrackCard from './TrackCard';
-import SkillProgressBar from './SkillProgressBar';
-import AnimatedCounter from './AnimatedCounter';
 import InteractiveCard from './InteractiveCard';
-import { FaSpotify, FaSoundcloud } from 'react-icons/fa';
+import MusicStatCard from './MusicStatCard';
+import { FaSpotify, FaSoundcloud, FaUsers, FaMusic, FaCompactDisc } from 'react-icons/fa';
 import { useEffect, useRef } from 'react';
 import { animations, killScrollTriggersFor, killTweensFor } from '../utils/animations';
+import { Typography } from '@material-tailwind/react';
+
 
 interface Track {
   title: string;
   duration: string;
   genre: string;
   description?: string;
+  soundCloudUrl?: string;
 }
 
 function MusicSection() {
@@ -19,29 +21,23 @@ function MusicSection() {
       title: "RINGS 2022",
       duration: "2022",
       genre: "Ambient Electronic",
-      description: "Atmospheric electronic composition featuring layered synthesizers and evolving soundscapes"
+      description: "Atmospheric electronic composition featuring layered synthesizers and evolving soundscapes",
+      soundCloudUrl: "https://soundcloud.com/user-228826128/rings-2022"
     },
     {
       title: "Experiment with modular",
       duration: "2022",
       genre: "Modular Synthesis",
-      description: "Exploration of modular synthesizer techniques with complex patch routing and generative sequences"
+      description: "Exploration of modular synthesizer techniques with complex patch routing and generative sequences",
+      soundCloudUrl: "https://soundcloud.com/user-228826128/big-bass-mastered"
     },
     {
       title: "garage 09",
       duration: "2020",
       genre: "UK Garage",
-      description: "UK garage-influenced track with syncopated rhythms and bass-heavy production"
+      description: "UK garage-influenced track with syncopated rhythms and bass-heavy production",
+      soundCloudUrl: "https://soundcloud.com/user-228826128/garage-09"
     }
-  ];
-
-  const audioSkills = [
-    { name: "Modular Synthesis", level: 85 },
-    { name: "Electronic Music Production", level: 90 },
-    { name: "Synthesizer Programming", level: 80 },
-    { name: "MIDI Sequencing", level: 85 },
-    { name: "Sound Design", level: 75 },
-    { name: "Ambient Composition", level: 80 }
   ];
 
   const audioStats = [
@@ -173,31 +169,29 @@ function MusicSection() {
           </div>
           {/* Audio Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16" role="region" aria-label="Audio engineering statistics">
-            {audioStats.map((stat, index) => (
-              <div
-                key={index}
-                ref={el => (statCardRefs.current[index] = el)}
-                className="glass-effect rounded-xl p-6 text-center hover:bg-white/20 transition-all duration-300 group"
-                tabIndex={0}
-              >
-                <div className="text-2xl md:text-3xl font-bold text-white mb-2 group-hover:scale-110 transition-transform">
-                  <AnimatedCounter
-                    end={stat.value}
+            {audioStats.map((stat, index) => {
+              const Icon =
+                stat.label === 'Monthly Listeners' ? FaUsers :
+                stat.label === 'Spotify Followers' ? FaSpotify :
+                stat.label === 'Published Tracks' ? FaMusic :
+                FaCompactDisc;
+              return (
+                <div key={index} ref={el => (statCardRefs.current[index] = el)}>
+                  <MusicStatCard
+                    label={stat.label}
+                    value={stat.value}
                     suffix={stat.suffix}
-                    duration={2500}
-                    delay={index * 300}
+                    Icon={Icon}
+                    delayMs={index * 300}
                   />
                 </div>
-                <div className="text-sm text-gray-400 uppercase tracking-wide">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </header>
-        <h2 className="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white mb-6" id="audio-projects-heading">
+        <Typography type="h2" id="audio-projects-heading" variant="h3" className="mb-6 text-center sm:text-left bg-gradient-to-r from-indigo-300 via-purple-300 to-blue-300 bg-clip-text text-transparent [@supports(not(background-clip:text))]:text-indigo-200">
           Featured Audio Projects
-        </h2>
+        </Typography>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12" role="region" aria-labelledby="audio-projects-heading">
           {audioProjects.map((project, index) => (
             <InteractiveCard
@@ -208,8 +202,8 @@ function MusicSection() {
               className="track-card-wrapper"
             >
               <div
-                ref={el => (trackCardRefs.current[index] = el)}
-                className="bg-neutral-100 dark:bg-neutral-900 rounded-lg p-5 h-full flex flex-col focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                ref={(el) => (trackCardRefs.current[index] = el)}
+                className="h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 tabIndex={0}
               >
                 <TrackCard track={project} />
@@ -217,37 +211,21 @@ function MusicSection() {
             </InteractiveCard>
           ))}
         </div>
-        <h3 className="text-xl md:text-2xl font-semibold text-neutral-900 dark:text-white mb-4" id="audio-skills-heading">
-          Audio Technology Skills
-        </h3>
-        <p className="text-base text-neutral-700 dark:text-neutral-300 mb-4 max-w-2xl mx-auto">
-          Professional audio tools and technologies for modern digital production
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8" role="region" aria-labelledby="audio-skills-heading">
-          {audioSkills.map((skill, index) => (
-            <SkillProgressBar
-              key={index}
-              skill={skill.name}
-              level={skill.level}
-              category="Audio"
-              showPercentage={true}
-            />
-          ))}
-        </div>
-        <h3 className="text-xl md:text-2xl font-semibold text-neutral-900 dark:text-white mb-4" id="music-links-heading">
+        
+        <Typography type="h4" id="music-links-heading" className="mb-2 text-center sm:text-left bg-gradient-to-r from-indigo-300 via-purple-300 to-blue-300 bg-clip-text text-transparent [@supports(not(background-clip:text))]:text-indigo-200">
           Listen to My Music
-        </h3>
-        <p className="text-base text-neutral-700 dark:text-neutral-300 mb-4 max-w-2xl mx-auto">
+        </Typography>
+        <Typography type="p" className="mb-4 max-w-2xl mx-auto text-neutral-200 sm:text-base text-sm">
           Stream my electronic music, synth compositions, and experimental audio across platforms
-        </p>
+        </Typography>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6" role="region" aria-labelledby="music-links-heading">
           {/* Spotify Card */}
-          <div className="music-platform-card spotify-card bg-green-50 dark:bg-green-900 rounded-lg shadow-md p-6 flex flex-col items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400 transition" tabIndex={0}>
+          <div className="music-platform-card spotify-card bg-green-600 hover:bg-green-700 rounded-lg shadow-md p-6 flex flex-col items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400 transition" tabIndex={0}>
             <a
               href="https://open.spotify.com/artist/4cHJRNFfmZcx44gkmTr8mH?si=p__McSMTTbyGI3AQeVi52A"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col items-center gap-2 text-green-700 dark:text-green-200 font-semibold hover:text-green-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
+              className="flex flex-col items-center gap-2 text-white font-semibold hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
               aria-label="Listen to my music on Spotify"
             >
               <FaSpotify className="w-8 h-8 mb-2" />
@@ -257,12 +235,12 @@ function MusicSection() {
             </a>
           </div>
           {/* SoundCloud Card */}
-          <div className="music-platform-card soundcloud-card bg-orange-50 dark:bg-orange-900 rounded-lg shadow-md p-6 flex flex-col items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300 transition" tabIndex={0}>
+          <div className="music-platform-card soundcloud-card bg-orange-600 hover:bg-orange-700 rounded-lg shadow-md p-6 flex flex-col items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300 transition" tabIndex={0}>
             <a
               href="https://soundcloud.com/user-228826128"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col items-center gap-2 text-orange-700 dark:text-orange-200 font-semibold hover:text-orange-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300"
+              className="flex flex-col items-center gap-2 text-white font-semibold hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300"
               aria-label="Visit my SoundCloud profile"
             >
               <FaSoundcloud className="w-8 h-8 mb-2" />

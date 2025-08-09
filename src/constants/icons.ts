@@ -30,6 +30,7 @@ import {
   LuSend,
   LuCheck,
   LuMessageCircle,
+  LuGraduationCap,
 } from 'react-icons/lu';
 
 import {
@@ -76,6 +77,7 @@ export const DevelopmentIcons = {
   code: LuCode,
   user: HiOutlineUser,
   phone: HiOutlineDevicePhoneMobile,
+  gradcap: LuGraduationCap,
 } as const;
 
 export const ContactIcons = {
