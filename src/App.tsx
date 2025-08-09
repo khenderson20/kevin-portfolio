@@ -69,12 +69,12 @@ function App() {
     );
   }
 
-  // Define sections for Navbar
+  // Define sections for Navbar in the order: home, about, development, music, contact
   const sections = [
     { id: 'home', label: 'Home' },
-    { id: 'music', label: 'Music' },
-    { id: 'development', label: 'Development' },
     { id: 'about', label: 'About' },
+    { id: 'development', label: 'Development' },
+    { id: 'music', label: 'Music' },
     { id: 'contact', label: 'Contact' },
   ];
 
@@ -86,7 +86,7 @@ function App() {
           Skip to Music content
         </a>
         <Navbar
-          sections={sections}
+          orderedSections={sections}
           activeSection={activeSection}
           setActiveSection={navigateToSection}
         />
@@ -95,17 +95,17 @@ function App() {
           <section id="home" className="section-container relative min-h-[110vh] pb-24 md:pb-32 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
             <HomeSection onNavigateToSection={navigateToSection} />
           </section>
-
-          <section id="music" className="section-container relative min-h-[110vh] pb-24 md:pb-32 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
-            <MusicSection />
+          
+          <section id="about" className="section-container relative min-h-[110vh] pb-24 md:pb-32 bg-gradient-to-br from-slate-900 via-gray-900 to-slate-900">
+            <AboutSection />
           </section>
 
           <section id="development" className="section-container relative min-h-[110vh] pb-24 md:pb-32 bg-gradient-to-br from-emerald-900 via-teal-900 to-cyan-900">
             <DevelopmentSection />
           </section>
 
-          <section id="about" className="section-container relative min-h-[110vh] pb-24 md:pb-32 bg-gradient-to-br from-slate-900 via-gray-900 to-slate-900">
-            <AboutSection />
+          <section id="music" className="section-container relative min-h-[110vh] pb-24 md:pb-32 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+            <MusicSection />
           </section>
 
           <section id="contact" className="section-container relative min-h-[110vh] pb-24 md:pb-32 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
