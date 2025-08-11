@@ -29,7 +29,7 @@ function TrackCard({ track }: TrackCardProps) {
   return (
     <Card className="h-full bg-white/80 dark:bg-neutral-900 border border-white/10 shadow-lg" role="article" aria-labelledby={trackId}>
       <CardHeader
-        floated={false}
+        floated={undefined}
         className={`relative grid place-content-center h-28 bg-gradient-to-r ${gradient} rounded-b-none text-white`}
       >
         <FaSoundcloud className="w-16 h-16" aria-hidden="true" />

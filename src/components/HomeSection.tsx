@@ -166,17 +166,21 @@ function HomeSection({ onNavigateToSection }: HomeSectionProps) {
             ref={titleRef}
             className="text-xl md:text-2xl lg:text-3xl font-light text-gray-300 mb-6 opacity-0"
           >
-            Full-Stack Developer & Creative Technologist
+            Software Developer & Creative Technologist
           </h2>
 
           {/* Description */}
           <p
             ref={descriptionRef}
-            className="text-lg md:text-xl text-gray-400 mb-12 max-w-xl mx-auto leading-normal md:leading-relaxed opacity-0 pt-4 md:pt-6"
+            className="text-xl md:text-xl text-gray-400 mb-12 max-w-xl mx-auto leading-normal md:leading-relaxed opacity-0 pt-4 md:pt-6"
           >
-            I build fast, polished web apps—where thoughtful design meets solid engineering.
+            ul design meets solid engineering.
             <br />
-            Focused on React, Node.js, and cloud-first architecture.
+            Originally started as a front-end developer and music producer by hobby, 
+            <br/>
+            I've since been expanding my skillset to include
+            <br/>
+            backend development, Node.js, fastAPI, and cloud architecture.
           </p>
 
           {/* Hero Actions */}

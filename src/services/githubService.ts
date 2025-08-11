@@ -45,7 +45,7 @@ export class GitHubService {
 
     // Add authorization header if token is available
     if (this.VITE_GITHUB_TOKEN) {
-      console.log('✅ GitHub token found, using authenticated requests');
+  // console.log removed
       headers['Authorization'] = `token ${this.VITE_GITHUB_TOKEN}`;
     } else {
       console.warn('⚠️ No GitHub token found, using unauthenticated requests (60/hour limit)');

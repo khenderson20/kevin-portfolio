@@ -166,18 +166,14 @@ export const colorCombinations = [
  * Run accessibility tests on all color combinations
  */
 export function runAccessibilityTests(): void {
-  console.group('🎨 Color Accessibility Test Results');
-  
-  colorCombinations.forEach(({ name, fg, bg }) => {
-    const result = testColorCombination(fg, bg);
-    const status = result.grade === 'Fail' ? '❌' : '✅';
-    
-    console.log(
-      `${status} ${name}: ${result.contrastRatio}:1 (${result.grade})`
-    );
-  });
-  
-  console.groupEnd();
+  // console.group('🎨 Color Accessibility Test Results');
+  // colorCombinations.forEach(({ name, fg, bg }) => {
+  //   const result = testColorCombination(fg, bg);
+  //   const status = result.grade === 'Fail' ? '❌' : '✅';
+  //   // console.log removed
+  //     `${status} ${name}: ${result.contrastRatio}:1 (${result.grade})}`;
+  // });
+  // console.groupEnd();
 }
 
 /**
