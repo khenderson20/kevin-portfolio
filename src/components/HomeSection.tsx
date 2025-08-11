@@ -175,12 +175,6 @@ function HomeSection({ onNavigateToSection }: HomeSectionProps) {
             className="text-xl md:text-xl text-gray-400 mb-12 max-w-xl mx-auto leading-normal md:leading-relaxed opacity-0 pt-4 md:pt-6"
           >
             I build fast, polished web apps—where thoughtful design meets solid engineering.
-            <br />
-            Originally started as a front-end developer and music producer by hobby, 
-            <br/>
-            I've since been expanding my skillset to include
-            <br/>
-            backend development, Node.js, fastAPI, and cloud architecture.
           </p>
 
           {/* Hero Actions */}
