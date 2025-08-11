@@ -348,6 +348,6 @@ ${menuTest.score >= 80 && touchTest.score >= 80 && keyboardTest.score >= 80
  */
 export function runMobileNavigationTests(): void {
   console.group('📱 Mobile Navigation Analysis');
-  console.log(generateMobileNavigationReport());
+  // console.log removed
   console.groupEnd();
 }

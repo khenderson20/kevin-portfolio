@@ -205,6 +205,7 @@ function Navbar({ orderedSections, activeSection, setActiveSection }: NavbarProp
           className={`mobile-menu-overlay fixed inset-0 bg-black/80 backdrop-blur-md z-40 ${isMobileMenuOpen ? 'open' : ''}`}
           aria-hidden="true"
           onClick={closeMobileMenu}
+          style={{ pointerEvents: isMobileMenuOpen ? 'auto' : 'none' }}
         />
       )}
 
@@ -216,6 +217,7 @@ function Navbar({ orderedSections, activeSection, setActiveSection }: NavbarProp
           className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''} fixed top-0 right-0 h-screen w-[min(320px,85vw)] glass-effect border-l border-white/20 shadow-2xl z-50 overflow-y-auto overflow-x-hidden backdrop-blur-2xl`}
           role="menu"
           aria-labelledby="hamburger-button"
+          style={{ pointerEvents: isMobileMenuOpen ? 'auto' : 'none' }}
         >
           <div className="mobile-menu-content flex flex-col h-full">
             {/* Mobile Menu Header */}

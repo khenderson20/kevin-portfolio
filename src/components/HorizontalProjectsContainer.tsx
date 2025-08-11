@@ -52,7 +52,7 @@ function HorizontalProjectsContainer({ projects, loading }: HorizontalProjectsCo
       duration,
       ease: 'none',
       repeat: -1,
-      yoyo: true, // ping-pong for readability
+      yoyo: false, // ping-pong for readability
     });
   }, [killTween]);
 
