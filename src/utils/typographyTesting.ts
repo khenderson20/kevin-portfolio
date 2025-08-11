@@ -266,6 +266,6 @@ ${bodyTextTest.score >= 80 && hierarchyTest.hierarchyScore >= 80 && scaleTest.is
  */
 export function runTypographyTests(): void {
   console.group('📝 Typography System Analysis');
-  console.log(generateTypographyReport());
+  // console.log removed
   console.groupEnd();
 }

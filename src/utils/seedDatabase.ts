@@ -83,31 +83,31 @@ const sampleFeaturedProjects: Omit<Project, 'id'>[] = [
 ];
 
 export async function seedFeaturedProjects(): Promise<void> {
-  console.log('🌱 Starting to seed featured projects...');
+  // console.log removed
   
   try {
     // Check if projects already exist
     const existingProjects = await PortfolioService.getFeaturedProjects();
     
     if (existingProjects.length > 0) {
-      console.log(`✅ Database already has ${existingProjects.length} featured projects. Skipping seed.`);
+  // console.log removed
       return;
     }
 
     // Create each project
     const createdProjects = [];
     for (const projectData of sampleFeaturedProjects) {
-      console.log(`📝 Creating project: ${projectData.title}`);
+  // console.log removed
       const project = await PortfolioService.createProject(projectData);
       if (project) {
         createdProjects.push(project);
-        console.log(`✅ Created: ${project.title}`);
+  // console.log removed
       } else {
-        console.log(`❌ Failed to create: ${projectData.title}`);
+  // console.log removed
       }
     }
 
-    console.log(`🎉 Successfully seeded ${createdProjects.length} featured projects!`);
+  // console.log removed
     
   } catch (error) {
     console.error('❌ Error seeding database:', error);
