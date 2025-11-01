@@ -15,7 +15,7 @@ function AboutSection() {
 
   const experience = [
     {
-      role: "DevOps Developer Intern",
+      role: "Front-End Software Engineer Intern",
       company: "International Business Machines (IBM)",
       period: "May 2025 – August 2025",
       type: "enterprise", // For color theming

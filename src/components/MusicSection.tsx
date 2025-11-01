@@ -189,8 +189,8 @@ function MusicSection() {
             })}
           </div>
         </header>
-        <Typography type="h2" id="audio-projects-heading" variant="h3" className="mb-6 text-center sm:text-left bg-gradient-to-r from-indigo-300 via-purple-300 to-blue-300 bg-clip-text text-transparent [@supports(not(background-clip:text))]:text-indigo-200">
-          Featured Audio Projects
+        <Typography type="h2" id="audio-projects-heading" variant="h3" className="mb-6 text-center sm:text-left">
+          <span className="gradient-text">Featured Audio Projects</span>
         </Typography>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12" role="region" aria-labelledby="audio-projects-heading">
           {audioProjects.map((project, index) => (
@@ -212,8 +212,8 @@ function MusicSection() {
           ))}
         </div>
         
-        <Typography type="h4" id="music-links-heading" className="mb-2 text-center sm:text-left bg-gradient-to-r from-indigo-300 via-purple-300 to-blue-300 bg-clip-text text-transparent [@supports(not(background-clip:text))]:text-indigo-200">
-          Listen to My Music
+        <Typography type="h4" id="music-links-heading" className="mb-2 text-center sm:text-left">
+          <span className="gradient-text">Listen to My Music</span>
         </Typography>
         <Typography type="p" className="mb-4 max-w-2xl mx-auto text-neutral-200 sm:text-base text-sm">
           Stream my electronic music, synth compositions, and experimental audio across platforms
