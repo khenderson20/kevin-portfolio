@@ -12,7 +12,6 @@ function ProjectCard({ project }: ProjectCardProps) {
     return tech.toLowerCase()
       .replace(/\s+/g, '')
       .replace(/[^a-z0-9]/g, '')
-      .replace('javascript', 'javascript')
       .replace('nodejs', 'node')
       .replace('reactjs', 'react')
       .replace('vuejs', 'vue')
