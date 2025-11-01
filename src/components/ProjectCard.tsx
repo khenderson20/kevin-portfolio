@@ -13,7 +13,6 @@ function ProjectCard({ project }: ProjectCardProps) {
       .replace(/\s+/g, '')
       .replace(/[^a-z0-9]/g, '')
       .replace('javascript', 'javascript')
-      .replace('typescript', 'typescript')
       .replace('nodejs', 'node')
       .replace('reactjs', 'react')
       .replace('vuejs', 'vue')
