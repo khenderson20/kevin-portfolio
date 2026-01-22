@@ -11,7 +11,7 @@
     "cdk": "npx aws-cdk"
   },
   "dependencies": {
-    "@aws-amplify/ui-react": "^6.5.5",
+    "@aws-amplify/ui-react": "^2.1.9",
     "@material-tailwind/react": "^3.0.0-beta.24",
     "aws-amplify": "^6.6.6",
     "clsx": "^2.1.1",
@@ -21,8 +21,8 @@
     "react-icons": "^5.5.0"
   },
   "devDependencies": {
-    "@aws-amplify/backend": "^1.5.0",
-    "@aws-amplify/backend-cli": "^1.2.9",
+    "@aws-amplify/backend": "^1.2.1",
+    "@aws-amplify/backend-cli": "^1.2.2",
     "@eslint/js": "^9.15.0",
     "@types/node": "^20.17.6",
     "@types/react": "^18.3.12",
