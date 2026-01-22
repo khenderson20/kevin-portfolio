@@ -1,8 +1,10 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { GitHubStatsService } from '../services/githubStatsService';
 import { FaArrowDown } from 'react-icons/fa';
 import { animations, killScrollTriggersFor, killTweensFor } from '../utils/animations';
 import HeroActions from './HeroActions';
+import heroVideo from '../assets/Hero-background.mp4';
+import styles from './HomeSection.module.css';
 
 interface HomeSectionProps {
   onNavigateToSection?: (section: string) => void;
@@ -16,6 +18,9 @@ interface GitHubStats {
 }
 
 function HomeSection({ onNavigateToSection }: HomeSectionProps) {
+  const reducedMotion = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)[0];
+  const [videoError, setVideoError] = useState(false);
+
   const [githubStats, setGithubStats] = useState<GitHubStats>({
     yearsExperience: 8,
     repositoryCount: 11,
@@ -139,19 +144,46 @@ function HomeSection({ onNavigateToSection }: HomeSectionProps) {
   return (
     <div
       ref={heroRef}
-      className="relative min-h-screen flex items-center justify-center navbar-spacing"
+      className={`${styles.hero} heroThemeA w-full relative min-h-screen flex items-center justify-center navbar-spacing`}
     >
-      {/* Animated Background Elements */}
-      <div className="pointer-events-none absolute -inset-x-16 -top-16 -bottom-0 md:-inset-x-24 md:-top-24 md:-bottom-0">
-        <div className="absolute inset-0 opacity-50">
-          <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-          <div className="absolute top-3/4 right-1/4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-2000"></div>
-          <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-4000"></div>
-        </div>
+      {/* Background video (Home section only) */}
+      <div className={styles.background} aria-hidden="true">
+        {!reducedMotion && !videoError ? (
+          <>
+            <video
+              className={`${styles.video} ${styles.videoCover}`}
+              data-hero-bg
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              onError={() => setVideoError(true)}
+            >
+              <source src={heroVideo} type="video/mp4" />
+            </video>
+            <video
+              className={`${styles.video} ${styles.videoContain}`}
+              data-hero-bg
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              onError={() => setVideoError(true)}
+            >
+              <source src={heroVideo} type="video/mp4" />
+            </video>
+          </>
+        ) : (
+          <div
+            className={styles.fallback}
+          />
+        )}
       </div>
 
       {/* Main Content */}
-      <div className="container-responsive relative z-10 pt-20 md:pt-16">
+      <div className={`${styles.content} container-responsive relative z-10 pt-20 md:pt-16`}>
         <div className="text-center pb-4 max-w-4xl mx-auto">
           {/* Name */}
           <h1

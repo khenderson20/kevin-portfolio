@@ -5,6 +5,7 @@ interface SmoothScrollOptions {
   duration?: number;
   easing?: (t: number) => number;
   offset?: number;
+  onComplete?: () => void;
 }
 
 interface UseActiveSectionOptions {
@@ -32,7 +33,8 @@ export function useActiveSection(options: UseActiveSectionOptions = {}) {
     const {
       duration = 450,
       easing = (t: number) => t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1, // easeInOutCubic
-      offset = 0
+      offset = 0,
+      onComplete
     } = { ...smoothScrollOptions, ...options };
 
     const startPosition = window.pageYOffset;
@@ -50,8 +52,9 @@ export function useActiveSection(options: UseActiveSectionOptions = {}) {
 
       if (progress < 1) {
         requestAnimationFrame(animateScroll);
+      } else if (onComplete) {
+        onComplete();
       }
-      // Don't set isScrolling to false here - let the timeout handle it
     };
 
     requestAnimationFrame(animateScroll);
@@ -63,8 +66,16 @@ export function useActiveSection(options: UseActiveSectionOptions = {}) {
     return navbar ? navbar.getBoundingClientRect().height : 80;
   }, []);
 
+  // Debounce mechanism for rapid clicks
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   // Navigate to section with enhanced smooth scrolling
   const navigateToSection = useCallback((section: string) => {
+    // Debounce mechanism to prevent rapid clicks
+    if (debounceRef.current) {
+      return;
+    }
+
     const element = document.getElementById(section);
     if (!element) return;
 
@@ -91,22 +102,27 @@ export function useActiveSection(options: UseActiveSectionOptions = {}) {
     setActiveSection(section);
     window.history.pushState(null, '', `#${section}`);
 
-    // Set scrolling state with extended timeout to prevent observer interference
+    // Set scrolling state
     setIsScrolling(true);
 
-    // Clear any existing timeout
-    if (scrollTimeoutRef.current) {
-      clearTimeout(scrollTimeoutRef.current);
-    }
-
-    // Set timeout to reset scrolling state after animation completes + buffer
-    scrollTimeoutRef.current = setTimeout(() => {
+    // Enhanced smooth scroll with completion callback
+    const onScrollComplete = () => {
       setIsScrolling(false);
-    }, 600); // 450ms animation + 150ms buffer
+      // Clear debounce after scroll completes
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+        debounceRef.current = null;
+      }
+    };
 
-    // Perform smooth scroll
-    smoothScrollTo(targetPosition);
-  }, [smoothScrollTo, getNavbarHeight]);
+    // Perform smooth scroll with completion callback
+    smoothScrollTo(targetPosition, { ...smoothScrollOptions, onComplete: onScrollComplete });
+
+    // Set debounce timeout
+    debounceRef.current = setTimeout(() => {
+      debounceRef.current = null;
+    }, 500); // 500ms debounce period
+  }, [smoothScrollTo, getNavbarHeight, smoothScrollOptions]);
 
   // Set up intersection observer for automatic section detection
   useEffect(() => {

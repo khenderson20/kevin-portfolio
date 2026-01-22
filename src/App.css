@@ -71,8 +71,24 @@
   transition: none !important;
 }
 
-/* Disable any CSS animations */
-@keyframes fadeIn, @keyframes slideIn, @keyframes bounce, @keyframes pulse, @keyframes spin {
+/* Disable any CSS animations (keep valid CSS syntax) */
+@keyframes fadeIn {
+  from, to { opacity: 1; transform: none; }
+}
+
+@keyframes slideIn {
+  from, to { opacity: 1; transform: none; }
+}
+
+@keyframes bounce {
+  from, to { opacity: 1; transform: none; }
+}
+
+@keyframes pulse {
+  from, to { opacity: 1; transform: none; }
+}
+
+@keyframes spin {
   from, to { opacity: 1; transform: none; }
 }
 
@@ -112,7 +128,8 @@
 
 /* Specific fixes for common overflow elements */
 .section-container img,
-.section-container video,
+/* Allow hero/background videos to manage their own sizing via component-scoped CSS */
+.section-container video:not([data-hero-bg]),
 .section-container canvas {
   max-width: 100% !important;
   height: auto !important;
@@ -165,5 +182,3 @@ nav {
   box-sizing: border-box;
   width: 100%;
 }
-
-

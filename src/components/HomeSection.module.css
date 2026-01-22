@@ -1,0 +1,205 @@
+.hero {
+  width: 100%;
+
+  /* Avoid distortion on very tall/short viewports */
+  /* Prefer dynamic viewport units on mobile browsers when available */
+  min-height: 100svh;
+  min-height: 100dvh;
+
+  /* Stable paint fallback behind the video */
+  background-color: var(--color-neutral-950);
+
+  /* Establish stacking context for overlays and content */
+  position: relative;
+  isolation: isolate;
+
+  /* Ensure background + decorative elements do not bleed into other sections */
+  overflow: hidden;
+}
+
+/* ===== Hero Theme A: "Midnight Aurora" (scoped to Home hero only) ===== */
+/* Apply by adding `heroThemeA` class on the hero root (done in HomeSection.tsx). */
+
+.hero.heroThemeA {
+  /* Fonts */
+  --hero-font-display: "Space Grotesk", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --hero-font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Text colors */
+  --hero-headline: #F8FAFC;
+  --hero-subheadline: #E5E7EB;
+  --hero-body: #CBD5E1;
+  --hero-muted: #94A3B8;
+
+  /* Accents */
+  --hero-accent-1: #60A5FA;
+  --hero-accent-2: #A78BFA;
+
+  /* Links + icons */
+  --hero-link: #93C5FD;
+  --hero-link-hover: #BFDBFE;
+  --hero-icon: #E2E8F0;
+  --hero-icon-muted: #A1A1AA;
+
+  /* Focus */
+  --hero-focus: #A78BFA;
+
+  /* Overlay strategy (AA on bright frames) */
+  --hero-overlay: rgba(2, 6, 23, 0.62);
+  --hero-overlay-strong: rgba(2, 6, 23, 0.80);
+
+  /* Type scale */
+  --hero-h1-size: clamp(2.6rem, 2.0rem + 3.2vw, 5.2rem);
+  --hero-h1-lh: 1.02;
+  --hero-h1-tracking: -0.04em;
+
+  --hero-h2-size: clamp(1.125rem, 0.95rem + 0.85vw, 1.75rem);
+  --hero-h2-lh: 1.25;
+  --hero-h2-tracking: -0.01em;
+
+  --hero-body-size: clamp(1.0rem, 0.95rem + 0.3vw, 1.125rem);
+  --hero-body-lh: 1.6;
+  --hero-body-tracking: 0.005em;
+}
+
+/* Overlay layers: tint + vignette + top gradient for nav readability */
+.hero.heroThemeA::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(2, 6, 23, 0.82) 0%,
+      rgba(2, 6, 23, 0.45) 35%,
+      rgba(2, 6, 23, 0.74) 100%
+    ),
+    radial-gradient(
+      1200px 700px at 50% 35%,
+      rgba(2, 6, 23, 0.18) 0%,
+      rgba(2, 6, 23, 0.72) 70%,
+      rgba(2, 6, 23, 0.90) 100%
+    );
+}
+
+/* Typography mapping for the hero content only */
+.hero.heroThemeA h1 {
+  font-family: var(--hero-font-display);
+  font-weight: 700;
+  font-size: var(--hero-h1-size);
+  line-height: var(--hero-h1-lh);
+  letter-spacing: var(--hero-h1-tracking);
+  color: var(--hero-headline);
+}
+
+.hero.heroThemeA :global(.gradient-text) {
+  background: linear-gradient(135deg, var(--hero-accent-1), var(--hero-accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero.heroThemeA h2 {
+  font-family: var(--hero-font-body);
+  font-weight: 500;
+  font-size: var(--hero-h2-size);
+  line-height: var(--hero-h2-lh);
+  letter-spacing: var(--hero-h2-tracking);
+  color: var(--hero-subheadline);
+}
+
+.hero.heroThemeA p {
+  font-family: var(--hero-font-body);
+  font-weight: 400;
+  font-size: var(--hero-body-size);
+  line-height: var(--hero-body-lh);
+  letter-spacing: var(--hero-body-tracking);
+  color: var(--hero-body);
+}
+
+.hero.heroThemeA a {
+  color: var(--hero-link);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+.hero.heroThemeA a:hover {
+  color: var(--hero-link-hover);
+}
+
+.hero.heroThemeA :global(:is(a, button, [role="button"])):focus-visible {
+  outline: 2px solid var(--hero-focus);
+  outline-offset: 3px;
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+
+  /* Fill any letterboxed area when the video uses `contain` */
+  background-color: var(--color-neutral-950);
+}
+
+.fallback {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.video {
+  position: absolute;
+  inset: 0;
+  /* Global CSS currently applies `.section-container video { height: auto !important; }`.
+     Override locally so the background video can truly fill the hero. */
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  display: block;
+  object-position: center;
+
+  /* Improve rendering stability on mobile GPUs */
+  transform: translateZ(0);
+}
+
+/* Default (desktop/tablet): full-bleed crop */
+.videoCover {
+  object-fit: cover;
+  filter: brightness(0.55) contrast(1.05) saturate(1.05);
+}
+
+/* Mobile: keep the full frame visible (no crop) */
+.videoContain {
+  object-fit: contain;
+  filter: brightness(0.72) contrast(1.02) saturate(1.02);
+}
+
+/* By default, only render the cover layer */
+.videoContain {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  /* On mobile, show the contain layer for the “no cut-off” requirement,
+     while keeping a blurred cover layer behind it to avoid letterboxing feeling. */
+  .videoContain {
+    display: block;
+  }
+
+  .videoCover {
+    filter: blur(18px) brightness(0.35) saturate(1.1);
+    transform: scale(1.08) translateZ(0);
+  }
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+}
