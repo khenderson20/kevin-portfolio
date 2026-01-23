@@ -16,7 +16,7 @@ export default defineConfig({
           vendor: ['react', 'react-dom'],
           animations: ['gsap'],
           ui: ['@material-tailwind/react', 'react-icons'],
-          utils: ['clsx', 'uuid']
+          utils: ['clsx']
         }
       }
     },
