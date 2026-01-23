@@ -22,7 +22,7 @@ const schema = a.schema({
     })
     .authorization((allow) => [
       // Public read-only access (for portfolio visitors)
-      allow.publicApiKey().to(['read', 'list', 'get']),
+      allow.publicApiKey().to(['list', 'get']),
       // Owner-only write access (for you/admin tooling)
       allow.owner().to(['create', 'update', 'delete']),
     ]),
@@ -37,7 +37,7 @@ const schema = a.schema({
       featured: a.boolean().default(false),
     })
     .authorization((allow) => [
-      allow.publicApiKey().to(['read', 'list', 'get']),
+      allow.publicApiKey().to(['list', 'get']),
       allow.owner().to(['create', 'update', 'delete']),
     ]),
 
@@ -53,7 +53,7 @@ const schema = a.schema({
       featured: a.boolean().default(true),
     })
     .authorization((allow) => [
-      allow.publicApiKey().to(['read', 'list', 'get']),
+      allow.publicApiKey().to(['list', 'get']),
       allow.owner().to(['create', 'update', 'delete']),
     ]),
 });
