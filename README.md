@@ -1,4 +1,5 @@
 # Kevin Henderson's Portfolio
+[![Netlify Status](https://api.netlify.com/api/v1/badges/2dcdc009-2001-4bb6-b5be-01629252c0c6/deploy-status)](https://app.netlify.com/projects/shiny-cocada-025f63/deploys)
 
 A modern, full-stack portfolio website built with React, TypeScript, and AWS Amplify, showcasing professional projects, technical expertise, and creative work.
 
