@@ -65,7 +65,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     optimizeDeps: {
-      include: ['react', 'react-dom'],
+      include: ['react', 'react-dom', 'deepmerge'],
       exclude: ['@material-tailwind/react'],
     },
   }

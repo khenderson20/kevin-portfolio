@@ -19,7 +19,7 @@ type ReportHandler = (metric: Metric) => void;
 export function reportWebVitals(handler?: ReportHandler) {
   const defaultHandler: ReportHandler = (metric) => {
     if (import.meta.env.DEV) {
-      // eslint-disable-next-line no-console
+      // Log to console in development
       console.log('[web-vitals]', metric);
     }
   };

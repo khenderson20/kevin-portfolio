@@ -96,19 +96,19 @@ function App() {
             <HomeSection onNavigateToSection={navigateToSection} />
           </section>
           
-          <section id="about" className="section-container relative min-h-[110vh] pb-24 md:pb-32 bg-gradient-to-br from-slate-900 via-gray-900 to-slate-900">
+          <section id="about" className="section-container relative min-h-[110vh] bg-gradient-to-br from-slate-900 via-gray-900 to-slate-900">
             <AboutSection />
           </section>
 
-          <section id="development" className="section-container relative min-h-[110vh] pb-24 md:pb-32 bg-gradient-to-br from-emerald-900 via-teal-900 to-cyan-900">
+          <section id="development" className="section-container relative min-h-[110vh] bg-gradient-to-br from-emerald-900 via-teal-900 to-cyan-900">
             <DevelopmentSection />
           </section>
 
-          <section id="music" className="section-container relative min-h-[110vh] pb-24 md:pb-32 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+          <section id="music" className="section-container relative min-h-[110vh] bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
             <MusicSection />
           </section>
 
-          <section id="contact" className="section-container relative min-h-[110vh] pb-24 md:pb-32 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
+          <section id="contact" className="section-container relative min-h-[110vh] bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
             <ContactSection />
           </section>
           </Suspense>

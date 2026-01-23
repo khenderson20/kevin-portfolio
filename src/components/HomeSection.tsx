@@ -3,8 +3,8 @@ import { GitHubStatsService } from '../services/githubStatsService';
 import { FaArrowDown } from 'react-icons/fa';
 import { animations, killScrollTriggersFor, killTweensFor } from '../utils/animations';
 import HeroActions from './HeroActions';
-import heroVideoMp4 from '../assets/Hero-background.optimized.mp4';
-import heroVideoWebm from '../assets/Hero-background.webm';
+import musicVideoMp4 from '../assets/Hero-background.optimized.mp4';
+import musicVideoWebm from '../assets/Hero-background.webm';
 import heroPoster from '../assets/hero-poster.jpg';
 import styles from './HomeSection.module.css';
 
@@ -175,8 +175,8 @@ function HomeSection({ onNavigateToSection }: HomeSectionProps) {
             onError={() => setVideoError(true)}
           >
             {/* Prefer WebM when available; falls back to MP4. */}
-            <source src={heroVideoWebm} type="video/webm" />
-            <source src={heroVideoMp4} type="video/mp4" />
+            <source src={musicVideoWebm} type="video/webm" />
+            <source src={musicVideoMp4} type="video/mp4" />
           </video>
         ) : (
           <div
