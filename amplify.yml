@@ -8,6 +8,21 @@ backend:
         - npm ci --cache .npm --prefer-offline
         - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
 frontend:
+  customHeaders:
+    - pattern: '**/*'
+      headers:
+        - key: 'Strict-Transport-Security'
+          value: 'max-age=63072000; includeSubDomains; preload'
+        - key: 'X-Content-Type-Options'
+          value: 'nosniff'
+        - key: 'Referrer-Policy'
+          value: 'strict-origin-when-cross-origin'
+        - key: 'Permissions-Policy'
+          value: 'geolocation=(), microphone=(), camera=()'
+        # CSP needs to match your real external dependencies.
+        # This is a conservative baseline for a Vite React SPA that loads Google Fonts.
+        - key: 'Content-Security-Policy'
+          value: "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self'; connect-src 'self' https://api.github.com https:; media-src 'self' blob:; upgrade-insecure-requests"
   phases:
     preBuild:
       commands:
@@ -16,9 +31,7 @@ frontend:
         - nvm alias default 20.19.0
         - node --version
         - npm --version
-        - npm install
         - npm ci --cache .npm --prefer-offline
-        - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
     build:
       commands:
         - nvm use 20.19.0

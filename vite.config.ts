@@ -24,7 +24,8 @@ export default defineConfig({
     chunkSizeWarningLimit: 600,
     minify: 'esbuild',
     cssCodeSplit: true,
-    sourcemap: true,
+    // Avoid leaking source code via production sourcemaps
+    sourcemap: false,
     emptyOutDir: true,
     assetsInlineLimit: 4096,
   },

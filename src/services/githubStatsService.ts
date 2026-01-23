@@ -64,6 +64,9 @@ interface GitHubStats {
 
 export class GitHubStatsService {
   private static readonly BASE_URL = 'https://api.github.com';
+  // Same-origin GitHub proxy (Amplify Function/API) to keep tokens server-side.
+  // If not configured, we fall back to direct public GitHub API requests.
+  private static readonly PROXY_BASE_URL = '/github';
   private static readonly USERNAME = 'khenderson20';
   private static cache: GitHubStats | null = null;
   private static cacheTimestamp = 0;
@@ -74,16 +77,8 @@ export class GitHubStatsService {
       'Accept': 'application/vnd.github.v3+json',
       'User-Agent': 'Portfolio-Website'
     };
-
-    try {
-      const token = import.meta.env?.VITE_GITHUB_TOKEN;
-      if (token) {
-        headers['Authorization'] = `token ${token}`;
-      }
-    } catch (error) {
-      console.warn('Environment variable access error:', error);
-    }
-
+    // IMPORTANT: do not attach any token from import.meta.env here.
+    // Any VITE_* value is embedded into the browser bundle and becomes public.
     return headers;
   }
 
@@ -98,10 +93,19 @@ export class GitHubStatsService {
 
     try {
       // Fetch user data, repositories, and recent activity in parallel
+      const proxyFetchOrFallback = async (proxyPath: string, fallbackPath: string) => {
+        const proxyUrl = `${this.PROXY_BASE_URL}${proxyPath}`;
+        let res = await fetch(proxyUrl, { headers: this.getHeaders() });
+        if (!res.ok) {
+          res = await fetch(`${this.BASE_URL}${fallbackPath}`, { headers: this.getHeaders() });
+        }
+        return res;
+      };
+
       const [userResponse, reposResponse, eventsResponse] = await Promise.all([
-        fetch(`${this.BASE_URL}/users/${this.USERNAME}`, { headers: this.getHeaders() }),
-        fetch(`${this.BASE_URL}/users/${this.USERNAME}/repos?sort=updated&per_page=100`, { headers: this.getHeaders() }),
-        fetch(`${this.BASE_URL}/users/${this.USERNAME}/events?per_page=30`, { headers: this.getHeaders() })
+        proxyFetchOrFallback('/user', `/users/${this.USERNAME}`),
+        proxyFetchOrFallback('/repos', `/users/${this.USERNAME}/repos?sort=updated&per_page=100`),
+        proxyFetchOrFallback('/events', `/users/${this.USERNAME}/events?per_page=30`),
       ]);
 
       if (!userResponse.ok || !reposResponse.ok) {

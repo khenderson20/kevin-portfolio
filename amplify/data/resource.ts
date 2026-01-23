@@ -20,7 +20,12 @@ const schema = a.schema({
       createdAt: a.datetime(),
       updatedAt: a.datetime(),
     })
-    .authorization((allow) => [allow.publicApiKey()]),
+    .authorization((allow) => [
+      // Public read-only access (for portfolio visitors)
+      allow.publicApiKey().to(['read', 'list', 'get']),
+      // Owner-only write access (for you/admin tooling)
+      allow.owner().to(['create', 'update', 'delete']),
+    ]),
 
   Skill: a
     .model({
@@ -31,7 +36,10 @@ const schema = a.schema({
       yearsExperience: a.integer(),
       featured: a.boolean().default(false),
     })
-    .authorization((allow) => [allow.publicApiKey()]),
+    .authorization((allow) => [
+      allow.publicApiKey().to(['read', 'list', 'get']),
+      allow.owner().to(['create', 'update', 'delete']),
+    ]),
 
   Experience: a
     .model({
@@ -44,7 +52,10 @@ const schema = a.schema({
       current: a.boolean().default(false),
       featured: a.boolean().default(true),
     })
-    .authorization((allow) => [allow.owner()]),
+    .authorization((allow) => [
+      allow.publicApiKey().to(['read', 'list', 'get']),
+      allow.owner().to(['create', 'update', 'delete']),
+    ]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
