@@ -1,0 +1,133 @@
+.section {
+  width: 100%;
+
+  /* Stable paint fallback behind the video */
+  background-color: var(--color-neutral-950);
+
+  /* Establish stacking context for overlays and content */
+  position: relative;
+  isolation: isolate;
+
+  /* Ensure background + decorative elements do not bleed into other sections */
+  overflow: hidden;
+}
+
+/*
+  AboutSection background media styles
+  - Kept intentionally similar to HomeSection.module.css
+  - Uses CSS vars with safe fallbacks so this module works without extra theme classes.
+*/
+
+.background {
+  /* Tunables (safe defaults) */
+  --about-media-blur: 30px;
+  --about-media-scale: 1.08;
+  /* Darken slightly so foreground headings/body copy stay readable over motion */
+  --about-media-brightness: 0.55;
+  --about-media-contrast: 1.1;
+  --about-media-saturate: 1.05;
+
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+
+  /*
+    IMPORTANT:
+    Apply blur on the *wrapper* instead of the <video> element.
+    Some browsers / GPU paths can ignore or down-rank `filter: blur()` on videos.
+  */
+  will-change: transform, filter;
+  transform: scale(var(--about-media-scale)) translateZ(0);
+  filter:
+    blur(var(--about-media-blur))
+    brightness(var(--about-media-brightness))
+    contrast(var(--about-media-contrast))
+    saturate(var(--about-media-saturate));
+
+  /* Fill any letterboxed area when the video uses `contain` */
+  background-color: var(--color-neutral-950);
+}
+
+/*
+  Dark overlay above the video/fallback to improve text readability.
+  Kept subtle + slightly gradient to preserve depth without crushing blacks.
+*/
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.92) 0%,
+      rgba(0, 0, 0, 0.56) 40%,
+      rgba(0, 0, 0, 0.70) 100%
+    );
+}
+
+.fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  /* Wrapper handles blur + tone. Keep the fallback simple. */
+  will-change: transform, filter;
+  transform: scale(var(--about-media-scale)) translateZ(0);
+}
+
+.video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  /* Global CSS currently applies `.section-container video { height: auto !important; }`.
+     Override locally so the background video can truly fill the section. */
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  display: block;
+  object-position: center;
+
+  /* Improve rendering stability on mobile GPUs */
+  will-change: transform, filter;
+  transform: scale(var(--about-media-scale)) translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Default (desktop/tablet): full-bleed crop */
+.videoCover {
+  object-fit: cover;
+}
+
+/* Mobile: keep the full frame visible (no crop) */
+.videoContain {
+  object-fit: contain;
+  /* Hidden by default; enabled on small screens below */
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .background {
+    /* Stronger blur on small screens where text sits closer to details */
+    --about-media-blur: 24px;
+    --about-media-scale: 1.12;
+  }
+
+  .videoContain {
+    display: block;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .background {
+    /* Reduce GPU cost on devices/users likely to prefer simpler effects */
+    --about-media-blur: 6px;
+    --about-media-scale: 1.04;
+  }
+}

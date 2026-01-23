@@ -1,7 +1,10 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { DevelopmentIcons } from '../constants/icons';
 import { animations, killScrollTriggersFor, killTweensFor } from '../utils/animations';
-
+import aboutVideoMp4 from '../assets/prof-background.optimized.mp4';
+import aboutVideoWebm from '../assets/prof-background.optimized.mp4';
+import aboutPoster from '../assets/hero-poster.jpg';
+import styles from './AboutSection.module.css';
 
 
 
@@ -13,7 +16,21 @@ function AboutSection() {
   const experienceRef = useRef<HTMLDivElement>(null);
   const educationRef = useRef<HTMLDivElement>(null);
 
+  const reducedMotion = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)[0];
+  const [videoError, setVideoError] = useState(false);
+
   const experience = [
+    {
+      role: "Junior Software Engineer",
+      company: "Irys Technologies",
+      period: "September 2025 - December 2025",
+      type: "startup", // For color theming
+      achievements: [
+        "Developed and deployed a full-stack web application using React, Python",
+        "Collaborated with a small team on design and development of a new product features",
+        "Implemented features on time and on budget"
+      ]
+    },
     {
       role: "Front-End Software Engineer Intern",
       company: "International Business Machines (IBM)",
@@ -177,41 +194,74 @@ function AboutSection() {
   return (
     <div
       ref={sectionRef}
-      className="relative py-6 px-8"
+      // NOTE:
+      // The parent <section id="about" /> (in `src/App.tsx`) applies bottom padding (pb-24 md:pb-32)
+      // to create breathing room between sections.
+      // Since this component owns the background video/overlay, that parent padding would otherwise
+      // show through as an empty strip at the bottom (background ends "too early").
+      // Cancel the parent padding via negative bottom margin so the About background fills the full
+      // visual section height.
+      className={`${styles.section} relative py-6 px-8 -mb-24 md:-mb-32`}
       aria-labelledby="about-heading"
     >
-      {/* Background Elements */}
-      <div className="pointer-events-none absolute -inset-x-16 -top-16 -bottom-0 md:-inset-x-24 md:-top-24 md:-bottom-0">
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-          <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-2000"></div>
-          <div className="absolute top-3/4 left-1/2 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-4000"></div>
-        </div>
+      {/* Background video (Home section only) */}
+      <div className={styles.background} aria-hidden="true">
+        {!reducedMotion && !videoError ? (
+          <video
+            className={`${styles.video} ${styles.videoCover}`}
+            data-hero-bg
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster={aboutPoster}
+            aria-hidden="true"
+            tabIndex={-1}
+            disablePictureInPicture
+            onError={() => setVideoError(true)}
+          >
+            {/* Prefer WebM when available; falls back to MP4. */}
+            <source src={aboutVideoWebm} type="video/webm" />
+            <source src={aboutVideoMp4} type="video/mp4" />
+          </video>
+        ) : (
+          <div
+            className={styles.fallback}
+            style={{ backgroundImage: `url(${aboutPoster})` }}
+          />
+        )}
+
+        {/* Dark overlay to improve text readability over motion */}
+        <div className={styles.overlay} aria-hidden="true" />
       </div>
 
       <div className="container-responsive relative z-10 section-content-container">
         <header ref={headerRef} className="text-center mb-16">
-          <div className="inline-flex items-center gap-3 mb-6 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
+          <div className="inline-flex items-center gap-3 mb-6 px-4 py-2 bg-black/20 backdrop-blur-sm rounded-full border border-white/20 shadow-md shadow-black/20">
             <DevelopmentIcons.user className="w-5 h-5 text-blue-300" />
             <span className="text-blue-200 font-medium">About Me</span>
           </div>
 
-          <h2 id="about-heading" className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white">
+          <h2
+            id="about-heading"
+            className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05] mb-6 text-white text-shadow"
+          >
             <span className="gradient-text">Professional Background</span>
           </h2>
 
-          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl md:text-2xl text-gray-200 mb-12 max-w-[65ch] mx-auto leading-relaxed text-shadow">
             Computer Science student with enterprise experience and research experience
           </p>
         </header>
 
         <div className="about-content">
           <div ref={summaryRef} className="max-w-4xl mx-auto mb-20">
-            <h3 className="text-3xl md:text-4xl font-bold text-white mb-8 text-center">
+            <h3 className="text-3xl md:text-4xl font-bold text-white mb-8 text-center text-shadow">
               Professional Summary
             </h3>
             <div className="glass-effect rounded-2xl p-8 md:p-12">
-              <div className="space-y-6 text-lg md:text-xl text-gray-300 leading-relaxed">
+              <div className="space-y-6 text-lg md:text-xl text-gray-200 leading-relaxed">
               <p>
                 I’m a passionate full-stack developer and creative technologist with a love for building elegant, user-focused digital experiences. My portfolio showcases a blend of technical depth and design sensibility, spanning web applications, interactive media, and music technology. I thrive on solving complex problems, collaborating across disciplines, and delivering polished solutions that delight human users.
               </p>
@@ -283,7 +333,7 @@ function AboutSection() {
           </div>
 
           <div ref={educationRef} className="education-section" role="region" aria-labelledby="education-heading">
-            <h3 id="education-heading" className="text-3xl md:text-4xl font-bold text-white mb-8">
+            <h3 id="education-heading" className="text-3xl md:text-4xl font-bold text-white mb-8 mt-8">
               Education
             </h3>
             <p className="text-gray-300 mb-8 text-xl md:text-2xl">
@@ -329,4 +379,3 @@ function AboutSection() {
 }
 
 export default AboutSection;
-

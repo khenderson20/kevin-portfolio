@@ -157,8 +157,7 @@ export default function GitHubProjects({
                 }
               }}
             >
-              {/* Accent bar */}
-              <div className={`absolute inset-x-0 top-0 h-1.5 ${accent.accentBg}`} aria-hidden="true" />
+
 
               {/* Header */}
               <div className="flex items-start justify-between gap-3">
