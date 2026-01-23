@@ -2,8 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
-import { Amplify } from "aws-amplify";
-import outputs from "../amplify_outputs.json";
 // material UI Tailwind import
 import { ThemeProvider } from "@material-tailwind/react";
 // Import GSAP to ensure it's loaded
@@ -28,14 +26,9 @@ window.ScrollTrigger = ScrollTrigger;
 try {
   document.documentElement.setAttribute('data-theme', 'dark');
   localStorage.setItem('theme', 'dark');
-} catch {}
-
-// Configure Amplify with error handling
-try {
-  Amplify.configure(outputs);
-  console.log('✅ Amplify configured successfully');
-} catch (error) {
-  console.warn('⚠️ Amplify configuration failed:', error);
+} catch (e) {
+  // Ignore write failures (e.g., private browsing / blocked storage)
+  void e;
 }
 
 // Verify GSAP is loaded and exposed globally

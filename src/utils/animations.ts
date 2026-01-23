@@ -107,11 +107,17 @@ const toElementArray = (target: gsap.TweenTarget | gsap.TweenTarget[] | null | u
       (t as unknown[]).forEach(inner => {
         if (inner instanceof Element) elements.push(inner);
       });
-    } else if ((t as any).length && !(t as any).nodeType) {
+    } else {
+      const record = t as unknown as Record<string, unknown>;
+      const length = record.length;
+      const nodeType = record.nodeType;
+
       // Likely a NodeList or HTMLCollection
-      Array.from(t as any).forEach((el: any) => {
-        if (el instanceof Element) elements.push(el);
-      });
+      if (typeof length === 'number' && typeof nodeType !== 'number') {
+        Array.from(t as unknown as ArrayLike<unknown>).forEach((el) => {
+          if (el instanceof Element) elements.push(el);
+        });
+      }
     }
   });
   return elements;
@@ -204,8 +210,11 @@ export const animations = {
 
     if (scrollTrigger) {
       // Use provided triggerElement or fall back to first element in the collection
-      const fallbackTrigger = triggerElement || toElementArray(elements)[0] || (elements as any);
-      animationProps.scrollTrigger = createScrollTriggerConfig(fallbackTrigger as Element);
+      const fallbackTrigger = (triggerElement instanceof Element ? triggerElement : undefined)
+        ?? toElementArray(elements)[0];
+      if (fallbackTrigger) {
+        animationProps.scrollTrigger = createScrollTriggerConfig(fallbackTrigger);
+      }
     }
 
     setInitialState(elements, { opacity: 0, y });

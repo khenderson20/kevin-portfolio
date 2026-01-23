@@ -1,7 +1,6 @@
 // Barrel exports for services
 // Provides clean import interface for all service classes
 
-export { PortfolioService } from './portfolioService';
 export { GitHubService } from './githubService';
 export { GitHubStatsService } from './githubStatsService';
 

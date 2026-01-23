@@ -1,7 +1,7 @@
 # Kevin Henderson's Portfolio
 [![Netlify Status](https://api.netlify.com/api/v1/badges/2dcdc009-2001-4bb6-b5be-01629252c0c6/deploy-status)](https://app.netlify.com/projects/shiny-cocada-025f63/deploys)
 
-A modern, full-stack portfolio website built with React, TypeScript, and AWS Amplify, showcasing professional projects, technical expertise, and creative work.
+A modern portfolio website built with React, TypeScript, and Vite, showcasing professional projects, technical expertise, and creative work.
 
 ## 🌟 Overview
 
@@ -12,8 +12,7 @@ This portfolio is a production-ready web application demonstrating enterprise-gr
 | Feature Category | Technologies | Description | Documentation |
 |-----------------|--------------|-------------|---------------|
 | Frontend Framework | React 18, TypeScript, Vite | Modern React application with full type safety | [React Docs](https://react.dev) · [TypeScript](https://www.typescriptlang.org/docs/) · [Vite](https://vitejs.dev) |
-| Backend & Database | AWS Amplify Gen2, GraphQL, DynamoDB | Serverless backend with real-time data | [Amplify Gen2](https://docs.amplify.aws/react/) · [GraphQL](https://graphql.org/learn/) |
-| Authentication | Amazon Cognito | Secure user authentication (expandable) | [Cognito Docs](https://docs.aws.amazon.com/cognito/) |
+| Deployment | Netlify | Static hosting + CI/CD | [Netlify Docs](https://docs.netlify.com/) |
 | Styling System | CSS3, Tailwind CSS, Material Tailwind | Comprehensive design tokens and component library | [Design System](src/styles/README.md) · [Tailwind](https://tailwindcss.com/docs) |
 | Animations | GSAP 3, ScrollTrigger | Smooth, performant animations and scroll effects | [GSAP Docs](https://greensock.com/docs/) |
 | Data Integration | GitHub API, Custom Services | Live GitHub statistics and project fetching | [GitHub API](https://docs.github.com/en/rest) |
@@ -23,10 +22,6 @@ This portfolio is a production-ready web application demonstrating enterprise-gr
 
 ```bash
 kevin-portfolio/
-├── amplify/              # AWS Amplify backend configuration
-│   ├── backend.ts
-│   └── data/
-│       └── resource.ts
 ├── src/
 │   ├── components/       # React components
 │   ├── styles/          # Design system and styling
@@ -34,7 +29,6 @@ kevin-portfolio/
 │   │   └── README.md    # Design system documentation
 │   ├── utils/           # Utility functions
 │   └── main.tsx         # Application entry point
-└── amplify_outputs.json # Generated backend configuration
 ```
 
 ## 🚀 Getting Started
@@ -45,7 +39,6 @@ kevin-portfolio/
 |------------|---------|-------------------|
 | Node.js | 18+ | [Download Node.js](https://nodejs.org/) |
 | npm | Latest | Included with Node.js |
-| AWS CLI | Latest | [AWS CLI Setup](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) |
 | Git | Latest | [Install Git](https://git-scm.com/downloads) |
 
 ### Installation
@@ -68,28 +61,12 @@ npm install
 | `npm run lint` | Run ESLint code quality checks | [ESLint](https://eslint.org/docs/latest/) |
 | `npm run preview` | Preview production build locally | [Vite Preview](https://vitejs.dev/guide/cli.html#vite-preview) |
 
-## 🔧 Backend Setup
+## 🚀 Deployment (Netlify)
 
-### Amplify Gen2 Commands
+Build settings:
 
-| Command | Purpose | Documentation |
-|---------|---------|---------------|
-| `npx ampx sandbox` | Start local development sandbox | [Sandbox Docs](https://docs.amplify.aws/react/deploy-and-host/sandbox-environments/) |
-| `npx ampx generate outputs` | Generate amplify_outputs.json | [Configuration](https://docs.amplify.aws/react/build-a-backend/add-aws-services/rest-api/) |
-| `npx ampx generate graphql-client-code` | Generate GraphQL client code | [GraphQL Client](https://docs.amplify.aws/react/build-a-backend/graphqlapi/client-code-generation/) |
-| `npx ampx pipeline-deploy --branch main` | Deploy to production | [Deployment](https://docs.amplify.aws/react/deploy-and-host/fullstack-branching/) |
-| `npx ampx sandbox delete` | Clean up sandbox resources | [Cleanup](https://docs.amplify.aws/react/deploy-and-host/sandbox-environments/) |
-| `npx ampx configure list` | View backend configuration | [Configuration](https://docs.amplify.aws/react/start/account-setup/) |
-
-### Deployment Options
-
-| Method | Use Case | Documentation |
-|--------|----------|---------------|
-| AWS Amplify Console | Production deployment with CI/CD | [Amplify Hosting](https://docs.amplify.aws/react/deploy-and-host/hosting/) |
-| Sandbox Environment | Local development and testing | [Sandbox Guide](https://docs.amplify.aws/react/deploy-and-host/sandbox-environments/) |
-| Pipeline Deploy | Branch-based deployments | [Fullstack Branching](https://docs.amplify.aws/react/deploy-and-host/fullstack-branching/) |
-
-**Note**: Amplify Gen2 uses TypeScript-based configuration files (`amplify/backend.ts`, `amplify/data/resource.ts`) instead of the legacy CLI approach.
+- **Build command**: `npm run build`
+- **Publish directory**: `dist`
 
 ## 🎨 Design System
 
@@ -129,10 +106,9 @@ See [Design System Documentation](src/styles/README.md) for complete details.
 
 | Step | Action | Guide |
 |------|--------|-------|
-| 1 | Visit AWS Amplify Console | [Console Link](https://console.aws.amazon.com/amplify/) |
-| 2 | Connect Git repository | [Connect Repo](https://docs.amplify.aws/react/deploy-and-host/hosting/) |
-| 3 | Configure build settings | Uses `amplify.yml` |
-| 4 | Deploy on push to main | [Auto Deploy](https://docs.amplify.aws/react/deploy-and-host/hosting/) |
+| 1 | Create a new Netlify site from Git | [Netlify: Create a site](https://docs.netlify.com/site-deploys/create-deploys/) |
+| 2 | Set build command and publish directory | [Build settings](https://docs.netlify.com/configure-builds/overview/) |
+| 3 | Deploy on push to `main` | [Continuous deployment](https://docs.netlify.com/site-deploys/overview/#definitions) |
 
 ### Build Optimizations
 
@@ -188,7 +164,6 @@ See [Design System Documentation](src/styles/README.md) for complete details.
 
 | Resource | Description | Link |
 |----------|-------------|------|
-| AWS Amplify Gen2 | Complete backend documentation | [Docs](https://docs.amplify.aws/react/) |
 | Design System | Internal design tokens & guidelines | [Design System](src/styles/README.md) |
 | React Best Practices | Official React documentation | [React Docs](https://react.dev) |
 | TypeScript Handbook | TypeScript language guide | [TS Handbook](https://www.typescriptlang.org/docs/handbook/) |

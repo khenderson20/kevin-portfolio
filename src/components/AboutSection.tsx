@@ -105,6 +105,13 @@ function AboutSection() {
 
   // Animation setup
   useEffect(() => {
+    // Capture ref values for cleanup to avoid stale `.current` warnings
+    const sectionEl = sectionRef.current;
+    const headerEl = headerRef.current;
+    const summaryEl = summaryRef.current;
+    const experienceEl = experienceRef.current;
+    const educationEl = educationRef.current;
+
     // Optimized delay to ensure DOM elements are fully rendered after lazy loading
     const timer = setTimeout(() => {
       // Section entrance animation - using ScrollTrigger for smooth entrance
@@ -151,18 +158,18 @@ function AboutSection() {
       clearTimeout(timer);
       // Targeted cleanup for this section only
       killScrollTriggersFor([
-        sectionRef.current,
-        headerRef.current,
-        summaryRef.current,
-        experienceRef.current,
-        educationRef.current,
+        sectionEl,
+        headerEl,
+        summaryEl,
+        experienceEl,
+        educationEl,
       ]);
       killTweensFor([
-        sectionRef.current,
-        headerRef.current,
-        summaryRef.current,
-        experienceRef.current,
-        educationRef.current,
+        sectionEl,
+        headerEl,
+        summaryEl,
+        experienceEl,
+        educationEl,
       ]);
     };
   }, []);
@@ -322,5 +329,4 @@ function AboutSection() {
 }
 
 export default AboutSection;
-
 

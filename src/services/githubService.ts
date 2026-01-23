@@ -32,8 +32,10 @@ interface CodeSnippet {
 
 export class GitHubService {
   private static readonly BASE_URL = 'https://api.github.com';
+  // Same-origin GitHub proxy (serverless function) to keep tokens server-side.
+  // If not configured, we fall back to direct public GitHub API requests.
+  private static readonly PROXY_BASE_URL = '/github';
   private static readonly USERNAME = 'khenderson20'; // Your GitHub username
-  private static readonly VITE_GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
   private static cache = new Map<string, { data: GitHubRepo[] | string[] | CodeSnippet; timestamp: number }>();
   private static readonly CACHE_DURATION = 10 * 60 * 1000; // 10 minutes cache
 
@@ -43,14 +45,8 @@ export class GitHubService {
       'User-Agent': 'Portfolio-Website'
     };
 
-    // Add authorization header if token is available
-    if (this.VITE_GITHUB_TOKEN) {
-  // console.log removed
-      headers['Authorization'] = `token ${this.VITE_GITHUB_TOKEN}`;
-    } else {
-      console.warn('⚠️ No GitHub token found, using unauthenticated requests (60/hour limit)');
-    }
-
+    // IMPORTANT: do not attach any token from import.meta.env here.
+    // Any VITE_* value is embedded into the browser bundle and becomes public.
     return headers;
   }
 
@@ -72,10 +68,15 @@ export class GitHubService {
     }
 
     try {
-      const response = await fetch(
-        `${this.BASE_URL}/users/${this.USERNAME}/repos?sort=updated&per_page=100`,
-        { headers: this.getHeaders() }
-      );
+      // Prefer proxy (token stays server-side). Fallback to direct GitHub API.
+      const proxyUrl = `${this.PROXY_BASE_URL}/repos`;
+      let response = await fetch(proxyUrl, { headers: this.getHeaders() });
+      if (!response.ok) {
+        response = await fetch(
+          `${this.BASE_URL}/users/${this.USERNAME}/repos?sort=updated&per_page=100`,
+          { headers: this.getHeaders() }
+        );
+      }
 
       if (!response.ok) {
         // Check if it's a rate limit error
@@ -123,7 +124,7 @@ export class GitHubService {
         id: 1032137464,
         name: 'kevin-portfolio',
         full_name: 'khenderson20/kevin-portfolio',
-        description: 'AWS Amplify Portfolio',
+        description: 'Portfolio website',
         html_url: 'https://github.com/khenderson20/kevin-portfolio',
         homepage: null,
         language: 'CSS',
@@ -241,10 +242,14 @@ export class GitHubService {
     }
 
     try {
-      const response = await fetch(
-        `${this.BASE_URL}/repos/${this.USERNAME}/${repoName}/languages`,
-        { headers: this.getHeaders() }
-      );
+      const proxyUrl = `${this.PROXY_BASE_URL}/repos/${encodeURIComponent(repoName)}/languages`;
+      let response = await fetch(proxyUrl, { headers: this.getHeaders() });
+      if (!response.ok) {
+        response = await fetch(
+          `${this.BASE_URL}/repos/${this.USERNAME}/${repoName}/languages`,
+          { headers: this.getHeaders() }
+        );
+      }
 
       if (!response.ok) {
         if (response.status === 403) {
@@ -367,8 +372,6 @@ export class GitHubService {
 
   // Removed getLanguageFromFilename method
 }
-
-
 
 
 

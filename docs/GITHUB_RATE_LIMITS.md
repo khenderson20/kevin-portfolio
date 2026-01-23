@@ -5,7 +5,7 @@ GitHub's free tier API has a rate limit of **60 requests per hour** for unauthen
 
 ## Solutions Implemented
 
-### 1. **Personal Access Token (Recommended)**
+### 1. **Personal Access Token (Recommended — Server-side only)**
 
 **Benefits:**
 - Increases rate limit from 60 to **5,000 requests per hour**
@@ -17,10 +17,11 @@ GitHub's free tier API has a rate limit of **60 requests per hour** for unauthen
 2. Click "Generate new token (classic)"
 3. Select scopes: `public_repo` (for public repositories only)
 4. Copy the generated token
-5. Create a `.env.local` file in your project root:
-   ```bash
-   VITE_GITHUB_TOKEN=your_token_here
-   ```
+5. Do **NOT** put tokens in `VITE_*` variables.
+
+   In Vite, any `VITE_*` variable is embedded into the browser bundle and becomes public.
+
+   Instead, store the token **server-side** (for example, in a Netlify environment variable) and access it from a serverless function.
 
 **Security Notes:**
 - Never commit tokens to version control
@@ -106,14 +107,9 @@ The service now includes:
    npm run dev
    ```
 
-### Production
-1. **Vercel/Netlify:**
-   - Add `VITE_GITHUB_TOKEN` to environment variables
-   - Deploy normally
-
-2. **AWS Amplify:**
-   - Add environment variable in Amplify Console
-   - Redeploy application
+### Production (Netlify)
+1. Add `GITHUB_TOKEN` as a **server-side** environment variable in Netlify (not a `VITE_*` frontend env var).
+2. If you implement a same-origin GitHub proxy (recommended), read `GITHUB_TOKEN` inside the serverless function.
 
 ## Monitoring & Debugging
 

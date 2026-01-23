@@ -27,7 +27,7 @@ function DevelopmentSection() {
       try {
         const repos = await GitHubService.getUserRepos();
         setAllGithubRepos(repos);
-      } catch (error) {
+      } catch {
         setAllGithubRepos([]);
       }
     };
@@ -49,7 +49,7 @@ function DevelopmentSection() {
       );
       setGithubProjects(projectsWithLanguages);
       setHasMoreGithubProjects(allGithubRepos.length > 6);
-    } catch (error) {
+    } catch {
       setGithubError('Failed to load GitHub projects');
     } finally {
       setGithubLoading(false);

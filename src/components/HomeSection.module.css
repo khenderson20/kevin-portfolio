@@ -3,6 +3,7 @@
 
   /* Avoid distortion on very tall/short viewports */
   /* Prefer dynamic viewport units on mobile browsers when available */
+  min-height: 100vh;
   min-height: 100svh;
   min-height: 100dvh;
 
@@ -18,9 +19,9 @@
 }
 
 /* ===== Hero Theme A: "Midnight Aurora" (scoped to Home hero only) ===== */
-/* Apply by adding `heroThemeA` class on the hero root (done in HomeSection.tsx). */
+/* Apply by adding `styles.heroThemeA` class on the hero root (done in HomeSection.tsx). */
 
-.hero.heroThemeA {
+.heroThemeA {
   /* Fonts */
   --hero-font-display: "Space Grotesk", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --hero-font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -45,8 +46,21 @@
   --hero-focus: #A78BFA;
 
   /* Overlay strategy (AA on bright frames) */
+  /* Keep the video visible while still obscuring detail via heavy blur */
   --hero-overlay: rgba(2, 6, 23, 0.62);
-  --hero-overlay-strong: rgba(2, 6, 23, 0.80);
+  --hero-overlay-strong: rgba(2, 6, 23, 0.78);
+
+  /* Background media readability (blur + slight scale to hide blur edges) */
+  --hero-media-blur: var(--hero-media-blur-cover);
+  /* Keep blur noticeable, but not so heavy that motion/detail is lost */
+  --hero-media-blur-cover: 5px;
+  --hero-media-blur-contain: 5px;
+  --hero-media-blur-fallback: 5px;
+  --hero-media-scale: 1.08;
+  /* Tone controls (applied once on the wrapper to avoid double-darkening) */
+  --hero-media-brightness: 0.65;
+  --hero-media-contrast: 1.05;
+  --hero-media-saturate: 1.05;
 
   /* Type scale */
   --hero-h1-size: clamp(2.6rem, 2.0rem + 3.2vw, 5.2rem);
@@ -63,29 +77,38 @@
 }
 
 /* Overlay layers: tint + vignette + top gradient for nav readability */
-.hero.heroThemeA::before {
+.heroThemeA::before {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 0;
+  /*
+    IMPORTANT: This overlay must sit *above* the background media (video/image)
+    but *below* all interactive hero content.
+
+    Previously, the background element used the same z-index as this pseudo-element,
+    causing the background media to paint on top of the overlay.
+  */
+  z-index: 1;
   pointer-events: none;
   background:
+    /* Top-to-bottom readability wash */
     linear-gradient(
       180deg,
-      rgba(2, 6, 23, 0.82) 0%,
-      rgba(2, 6, 23, 0.45) 35%,
-      rgba(2, 6, 23, 0.74) 100%
+      var(--hero-overlay-strong) 0%,
+      var(--hero-overlay) 35%,
+      var(--hero-overlay-strong) 100%
     ),
+    /* Soft vignette to keep edges readable without flattening the center */
     radial-gradient(
       1200px 700px at 50% 35%,
-      rgba(2, 6, 23, 0.18) 0%,
-      rgba(2, 6, 23, 0.72) 70%,
-      rgba(2, 6, 23, 0.90) 100%
+      rgba(2, 6, 23, 0.10) 0%,
+      rgba(2, 6, 23, 0.62) 70%,
+      rgba(2, 6, 23, 0.85) 100%
     );
 }
 
 /* Typography mapping for the hero content only */
-.hero.heroThemeA h1 {
+.heroThemeA h1 {
   font-family: var(--hero-font-display);
   font-weight: 700;
   font-size: var(--hero-h1-size);
@@ -94,14 +117,14 @@
   color: var(--hero-headline);
 }
 
-.hero.heroThemeA :global(.gradient-text) {
+.heroThemeA :global(.gradient-text) {
   background: linear-gradient(135deg, var(--hero-accent-1), var(--hero-accent-2));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.hero.heroThemeA h2 {
+.heroThemeA h2 {
   font-family: var(--hero-font-body);
   font-weight: 500;
   font-size: var(--hero-h2-size);
@@ -110,7 +133,7 @@
   color: var(--hero-subheadline);
 }
 
-.hero.heroThemeA p {
+.heroThemeA p {
   font-family: var(--hero-font-body);
   font-weight: 400;
   font-size: var(--hero-body-size);
@@ -119,17 +142,17 @@
   color: var(--hero-body);
 }
 
-.hero.heroThemeA a {
+.heroThemeA a {
   color: var(--hero-link);
   text-decoration-thickness: 0.08em;
   text-underline-offset: 0.18em;
 }
 
-.hero.heroThemeA a:hover {
+.heroThemeA a:hover {
   color: var(--hero-link-hover);
 }
 
-.hero.heroThemeA :global(:is(a, button, [role="button"])):focus-visible {
+.heroThemeA :global(:is(a, button, [role="button"])):focus-visible {
   outline: 2px solid var(--hero-focus);
   outline-offset: 3px;
 }
@@ -141,6 +164,24 @@
   pointer-events: none;
   overflow: hidden;
 
+  /*
+    IMPORTANT:
+    Apply blur on the *wrapper* instead of the <video> element.
+    Some browsers / GPU paths can ignore or down-rank `filter: blur()` on videos,
+    making the background look unblurred. Blurring the wrapper is reliable.
+  */
+  will-change: transform, filter;
+  transform: scale(var(--hero-media-scale)) translateZ(0);
+  /*
+    Blur on wrapper to reliably obscure video details.
+    Also lift brightness a bit so the (blurred) motion/color is still noticeable.
+  */
+  filter:
+    blur(var(--hero-media-blur))
+    brightness(var(--hero-media-brightness))
+    contrast(var(--hero-media-contrast))
+    saturate(var(--hero-media-saturate));
+
   /* Fill any letterboxed area when the video uses `contain` */
   background-color: var(--color-neutral-950);
 }
@@ -151,6 +192,11 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+
+  /* Keep fallback image subtle and non-competitive with foreground copy */
+  will-change: transform, filter;
+  transform: scale(var(--hero-media-scale)) translateZ(0);
+  /* Wrapper handles blur + tone. Keep the fallback simple. */
 }
 
 .video {
@@ -166,27 +212,32 @@
   object-position: center;
 
   /* Improve rendering stability on mobile GPUs */
-  transform: translateZ(0);
+  will-change: transform, filter;
+  transform: scale(var(--hero-media-scale)) translateZ(0);
+  backface-visibility: hidden;
 }
 
 /* Default (desktop/tablet): full-bleed crop */
 .videoCover {
   object-fit: cover;
-  filter: brightness(0.55) contrast(1.05) saturate(1.05);
 }
 
 /* Mobile: keep the full frame visible (no crop) */
 .videoContain {
   object-fit: contain;
-  filter: brightness(0.72) contrast(1.02) saturate(1.02);
-}
-
-/* By default, only render the cover layer */
-.videoContain {
+  /* Hidden by default; enabled on small screens below */
   display: none;
 }
 
 @media (max-width: 640px) {
+  .heroThemeA {
+    /* Slightly stronger blur on small screens where text sits closer to details */
+    --hero-media-blur-cover: 28px;
+    --hero-media-blur-contain: 24px;
+    --hero-media-blur-fallback: 24px;
+    --hero-media-scale: 1.12;
+  }
+
   /* On mobile, show the contain layer for the “no cut-off” requirement,
      while keeping a blurred cover layer behind it to avoid letterboxing feeling. */
   .videoContain {
@@ -194,12 +245,22 @@
   }
 
   .videoCover {
-    filter: blur(18px) brightness(0.35) saturate(1.1);
-    transform: scale(1.08) translateZ(0);
+    /* Wrapper handles blur + tone. */
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroThemeA {
+    /* Reduce GPU cost on devices/users likely to prefer simpler effects */
+    --hero-media-blur-cover: 6px;
+    --hero-media-blur-contain: 6px;
+    --hero-media-blur-fallback: 6px;
+    --hero-media-scale: 1.04;
   }
 }
 
 .content {
   position: relative;
-  z-index: 1;
+  /* Ensure CTAs and all hero content render above the overlay */
+  z-index: 2;
 }

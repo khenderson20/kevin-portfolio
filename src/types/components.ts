@@ -194,14 +194,6 @@ export interface HomeSectionProps {
   onNavigateToSection?: (section: string) => void;
 }
 
-// ===== DATABASE SEEDER TYPES =====
-
-export interface DatabaseSeederProps {
-  onSeedComplete?: () => void;
-}
-
-export type SeedStatus = 'idle' | 'success' | 'error';
-
 // ===== TYPOGRAPHY COMPONENT TYPES =====
 
 export interface TypographyShowcaseProps {

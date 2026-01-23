@@ -14,6 +14,11 @@ function HorizontalProjectCard({ project, index }: HorizontalProjectCardProps) {
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Capture ref values for cleanup to avoid stale `.current` warnings
+    const cardEl = cardRef.current;
+    const imageEl = imageRef.current;
+    const contentEl = contentRef.current;
+
     // Add a small delay to ensure DOM elements are fully rendered
     const timer = setTimeout(() => {
       // Card entrance animation with stagger
@@ -43,13 +48,13 @@ function HorizontalProjectCard({ project, index }: HorizontalProjectCardProps) {
       clearTimeout(timer);
       // Targeted cleanup for this card only
       killScrollTriggersFor([
-        cardRef.current,
-        imageRef.current,
+        cardEl,
+        imageEl,
       ]);
       killTweensFor([
-        cardRef.current,
-        imageRef.current,
-        contentRef.current,
+        cardEl,
+        imageEl,
+        contentEl,
       ]);
     };
   }, [index]);

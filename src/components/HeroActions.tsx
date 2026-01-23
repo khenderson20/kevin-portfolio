@@ -23,7 +23,11 @@ interface GitHubActivity {
   totalEventsToday: number;
 }
 
-function HeroActions({}: HeroActionsProps) {
+function HeroActions(props: HeroActionsProps) {
+  // This component currently doesn't navigate anywhere, but we keep the prop for future wiring.
+  // Mark as intentionally unused to satisfy lint without changing the public interface.
+  void props.onNavigateToSection;
+
   const [activity, setActivity] = useState<GitHubActivity>({
     recentCommits: 0,
     lastCommitDate: '',
@@ -114,8 +118,11 @@ function HeroActions({}: HeroActionsProps) {
 
 
       {/* GitHub Activity Display */}
-      <div ref={activityRef} className="glass-effect rounded-2xl p-6 w-full max-w-md border border-white/20 opacity-0">
-        <div className="flex items-center gap-3 mb-4">
+      <div
+        ref={activityRef}
+        className="glass-effect rounded-2xl p-6 w-fit max-w-[92vw] border border-white/20 opacity-0"
+      >
+        <div className="flex flex-wrap items-center justify-center gap-3 mb-4 text-center">
           <FaGithub className="w-6 h-6 text-gray-300" />
           <h3 className="text-lg font-semibold text-white">Live Activity</h3>
           {!loading && activity.totalEventsToday > 0 && (
@@ -133,19 +140,19 @@ function HeroActions({}: HeroActionsProps) {
           </div>
         ) : (
           <div className="space-y-3">
-            <div className="flex items-center justify-between">
+            <div className="grid grid-cols-[max-content,max-content] items-center justify-center gap-x-6 gap-y-2 text-center">
               <span className="text-gray-400">Recent commits (7d)</span>
               <span className="text-white font-bold text-xl">{activity.recentCommits}</span>
             </div>
             
             {activity.lastActiveRepo && (
-              <div className="flex items-center justify-between">
+              <div className="grid grid-cols-[max-content,max-content] items-center justify-center gap-x-6 gap-y-2 text-center">
                 <span className="text-gray-400">Latest repo</span>
-                <span className="text-blue-400 font-medium">{activity.lastActiveRepo}</span>
+                <span className="text-blue-400 font-medium break-words">{activity.lastActiveRepo}</span>
               </div>
             )}
             
-            <div className="flex items-center justify-between">
+            <div className="grid grid-cols-[max-content,max-content] items-center justify-center gap-x-6 gap-y-2 text-center">
               <span className="text-gray-400 flex items-center gap-2">
                 <FaCalendarAlt className="w-4 h-4" />
                 Last commit
