@@ -70,7 +70,7 @@ export class GitHubStatsService {
   private static readonly USERNAME = 'khenderson20';
   private static cache: GitHubStats | null = null;
   private static cacheTimestamp = 0;
-  private static readonly CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
+  private static readonly CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
 
   private static getHeaders(): HeadersInit {
     const headers: HeadersInit = {

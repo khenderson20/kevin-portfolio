@@ -7,6 +7,7 @@ import { ThemeProvider } from "@material-tailwind/react";
 // Import GSAP to ensure it's loaded
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { reportWebVitals } from '../src/utils/reportWebVitals.ts';
 
 // Register GSAP plugins globally
 gsap.registerPlugin(ScrollTrigger);
@@ -31,10 +32,15 @@ try {
   void e;
 }
 
-// Verify GSAP is loaded and exposed globally
-console.log('✅ GSAP loaded:', gsap.version);
-console.log('✅ ScrollTrigger loaded:', ScrollTrigger.version);
-console.log('✅ GSAP exposed globally:', typeof window.gsap !== 'undefined');
+// Performance monitoring (Web Vitals)
+reportWebVitals();
+
+// Verify GSAP is loaded and exposed globally (dev-only)
+if (import.meta.env.DEV) {
+  console.log('✅ GSAP loaded:', gsap.version);
+  console.log('✅ ScrollTrigger loaded:', ScrollTrigger.version);
+  console.log('✅ GSAP exposed globally:', typeof window.gsap !== 'undefined');
+}
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

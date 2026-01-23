@@ -3,7 +3,9 @@ import { GitHubStatsService } from '../services/githubStatsService';
 import { FaArrowDown } from 'react-icons/fa';
 import { animations, killScrollTriggersFor, killTweensFor } from '../utils/animations';
 import HeroActions from './HeroActions';
-import heroVideo from '../assets/Hero-background.mp4';
+import heroVideoMp4 from '../assets/Hero-background.optimized.mp4';
+import heroVideoWebm from '../assets/Hero-background.webm';
+import heroPoster from '../assets/hero-poster.jpg';
 import styles from './HomeSection.module.css';
 
 interface HomeSectionProps {
@@ -158,35 +160,28 @@ function HomeSection({ onNavigateToSection }: HomeSectionProps) {
       {/* Background video (Home section only) */}
       <div className={styles.background} aria-hidden="true">
         {!reducedMotion && !videoError ? (
-          <>
-            <video
-              className={`${styles.video} ${styles.videoCover}`}
-              data-hero-bg
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              onError={() => setVideoError(true)}
-            >
-              <source src={heroVideo} type="video/mp4" />
-            </video>
-            <video
-              className={`${styles.video} ${styles.videoContain}`}
-              data-hero-bg
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              onError={() => setVideoError(true)}
-            >
-              <source src={heroVideo} type="video/mp4" />
-            </video>
-          </>
+          <video
+            className={`${styles.video} ${styles.videoCover}`}
+            data-hero-bg
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster={heroPoster}
+            aria-hidden="true"
+            tabIndex={-1}
+            disablePictureInPicture
+            onError={() => setVideoError(true)}
+          >
+            {/* Prefer WebM when available; falls back to MP4. */}
+            <source src={heroVideoWebm} type="video/webm" />
+            <source src={heroVideoMp4} type="video/mp4" />
+          </video>
         ) : (
           <div
             className={styles.fallback}
+            style={{ backgroundImage: `url(${heroPoster})` }}
           />
         )}
       </div>

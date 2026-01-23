@@ -37,26 +37,33 @@ function ProjectCard({ project }: ProjectCardProps) {
     }
   };
 
-  return (
-    <Card3D
-      className="project-card"
-      intensity={0.8}
-      enableMouseTracking={true}
-    >
-      <article
-        className="project-card"
-        data-category={project.category}
-        role="article"
-        aria-labelledby={`project-${project.title.replace(/\s+/g, '-').toLowerCase()}`}
-      >
-      {project.image && (
-        <img src={project.image} alt={`${project.title} preview`} className="project-image" />
-      )}
-      <header>
-        <div className="project-header-top">
-          <h3 id={`project-${project.title.replace(/\s+/g, '-').toLowerCase()}`}>
-            {project.title}
-          </h3>
+	  return (
+	    <Card3D
+	      className="project-card"
+	      intensity={0.8}
+	      enableMouseTracking={true}
+	    >
+	      <article
+	        className="project-card"
+	        data-category={project.category}
+	        role="article"
+	        aria-labelledby={`project-${project.title.replace(/\s+/g, '-').toLowerCase()}`}
+	      >
+	      {project.image && (
+	        <img
+	          src={project.image}
+	          alt={`${project.title} preview`}
+	          className="project-image"
+	          loading="lazy"
+	          decoding="async"
+	          fetchPriority="low"
+	        />
+	      )}
+	      <header>
+	        <div className="project-header-top">
+	          <h3 id={`project-${project.title.replace(/\s+/g, '-').toLowerCase()}`}>
+	            {project.title}
+	          </h3>
           {project.category && (
             <span className="project-category-badge" data-category={project.category}>
               {getCategoryDisplayName(project.category)}
@@ -126,4 +133,3 @@ function ProjectCard({ project }: ProjectCardProps) {
 }
 
 export default ProjectCard;
-
