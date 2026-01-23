@@ -112,6 +112,9 @@ function HorizontalProjectCard({ project, index }: HorizontalProjectCardProps) {
             src={project.image} 
             alt={`${project.title} preview`} 
             className="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
+            fetchPriority="low"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
           

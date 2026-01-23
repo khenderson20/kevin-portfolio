@@ -78,10 +78,21 @@ const createScrollTriggerConfig = (
   trigger: trigger as Element,
   start,
   toggleActions,
+  // Never enable markers in production builds.
+  markers: false,
+  // Prefer one-time entrance animations for performance.
+  // NOTE: this overrides reverse behavior when used with toggleActions.
+  once: true,
 });
 
 const setInitialState = (element: gsap.TweenTarget, props: gsap.TweenVars): void => {
-  gsap.set(element, { ...props, clearProps: 'transition', willChange: 'opacity, transform', force3D: true });
+  gsap.set(element, {
+    ...props,
+    clearProps: 'transition',
+    willChange: 'opacity, transform',
+    force3D: true,
+    transformPerspective: 1000,
+  });
 };
 
 const createBaseProps = (options: BaseAnimationOptions): gsap.TweenVars => {

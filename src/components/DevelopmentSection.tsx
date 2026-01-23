@@ -41,12 +41,14 @@ function DevelopmentSection() {
       setGithubLoading(true);
       setGithubError(null);
       const initialRepos = allGithubRepos.slice(0, 6);
-      const projectsWithLanguages = await Promise.all(
-        initialRepos.map(async (repo) => {
-          const languages = await GitHubService.getRepoLanguages(repo.name);
-          return GitHubService.transformToPortfolioProject(repo, languages);
-        })
+      const languagesByRepo = await GitHubService.getRepoLanguagesBatch(
+        initialRepos.map((r) => r.name),
+        { concurrency: 3 }
       );
+      const projectsWithLanguages = initialRepos.map((repo) => {
+        const languages = languagesByRepo[repo.name] ?? [];
+        return GitHubService.transformToPortfolioProject(repo, languages);
+      });
       setGithubProjects(projectsWithLanguages);
       setHasMoreGithubProjects(allGithubRepos.length > 6);
     } catch {

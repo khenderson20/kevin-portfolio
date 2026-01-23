@@ -37,7 +37,8 @@ export class GitHubService {
   private static readonly PROXY_BASE_URL = '/github';
   private static readonly USERNAME = 'khenderson20'; // Your GitHub username
   private static cache = new Map<string, { data: GitHubRepo[] | string[] | CodeSnippet; timestamp: number }>();
-  private static readonly CACHE_DURATION = 10 * 60 * 1000; // 10 minutes cache
+  private static inflight = new Map<string, Promise<unknown>>();
+  private static readonly CACHE_DURATION = 30 * 60 * 1000; // 30 minutes cache
 
   private static getHeaders(): HeadersInit {
     const headers: HeadersInit = {
@@ -56,6 +57,15 @@ export class GitHubService {
     return Date.now() - cached.timestamp < this.CACHE_DURATION;
   }
 
+  private static async fetchWithProxyFallback(proxyPath: string, fallbackPath: string): Promise<Response> {
+    const proxyUrl = `${this.PROXY_BASE_URL}${proxyPath}`;
+    let response = await fetch(proxyUrl, { headers: this.getHeaders() });
+    if (!response.ok) {
+      response = await fetch(`${this.BASE_URL}${fallbackPath}`, { headers: this.getHeaders() });
+    }
+    return response;
+  }
+
   static async getUserRepos(): Promise<GitHubRepo[]> {
     const cacheKey = `repos-${this.USERNAME}`;
 
@@ -67,38 +77,44 @@ export class GitHubService {
       }
     }
 
-    try {
-      // Prefer proxy (token stays server-side). Fallback to direct GitHub API.
-      const proxyUrl = `${this.PROXY_BASE_URL}/repos`;
-      let response = await fetch(proxyUrl, { headers: this.getHeaders() });
-      if (!response.ok) {
-        response = await fetch(
-          `${this.BASE_URL}/users/${this.USERNAME}/repos?sort=updated&per_page=100`,
-          { headers: this.getHeaders() }
-        );
-      }
-
-      if (!response.ok) {
-        // Check if it's a rate limit error
-        if (response.status === 403) {
-          const resetTime = response.headers.get('X-RateLimit-Reset');
-          console.warn('⚠️ GitHub API rate limit exceeded. Reset time:', resetTime);
-          return this.getFallbackRepos();
-        }
-        throw new Error(`GitHub API error: ${response.status}`);
-      }
-      
-      const repos: GitHubRepo[] = await response.json();
-      const filteredRepos = repos.filter(repo => !repo.fork && !repo.archived);
-
-      // Cache the successful response
-      this.cache.set(cacheKey, { data: filteredRepos, timestamp: Date.now() });
-
-      return filteredRepos;
-    } catch (error) {
-      console.error('⚠️ Error fetching GitHub repos:', error);
-      return this.getFallbackRepos();
+    const inflight = this.inflight.get(cacheKey);
+    if (inflight) {
+      return inflight as Promise<GitHubRepo[]>;
     }
+
+    const request = (async (): Promise<GitHubRepo[]> => {
+      try {
+        const response = await this.fetchWithProxyFallback(
+          '/repos',
+          `/users/${this.USERNAME}/repos?sort=updated&per_page=100`
+        );
+
+        if (!response.ok) {
+          // Check if it's a rate limit error
+          if (response.status === 403) {
+            const resetTime = response.headers.get('X-RateLimit-Reset');
+            console.warn('⚠️ GitHub API rate limit exceeded. Reset time:', resetTime);
+            return this.getFallbackRepos();
+          }
+          throw new Error(`GitHub API error: ${response.status}`);
+        }
+
+        const repos: GitHubRepo[] = await response.json();
+        const filteredRepos = repos.filter(repo => !repo.fork && !repo.archived);
+
+        // Cache the successful response
+        this.cache.set(cacheKey, { data: filteredRepos, timestamp: Date.now() });
+        return filteredRepos;
+      } catch (error) {
+        console.error('⚠️ Error fetching GitHub repos:', error);
+        return this.getFallbackRepos();
+      } finally {
+        this.inflight.delete(cacheKey);
+      }
+    })();
+
+    this.inflight.set(cacheKey, request);
+    return request;
   }
 
   static async getSpecificRepos(): Promise<GitHubRepo[]> {
@@ -241,33 +257,62 @@ export class GitHubService {
       }
     }
 
-    try {
-      const proxyUrl = `${this.PROXY_BASE_URL}/repos/${encodeURIComponent(repoName)}/languages`;
-      let response = await fetch(proxyUrl, { headers: this.getHeaders() });
-      if (!response.ok) {
-        response = await fetch(
-          `${this.BASE_URL}/repos/${this.USERNAME}/${repoName}/languages`,
-          { headers: this.getHeaders() }
-        );
-      }
-
-      if (!response.ok) {
-        if (response.status === 403) {
-          console.warn('Rate limit exceeded for languages API');
-          return []; // Return empty array for rate limit
-        }
-        return [];
-      }
-
-      const languages: GitHubLanguages = await response.json();
-      const languageList = Object.keys(languages);
-
-      this.cache.set(cacheKey, { data: languageList, timestamp: Date.now() });
-      return languageList;
-    } catch (error) {
-      console.error('Error fetching repo languages:', error);
-      return [];
+    const inflight = this.inflight.get(cacheKey);
+    if (inflight) {
+      return inflight as Promise<string[]>;
     }
+
+    const request = (async (): Promise<string[]> => {
+      try {
+        const response = await this.fetchWithProxyFallback(
+          `/repos/${encodeURIComponent(repoName)}/languages`,
+          `/repos/${this.USERNAME}/${repoName}/languages`
+        );
+
+        if (!response.ok) {
+          if (response.status === 403) {
+            console.warn('Rate limit exceeded for languages API');
+            return []; // Return empty array for rate limit
+          }
+          return [];
+        }
+
+        const languages: GitHubLanguages = await response.json();
+        const languageList = Object.keys(languages);
+
+        this.cache.set(cacheKey, { data: languageList, timestamp: Date.now() });
+        return languageList;
+      } catch (error) {
+        console.error('Error fetching repo languages:', error);
+        return [];
+      } finally {
+        this.inflight.delete(cacheKey);
+      }
+    })();
+
+    this.inflight.set(cacheKey, request);
+    return request;
+  }
+
+  static async getRepoLanguagesBatch(
+    repoNames: string[],
+    options: { concurrency?: number } = {}
+  ): Promise<Record<string, string[]>> {
+    const uniqueNames = Array.from(new Set(repoNames.filter(Boolean)));
+    const results: Record<string, string[]> = {};
+
+    const concurrency = Math.max(1, Math.min(options.concurrency ?? 4, uniqueNames.length || 1));
+    let index = 0;
+
+    const worker = async () => {
+      while (index < uniqueNames.length) {
+        const repoName = uniqueNames[index++];
+        results[repoName] = await this.getRepoLanguages(repoName);
+      }
+    };
+
+    await Promise.all(Array.from({ length: concurrency }, () => worker()));
+    return results;
   }
 
   static async getFeaturedRepos(): Promise<GitHubRepo[]> {
@@ -372,7 +417,6 @@ export class GitHubService {
 
   // Removed getLanguageFromFilename method
 }
-
 
 
 
