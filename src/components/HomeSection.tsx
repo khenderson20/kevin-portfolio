@@ -144,7 +144,7 @@ function HomeSection({ onNavigateToSection }: HomeSectionProps) {
   return (
     <div
       ref={heroRef}
-      className={`${styles.hero} heroThemeA w-full relative min-h-screen flex items-center justify-center navbar-spacing`}
+      className={`${styles.hero} ${styles.heroThemeA} w-full relative min-h-screen flex items-center justify-center navbar-spacing`}
     >
       {/* Background video (Home section only) */}
       <div className={styles.background} aria-hidden="true">
