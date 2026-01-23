@@ -14,7 +14,6 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
-          aws: ['aws-amplify', '@aws-amplify/ui-react', '@aws-amplify/core', '@aws-amplify/auth'],
           animations: ['gsap'],
           ui: ['@material-tailwind/react', 'react-icons'],
           utils: ['clsx', 'uuid']

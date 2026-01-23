@@ -60,6 +60,15 @@ function HomeSection({ onNavigateToSection }: HomeSectionProps) {
   }, []);
 
   useEffect(() => {
+    // Capture ref values for cleanup to avoid stale `.current` warnings
+    const heroEl = heroRef.current;
+    const nameEl = nameRef.current;
+    const titleEl = titleRef.current;
+    const descriptionEl = descriptionRef.current;
+    const ctaButtonsEl = ctaButtonsRef.current;
+    const statsEl = statsRef.current;
+    const scrollIndicatorEl = scrollIndicatorRef.current;
+
     // Add a small delay to ensure DOM elements are fully rendered
     const timer = setTimeout(() => {
       // Hero entrance animations - immediate for first impression, no scroll trigger needed
@@ -110,22 +119,22 @@ function HomeSection({ onNavigateToSection }: HomeSectionProps) {
       clearTimeout(timer);
       // Targeted cleanup for this section only
       killScrollTriggersFor([
-        heroRef.current,
-        nameRef.current,
-        titleRef.current,
-        descriptionRef.current,
-        ctaButtonsRef.current,
-        statsRef.current,
-        scrollIndicatorRef.current,
+        heroEl,
+        nameEl,
+        titleEl,
+        descriptionEl,
+        ctaButtonsEl,
+        statsEl,
+        scrollIndicatorEl,
       ]);
       killTweensFor([
-        heroRef.current,
-        nameRef.current,
-        titleRef.current,
-        descriptionRef.current,
-        ctaButtonsRef.current,
-        statsRef.current,
-        scrollIndicatorRef.current,
+        heroEl,
+        nameEl,
+        titleEl,
+        descriptionEl,
+        ctaButtonsEl,
+        statsEl,
+        scrollIndicatorEl,
       ]);
     };
   }, []);

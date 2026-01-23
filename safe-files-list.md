@@ -1,7 +1,6 @@
 # Configuration Files (Safe)
 
 .env.example          # Template without real tokens
-amplify.yml          # Build configuration
 vite.config.ts       # Vite configuration
 package.json         # Dependencies
 tsconfig.json        # TypeScript config
@@ -11,7 +10,6 @@ tsconfig.json        # TypeScript config
 ## Source Code (Safe)
 
 src/**/*             # All source code
-amplify/**/*# Amplify backend configuration
 docs/**/*            # Documentation
 public/**/*          # Static assets
 

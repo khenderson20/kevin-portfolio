@@ -32,7 +32,7 @@ interface CodeSnippet {
 
 export class GitHubService {
   private static readonly BASE_URL = 'https://api.github.com';
-  // Same-origin GitHub proxy (Amplify Function/API) to keep tokens server-side.
+  // Same-origin GitHub proxy (serverless function) to keep tokens server-side.
   // If not configured, we fall back to direct public GitHub API requests.
   private static readonly PROXY_BASE_URL = '/github';
   private static readonly USERNAME = 'khenderson20'; // Your GitHub username
@@ -124,7 +124,7 @@ export class GitHubService {
         id: 1032137464,
         name: 'kevin-portfolio',
         full_name: 'khenderson20/kevin-portfolio',
-        description: 'AWS Amplify Portfolio',
+        description: 'Portfolio website',
         html_url: 'https://github.com/khenderson20/kevin-portfolio',
         homepage: null,
         language: 'CSS',
@@ -372,7 +372,6 @@ export class GitHubService {
 
   // Removed getLanguageFromFilename method
 }
-
 
 
 

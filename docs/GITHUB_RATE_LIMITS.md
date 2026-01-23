@@ -21,12 +21,7 @@ GitHub's free tier API has a rate limit of **60 requests per hour** for unauthen
 
    In Vite, any `VITE_*` variable is embedded into the browser bundle and becomes public.
 
-   Instead, store the token as an **Amplify Gen2 secret** and use it from a backend function (recommended):
-
-   ```bash
-   # Local sandbox
-   npx ampx sandbox secret set GITHUB_TOKEN
-   ```
+   Instead, store the token **server-side** (for example, in a Netlify environment variable) and access it from a serverless function.
 
 **Security Notes:**
 - Never commit tokens to version control
@@ -112,11 +107,9 @@ The service now includes:
    npm run dev
    ```
 
-### Production (AWS Amplify)
-1. Add `GITHUB_TOKEN` as an Amplify **Secret** (not a frontend env var).
-2. Deploy normally.
-
-The frontend should call your same-origin GitHub proxy endpoint (server-side) rather than GitHub directly.
+### Production (Netlify)
+1. Add `GITHUB_TOKEN` as a **server-side** environment variable in Netlify (not a `VITE_*` frontend env var).
+2. If you implement a same-origin GitHub proxy (recommended), read `GITHUB_TOKEN` inside the serverless function.
 
 ## Monitoring & Debugging
 

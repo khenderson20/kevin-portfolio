@@ -64,7 +64,7 @@ interface GitHubStats {
 
 export class GitHubStatsService {
   private static readonly BASE_URL = 'https://api.github.com';
-  // Same-origin GitHub proxy (Amplify Function/API) to keep tokens server-side.
+  // Same-origin GitHub proxy (serverless function) to keep tokens server-side.
   // If not configured, we fall back to direct public GitHub API requests.
   private static readonly PROXY_BASE_URL = '/github';
   private static readonly USERNAME = 'khenderson20';

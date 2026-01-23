@@ -23,7 +23,11 @@ interface GitHubActivity {
   totalEventsToday: number;
 }
 
-function HeroActions({}: HeroActionsProps) {
+function HeroActions(props: HeroActionsProps) {
+  // This component currently doesn't navigate anywhere, but we keep the prop for future wiring.
+  // Mark as intentionally unused to satisfy lint without changing the public interface.
+  void props.onNavigateToSection;
+
   const [activity, setActivity] = useState<GitHubActivity>({
     recentCommits: 0,
     lastCommitDate: '',

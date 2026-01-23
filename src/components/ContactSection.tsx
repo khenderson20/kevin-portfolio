@@ -76,6 +76,12 @@ function ContactSection() {
 
   // Animation setup
   useEffect(() => {
+    // Capture ref values for cleanup to avoid stale `.current` warnings
+    const sectionEl = sectionRef.current;
+    const headerEl = headerRef.current;
+    const contactCardEl = contactCardRef.current;
+    const linkEls = linksRef.current?.children ? Array.from(linksRef.current.children) : [];
+
     // Optimized delay to ensure DOM elements are fully rendered after lazy loading
     const timer = setTimeout(() => {
       // Section entrance animation - using ScrollTrigger for smooth entrance
@@ -117,16 +123,16 @@ function ContactSection() {
       clearTimeout(timer);
       // Targeted cleanup for this section only
       killScrollTriggersFor([
-        sectionRef.current,
-        headerRef.current,
-        contactCardRef.current,
-        linksRef.current?.children ? Array.from(linksRef.current.children) : [],
+        sectionEl,
+        headerEl,
+        contactCardEl,
+        linkEls,
       ]);
       killTweensFor([
-        sectionRef.current,
-        headerRef.current,
-        contactCardRef.current,
-        linksRef.current?.children ? Array.from(linksRef.current.children) : [],
+        sectionEl,
+        headerEl,
+        contactCardEl,
+        linkEls,
       ]);
     };
   }, []);
@@ -257,5 +263,4 @@ function ContactSection() {
 }
 
 export default ContactSection;
-
 

@@ -53,6 +53,12 @@ function MusicSection() {
   const trackCardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
+    // Capture ref values for cleanup to avoid stale `.current` warnings
+    const sectionEl = sectionRef.current;
+    const headingEl = headingRef.current;
+    const statEls = statCardRefs.current.slice();
+    const trackEls = trackCardRefs.current.slice();
+
     // Optimized delay to ensure DOM elements are fully rendered after lazy loading
     const timer = setTimeout(() => {
       // Section entrance animation - using ScrollTrigger for smooth entrance
@@ -92,16 +98,16 @@ function MusicSection() {
       clearTimeout(timer);
       // Targeted cleanup for this section only
       killScrollTriggersFor([
-        sectionRef.current,
-        headingRef.current,
-        statCardRefs.current,
-        trackCardRefs.current,
+        sectionEl,
+        headingEl,
+        statEls,
+        trackEls,
       ]);
       killTweensFor([
-        sectionRef.current,
-        headingRef.current,
-        statCardRefs.current,
-        trackCardRefs.current,
+        sectionEl,
+        headingEl,
+        statEls,
+        trackEls,
       ]);
     };
   }, []);
@@ -256,7 +262,6 @@ function MusicSection() {
 }
 
 export default MusicSection;
-
 
 
 
