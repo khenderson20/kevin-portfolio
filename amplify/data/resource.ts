@@ -20,7 +20,7 @@ const schema = a.schema({
       createdAt: a.datetime(),
       updatedAt: a.datetime(),
     })
-    .authorization((allow) => []),
+    .authorization((allow) => [allow.publicApiKey()]),
 
   Skill: a
     .model({
@@ -31,7 +31,7 @@ const schema = a.schema({
       yearsExperience: a.integer(),
       featured: a.boolean().default(false),
     })
-    .authorization((allow) => []),
+    .authorization((allow) => [allow.publicApiKey()]),
 
   Experience: a
     .model({
@@ -44,7 +44,7 @@ const schema = a.schema({
       current: a.boolean().default(false),
       featured: a.boolean().default(true),
     })
-    .authorization((allow) => []),
+    .authorization((allow) => [allow.owner()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
