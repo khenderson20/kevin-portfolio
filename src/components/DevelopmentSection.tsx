@@ -7,8 +7,17 @@ import { GitHubService } from '../services/githubService';
 import { animations, killScrollTriggersFor, killTweensFor } from '../utils/animations';
 import { GitHubRepo } from '../services';
 
+import techVideoMp4 from '../assets/tech-background.optimized.mp4';
+import techVideoWebm from '../assets/tech-background.webm';
+import techPoster from '../assets/tech-poster.jpg';
+
 
 function DevelopmentSection() {
+  const reducedMotion = useState(
+    () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  )[0];
+  const [videoError, setVideoError] = useState(false);
+
   // Animation refs
   const sectionRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -100,8 +109,39 @@ function DevelopmentSection() {
       ref={sectionRef}
       className="relative py-6 px-12 overflow-hidden"
     >
+        {/* Background video (Technical Projects section) */}
+        <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+          {!reducedMotion && !videoError ? (
+            <video
+              className="h-full w-full object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              poster={techPoster}
+              aria-hidden="true"
+              tabIndex={-1}
+              disablePictureInPicture
+              onError={() => setVideoError(true)}
+            >
+              {/* Prefer WebM when available; falls back to MP4. */}
+              <source src={techVideoWebm} type="video/webm" />
+              <source src={techVideoMp4} type="video/mp4" />
+            </video>
+          ) : (
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url(${techPoster})` }}
+            />
+          )}
+
+          {/* Contrast overlay for readability */}
+          <div className="absolute inset-0 bg-black/70" />
+        </div>
+
         {/* Background Elements (temporarily removed for mobile interaction debugging) */}
-        <div className="pointer-events-none z-0 absolute -inset-x-16 -top-16 -bottom-0 md:-inset-x-24 md:-top-24 md:-bottom-0">
+        <div className="pointer-events-none absolute -inset-x-16 -top-16 -bottom-0 z-[2] md:-inset-x-24 md:-top-24 md:-bottom-0">
           <div className="absolute inset-0 opacity-30">
             <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-emerald-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
             <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-teal-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-2000"></div>
