@@ -1,97 +1,132 @@
-
 import { useRef, useEffect } from 'react';
 import {
   LuMapPin,
-  LuPhone,
   LuMail,
   LuLinkedin,
   LuGithub,
-
   LuCalendar,
-  LuSend,
-  LuCheck,
-  LuX,
-  LuMessageCircle
+  LuMusic,
+  LuDisc,
+  LuPlay,
+  LuPause,
 } from 'react-icons/lu';
 import { animations, killScrollTriggersFor, killTweensFor } from '../utils/animations';
 
 // Icon mapping for consistent styling and semantic meaning
 const ContactIcons = {
   location: LuMapPin,
-  phone: LuPhone,
   email: LuMail,
   linkedin: LuLinkedin,
   github: LuGithub,
-
   calendar: LuCalendar,
-  send: LuSend,
-  success: LuCheck,
-  error: LuX,
 } as const;
+
+// Cassette tape screw component
+const CassetteScrew = ({ className = '' }: { className?: string }) => (
+  <div
+    className={`w-4 h-4 rounded-full bg-gradient-to-br from-zinc-400 to-zinc-600 shadow-inner flex items-center justify-center ${className}`}
+    aria-hidden="true"
+  >
+    <div className="w-2 h-0.5 bg-zinc-700 rounded-full" />
+  </div>
+);
+
+// Tape reel component with spinning animation
+const TapeReel = ({
+  size = 'lg',
+  spinning = false,
+}: {
+  size?: 'sm' | 'lg';
+  spinning?: boolean;
+}) => {
+  const sizeClasses = size === 'lg' ? 'w-24 h-24 md:w-32 md:h-32' : 'w-16 h-16 md:w-20 md:h-20';
+
+  return (
+    <div
+      className={`${sizeClasses} rounded-full bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 shadow-lg flex items-center justify-center ${
+        spinning ? 'animate-spin' : ''
+      }`}
+      style={{ animationDuration: '3s' }}
+      aria-hidden="true"
+    >
+      {/* Outer ring */}
+      <div className="absolute inset-2 rounded-full border-2 border-zinc-700" />
+      {/* Spokes */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        {[0, 60, 120, 180, 240, 300].map((rotation) => (
+          <div
+            key={rotation}
+            className="absolute w-full h-0.5 bg-zinc-700"
+            style={{ transform: `rotate(${rotation}deg)` }}
+          />
+        ))}
+      </div>
+      {/* Center hub */}
+      <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-zinc-600 to-zinc-800 border-2 border-zinc-500 z-10 flex items-center justify-center">
+        <div className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-zinc-400" />
+      </div>
+    </div>
+  );
+};
 
 function ContactSection() {
   // Animation refs
   const sectionRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-  const contactCardRef = useRef<HTMLDivElement>(null);
-  const linksRef = useRef<HTMLDivElement>(null);
+  const cassetteRef = useRef<HTMLDivElement>(null);
+  const vinylRef = useRef<HTMLDivElement>(null);
 
   const contactInfo = {
-    email: "primary-email@kevinhenderson.dev",
-    phone: "+1 (555) 123-4567",
-    location: "San Antonio, TX",
-    availability: "Available for full-time opportunities"
+    email: 'primary-email@kevinhenderson.dev',
+    location: 'San Antonio, TX',
+    availability: 'Available for full-time opportunities',
   };
 
   const professionalLinks = [
     {
-      href: "mailto:primary-email@kevinhenderson.dev",
-      icon: "email",
-      label: "Email",
-      description: "Send me a message",
-      primary: true
+      href: 'mailto:primary-email@kevinhenderson.dev',
+      icon: 'email',
+      label: 'Email',
+      description: 'Drop a line',
+      color: 'from-amber-500 to-orange-600',
     },
     {
-      href: "https://www.linkedin.com/in/kevin-h-cs/",
-      icon: "linkedin",
-      label: "LinkedIn",
-      description: "Professional network",
-      primary: true
+      href: 'https://www.linkedin.com/in/kevin-h-cs/',
+      icon: 'linkedin',
+      label: 'LinkedIn',
+      description: 'Connect',
+      color: 'from-blue-500 to-blue-700',
     },
     {
-      href: "https://github.com/khenderson20",
-      icon: "github",
-      label: "GitHub",
-      description: "View my code",
-      primary: true
+      href: 'https://github.com/khenderson20',
+      icon: 'github',
+      label: 'GitHub',
+      description: 'View code',
+      color: 'from-zinc-600 to-zinc-800',
     },
     {
-      href: "https://calendly.com/primary-email-kevinhenderson/one-on-one",
-      icon: "calendar",
-      label: "Schedule a Meeting",
-      description: "Book a meeting",
-      primary: false
-    }
+      href: 'https://calendly.com/primary-email-kevinhenderson/one-on-one',
+      icon: 'calendar',
+      label: 'Book a Call',
+      description: 'Schedule',
+      color: 'from-emerald-500 to-teal-600',
+    },
   ] as const;
 
   // Animation setup
   useEffect(() => {
-    // Capture ref values for cleanup to avoid stale `.current` warnings
     const sectionEl = sectionRef.current;
     const headerEl = headerRef.current;
-    const contactCardEl = contactCardRef.current;
-    const linkEls = linksRef.current?.children ? Array.from(linksRef.current.children) : [];
+    const cassetteEl = cassetteRef.current;
+    const vinylEl = vinylRef.current;
 
-    // Optimized delay to ensure DOM elements are fully rendered after lazy loading
     const timer = setTimeout(() => {
-      // Section entrance animation - using ScrollTrigger for smooth entrance
       animations.fadeIn(sectionRef.current, {
         duration: 1.2,
-        y: 20, // Reduced from 40 to prevent overflow
+        y: 20,
         scrollTrigger: true,
       });
 
-      // Header animation - with scroll trigger for better visual impact
       animations.fadeIn(headerRef.current, {
         duration: 1,
         delay: 0.2,
@@ -99,41 +134,25 @@ function ContactSection() {
         scrollTrigger: true,
       });
 
-      // Contact card animation - with scroll trigger for better UX
-      animations.scaleIn(contactCardRef.current, {
+      animations.scaleIn(cassetteRef.current, {
         duration: 0.8,
         delay: 0.3,
         scale: 0.9,
         scrollTrigger: true,
       });
 
-      // Staggered links animation - with scroll trigger for better UX
-      if (linksRef.current?.children) {
-        animations.staggerFadeIn(linksRef.current.children, {
-          duration: 0.6,
-          stagger: 0.1,
-          delay: 0.4,
-          y: 20,
-          scrollTrigger: true,
-        });
-      }
-    }, 150); // Optimized delay for DOM readiness
+      animations.scaleIn(vinylRef.current, {
+        duration: 0.8,
+        delay: 0.4,
+        scale: 0.9,
+        scrollTrigger: true,
+      });
+    }, 150);
 
     return () => {
       clearTimeout(timer);
-      // Targeted cleanup for this section only
-      killScrollTriggersFor([
-        sectionEl,
-        headerEl,
-        contactCardEl,
-        linkEls,
-      ]);
-      killTweensFor([
-        sectionEl,
-        headerEl,
-        contactCardEl,
-        linkEls,
-      ]);
+      killScrollTriggersFor([sectionEl, headerEl, cassetteEl, vinylEl]);
+      killTweensFor([sectionEl, headerEl, cassetteEl, vinylEl]);
     };
   }, []);
 
@@ -143,116 +162,279 @@ function ContactSection() {
       className="relative min-h-screen py-6 px-8"
       aria-labelledby="contact-heading"
     >
-      {/* Background Elements */}
-      <div className="pointer-events-none absolute -inset-x-16 -top-16 -bottom-0 md:-inset-x-24 md:-top-24 md:-bottom-0">
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-500 rounded-full mix-blend-overlay filter blur-xl opacity-20 animate-pulse"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-overlay filter blur-xl opacity-20 animate-pulse animation-delay-2000"></div>
-          <div className="absolute top-3/4 right-1/3 w-96 h-96 bg-pink-500 rounded-full mix-blend-overlay filter blur-xl opacity-20 animate-pulse animation-delay-4000"></div>
+      {/* Cassette Tape Background Pattern */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        {/* Dark warm gradient overlay - nostalgic cassette tape feel */}
+        <div className="absolute inset-0 bg-gradient-to-b from-stone-900/40 via-neutral-950/60 to-stone-900/40" />
+        {/* Subtle amber accent glow at edges */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-900/15 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-stone-800/20 via-transparent to-transparent" />
+        {/* Film grain / tape texture overlay */}
+        <div
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          }}
+        />
+        {/* Vintage scan lines - like old CRT/analog displays */}
+        <div className="absolute inset-0 opacity-[0.03]">
+          {Array.from({ length: 60 }).map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-full h-px bg-amber-100"
+              style={{ top: `${i * 1.67}%` }}
+            />
+          ))}
         </div>
+        {/* Corner vignette for that worn tape look */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_30%,_rgba(0,0,0,0.4)_100%)]" />
       </div>
 
       <div className="container-responsive relative z-10 section-content-container mb-0">
         <header ref={headerRef} className="text-center mb-16">
-          <div className="inline-flex items-center gap-3 mb-6 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
-            <LuMessageCircle className="w-5 h-5 text-indigo-300" />
-            <span className="text-indigo-200 font-medium">Contact</span>
+          <div className="inline-flex items-center gap-3 mb-6 px-6 py-3 bg-gradient-to-r from-amber-800/40 to-orange-800/40 backdrop-blur-sm rounded-full border border-amber-500/30">
+            <LuMusic className="w-5 h-5 text-amber-300" />
+            <span className="text-amber-200 font-medium tracking-wider uppercase text-sm">
+              Now Playing
+            </span>
           </div>
 
-          <h2 id="contact-heading" className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white">
-            <span className="gradient-text">Let's Connect</span>
+          <h2
+            id="contact-heading"
+            className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6"
+          >
+            <span
+              className="bg-gradient-to-r from-amber-200 via-orange-300 to-amber-200 bg-clip-text text-transparent"
+              style={{
+                fontFamily: "'Courier New', monospace",
+                textShadow: '0 0 40px rgba(251, 191, 36, 0.3)',
+              }}
+            >
+              Let's Connect
+            </span>
           </h2>
 
-          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
-            Ready to discuss opportunities and collaborate on exciting projects
+          <p
+            className="text-xl md:text-2xl text-amber-100/70 mb-12 max-w-3xl mx-auto leading-relaxed"
+            style={{ fontFamily: "'Georgia', serif" }}
+          >
+            Ready to spin up something amazing together
           </p>
         </header>
 
-        <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-          {/* Contact Information Card */}
+        <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          {/* Cassette Tape Card */}
           <div
-            ref={contactCardRef}
-            className="glass-effect rounded-2xl p-8 md:p-12"
+            ref={cassetteRef}
+            className="relative rounded-2xl overflow-hidden"
             role="region"
             aria-labelledby="contact-info-heading"
           >
-            <header className="mb-8">
-              <h3 id="contact-info-heading" className="text-2xl md:text-3xl font-bold text-white mb-4">
-                Get In Touch
-              </h3>
-              <p className="text-lg text-indigo-200 font-medium" role="status" aria-live="polite">
-                {contactInfo.availability}
-              </p>
-            </header>
-
-            <div className="space-y-6 mb-8">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center">
-                  <ContactIcons.location className="w-6 h-6 text-white" aria-hidden="true" />
+            {/* Cassette Body */}
+            <div className="relative bg-gradient-to-br from-amber-100 via-amber-50 to-stone-100 p-1 rounded-2xl shadow-2xl">
+              {/* Inner cassette frame */}
+              <div className="bg-gradient-to-br from-stone-800 via-stone-900 to-zinc-900 rounded-xl p-6 md:p-8">
+                {/* Top screws */}
+                <div className="flex justify-between items-center mb-4">
+                  <CassetteScrew />
+                  <div className="px-4 py-1.5 bg-amber-100 rounded text-xs font-bold text-stone-700 tracking-widest uppercase shadow-sm">
+                    Contact Mix Vol. 1
+                  </div>
+                  <CassetteScrew />
                 </div>
-                <div>
-                  <span className="block text-sm text-gray-400 uppercase tracking-wide">Location</span>
-                  <span className="text-lg text-white font-medium">{contactInfo.location}</span>
-                </div>
-              </div>
-            </div>
 
-            {/* Professional Links */}
-            <div>
-              <h4 className="text-xl font-bold text-white mb-6">Connect With Me</h4>
-              <div ref={linksRef} className="grid grid-cols-2 gap-4">
-                {professionalLinks.map((link, index) => {
-                  const IconComponent = ContactIcons[link.icon as keyof typeof ContactIcons];
-                  return (
-                    <a
-                      key={index}
-                      href={link.href}
-                      className={`group flex items-center gap-3 p-4 rounded-xl transition-all duration-300 transform hover:scale-105 ${
-                        link.primary
-                          ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg hover:shadow-indigo-500/25'
-                          : 'bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white'
-                      }`}
-                      target={link.href.startsWith('http') ? '_blank' : '_self'}
-                      rel={link.href.startsWith('http') ? 'noopener noreferrer' : ''}
-                      aria-label={`${link.label} - ${link.description}${link.href.startsWith('http') ? ' (opens in new tab)' : ''}`}
+                {/* Tape Window */}
+                <div className="relative bg-gradient-to-b from-stone-950 to-stone-900 rounded-lg p-4 mb-6 border-2 border-stone-700">
+                  {/* Tape reels container */}
+                  <div className="flex justify-between items-center">
+                    <TapeReel size="lg" spinning />
+                    <div className="flex-1 mx-4">
+                      {/* Tape path */}
+                      <div className="h-1 bg-gradient-to-r from-amber-800 via-amber-600 to-amber-800 rounded-full mb-2" />
+                      <div className="h-1 bg-gradient-to-r from-amber-800 via-amber-600 to-amber-800 rounded-full" />
+                    </div>
+                    <TapeReel size="lg" />
+                  </div>
+
+                  {/* Tape counter display */}
+                  <div className="absolute top-2 right-2 bg-zinc-900/95 px-2 py-1 rounded text-xs font-mono text-emerald-400 border border-zinc-700 z-10">
+                    00:42
+                  </div>
+                </div>
+
+                {/* Label Area - Clear separation from tape window */}
+                <div className="relative bg-gradient-to-br from-amber-100 to-orange-100 rounded-lg p-5 mb-4 shadow-inner z-10">
+                  <div className="text-center mb-3">
+                    <h3
+                      id="contact-info-heading"
+                      className="text-xl md:text-2xl font-bold text-stone-800 mb-2"
+                      style={{ fontFamily: "'Georgia', serif" }}
                     >
-                      <IconComponent className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
-                      <div className="flex-1 min-w-0">
-                        <div className="font-semibold truncate">{link.label}</div>
-                        <div className="text-sm opacity-75 truncate">{link.description}</div>
-                      </div>
-                    </a>
-                  );
-                })}
+                      Get In Touch
+                    </h3>
+                    <p className="text-sm text-stone-600 font-medium">{contactInfo.availability}</p>
+                  </div>
+
+                  <div className="flex items-center justify-center gap-2 text-sm text-stone-700 font-medium">
+                    <ContactIcons.location className="w-4 h-4 text-amber-700" />
+                    <span>{contactInfo.location}</span>
+                  </div>
+                </div>
+
+                {/* Control buttons / Links */}
+                <div className="grid grid-cols-2 gap-3">
+                  {professionalLinks.map((link, index) => {
+                    const IconComponent =
+                      ContactIcons[link.icon as keyof typeof ContactIcons];
+                    return (
+                      <a
+                        key={index}
+                        href={link.href}
+                        className={`group relative flex items-center gap-3 p-3 rounded-lg bg-gradient-to-br ${link.color} text-white transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-amber-500/20`}
+                        target={link.href.startsWith('http') ? '_blank' : '_self'}
+                        rel={link.href.startsWith('http') ? 'noopener noreferrer' : ''}
+                        aria-label={`${link.label} - ${link.description}${link.href.startsWith('http') ? ' (opens in new tab)' : ''}`}
+                      >
+                        <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                          <IconComponent className="w-4 h-4" aria-hidden="true" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-semibold text-sm truncate">
+                            {link.label}
+                          </div>
+                          <div className="text-xs opacity-80 truncate">
+                            {link.description}
+                          </div>
+                        </div>
+                      </a>
+                    );
+                  })}
+                </div>
+
+                {/* Bottom screws */}
+                <div className="flex justify-between mt-4">
+                  <CassetteScrew />
+                  <CassetteScrew />
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Additional Contact Methods */}
-          <div className="glass-effect rounded-2xl p-8 md:p-12">
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-8">
-              Other Ways to Connect
-            </h3>
+          {/* Vinyl Record Card */}
+          <div ref={vinylRef} className="relative">
+            <div className="relative bg-gradient-to-br from-stone-900 via-zinc-900 to-stone-950 rounded-2xl p-6 md:p-8 shadow-2xl border border-stone-700/50 overflow-hidden">
+              {/* Album sleeve texture - reduced opacity to not interfere with content */}
+              <div className="absolute inset-0 opacity-5 pointer-events-none">
+                <div
+                  className="w-full h-full"
+                  style={{
+                    backgroundImage:
+                      'repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px)',
+                  }}
+                />
+              </div>
 
-            <div className="space-y-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center">
-                  <ContactIcons.email className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <span className="block text-sm text-gray-400 uppercase tracking-wide">Email</span>
-                  <a href={`mailto:${contactInfo.email}`} className="text-lg text-white font-medium hover:text-purple-300 transition-colors">
-                    {contactInfo.email}
-                  </a>
+              {/* Vinyl Record */}
+              <div className="relative flex justify-center mb-8 z-10">
+                <div
+                  className="relative w-48 h-48 md:w-64 md:h-64 rounded-full bg-gradient-to-br from-zinc-900 via-zinc-800 to-black shadow-2xl group hover:animate-spin"
+                  style={{ animationDuration: '4s' }}
+                  aria-hidden="true"
+                >
+                  {/* Grooves */}
+                  {[...Array(12)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute rounded-full border border-zinc-700/30"
+                      style={{
+                        inset: `${8 + i * 6}%`,
+                      }}
+                    />
+                  ))}
+
+                  {/* Center label */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-20 h-20 md:w-28 md:h-28 rounded-full bg-gradient-to-br from-amber-400 via-orange-500 to-red-600 flex items-center justify-center shadow-lg">
+                      <div className="text-center">
+                        <LuDisc className="w-6 h-6 md:w-8 md:h-8 mx-auto text-white mb-1" />
+                        <div
+                          className="text-xs md:text-sm font-bold text-white tracking-wider drop-shadow-sm"
+                          style={{ fontFamily: "'Courier New', monospace" }}
+                        >
+                          KEVIN
+                        </div>
+                        <div className="text-[8px] md:text-[10px] text-white/90 font-medium">
+                          HENDERSON
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Light reflection */}
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none" />
                 </div>
               </div>
 
+              {/* Album info - elevated z-index for clear visibility */}
+              <div className="relative text-center space-y-4 z-10">
+                <h3
+                  className="text-2xl md:text-3xl font-bold text-amber-100 drop-shadow-sm"
+                  style={{ fontFamily: "'Georgia', serif" }}
+                >
+                  Other Ways to Connect
+                </h3>
 
-              <div className="mt-8 p-6 bg-white/5 rounded-xl border border-white/10">
-                <p className="text-gray-300 leading-relaxed">
-                  I'm always excited to discuss new opportunities, collaborate on interesting projects,
-                  or simply connect with fellow developers and creators. Feel free to reach out!
-                </p>
+                <div className="inline-flex items-center gap-4 px-4 py-2 bg-stone-800/80 backdrop-blur-sm rounded-full border border-stone-700">
+                  <button
+                    className="w-8 h-8 rounded-full bg-amber-500 hover:bg-amber-400 flex items-center justify-center transition-colors"
+                    aria-label="Play"
+                  >
+                    <LuPlay className="w-4 h-4 text-stone-900 ml-0.5" />
+                  </button>
+                  <button
+                    className="w-8 h-8 rounded-full bg-stone-700 hover:bg-stone-600 flex items-center justify-center transition-colors"
+                    aria-label="Pause"
+                  >
+                    <LuPause className="w-4 h-4 text-amber-100" />
+                  </button>
+                  <div className="h-6 w-px bg-stone-600" />
+                  <span className="text-sm text-amber-200 font-mono font-medium">Track 02</span>
+                </div>
+
+                <div className="flex items-center justify-center gap-4 pt-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-amber-600 to-orange-700 rounded-lg flex items-center justify-center shadow-lg flex-shrink-0">
+                    <ContactIcons.email className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="text-left">
+                    <span className="block text-xs text-amber-300 uppercase tracking-wider font-semibold">
+                      Email
+                    </span>
+                    <a
+                      href={`mailto:${contactInfo.email}`}
+                      className="text-amber-100 hover:text-amber-200 transition-colors font-medium"
+                    >
+                      {contactInfo.email}
+                    </a>
+                  </div>
+                </div>
+
+                <div className="mt-6 p-4 bg-gradient-to-r from-amber-900/30 via-orange-900/30 to-amber-900/30 rounded-xl border border-amber-700/30 backdrop-blur-sm">
+                  <p
+                    className="text-amber-100/90 leading-relaxed text-sm md:text-base"
+                    style={{ fontFamily: "'Georgia', serif" }}
+                  >
+                    "I'm always excited to discuss new opportunities, collaborate on interesting
+                    projects, or simply connect with fellow developers and creators. Feel free
+                    to reach out!"
+                  </p>
+                </div>
+
+                {/* Vintage rating sticker */}
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-red-600 rounded-sm rotate-[-2deg] shadow-md">
+                  <span className="text-xs font-bold text-white tracking-wider uppercase drop-shadow-sm">
+                    ★ Highly Recommended ★
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -263,4 +445,3 @@ function ContactSection() {
 }
 
 export default ContactSection;
-

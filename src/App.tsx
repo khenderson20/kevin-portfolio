@@ -100,7 +100,7 @@ function App() {
             <AboutSection />
           </section>
 
-          <section id="development" className="section-container relative min-h-[110vh] bg-gradient-to-br from-emerald-900 via-teal-900 to-cyan-900">
+          <section id="development" className="section-container relative min-h-[110vh] bg-slate-950">
             <DevelopmentSection />
           </section>
 
@@ -108,7 +108,7 @@ function App() {
             <MusicSection />
           </section>
 
-          <section id="contact" className="section-container relative min-h-[110vh] bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
+          <section id="contact" className="section-container relative  bg-gradient-to-b from-stone-950 via-neutral-950 to-zinc-950">
             <ContactSection />
           </section>
           </Suspense>

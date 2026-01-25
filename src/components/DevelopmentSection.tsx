@@ -1,7 +1,9 @@
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { DevelopmentIcons } from '../constants/icons';
 import GitHubProjects from './GitHubProjects';
+import TechFilters from './TechFilters';
+import LanguageDistribution from './LanguageDistribution';
 import { Project } from '../types/portfolio';
 import { GitHubService } from '../services/githubService';
 import { animations, killScrollTriggersFor, killTweensFor } from '../utils/animations';
@@ -11,6 +13,8 @@ import techVideoMp4 from '../assets/tech-background.optimized.mp4';
 import techVideoWebm from '../assets/tech-background.webm';
 import techPoster from '../assets/tech-poster.jpg';
 
+// Helper to normalize tech names
+const normalize = (t?: string) => (t || '').toLowerCase().replace(/[^a-z0-9+]/g, '');
 
 function DevelopmentSection() {
   const reducedMotion = useState(
@@ -28,6 +32,9 @@ function DevelopmentSection() {
   const [githubError, setGithubError] = useState<string | null>(null);
   const [allGithubRepos, setAllGithubRepos] = useState<GitHubRepo[]>([]);
   const [hasMoreGithubProjects, setHasMoreGithubProjects] = useState(true);
+
+  // Tech filter state
+  const [selectedTech, setSelectedTech] = useState<string | null>(null);
 
 
   // Load GitHub repository data
@@ -74,6 +81,25 @@ function DevelopmentSection() {
     }
   }, [allGithubRepos, githubProjects.length, loadInitialGithubProjects]);
 
+  // Compute all unique technologies and counts for filters
+  const { allTechs, techCounts } = useMemo(() => {
+    const counts: Record<string, number> = {};
+    const techs = new Set<string>();
+
+    githubProjects.forEach(project => {
+      project.tech?.forEach(t => {
+        const normalized = normalize(t);
+        techs.add(t);
+        counts[normalized] = (counts[normalized] || 0) + 1;
+      });
+    });
+
+    return {
+      allTechs: Array.from(techs),
+      techCounts: counts
+    };
+  }, [githubProjects]);
+
   // Animation setup
   useEffect(() => {
     const section = sectionRef.current;
@@ -107,13 +133,13 @@ function DevelopmentSection() {
   return (
     <div
       ref={sectionRef}
-      className="relative overflow-hidden min-h-full py-6 px-12"
+      className="relative overflow-hidden min-h-[110vh] py-6 px-12 min-w-full"
     >
       {/* Background video (Technical Projects section) */}
-      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
         {!reducedMotion && !videoError ? (
           <video
-            className="h-full w-full object-cover"
+            className="absolute top-1/2 left-1/2 min-h-full min-w-full -translate-x-1/2 -translate-y-1/2 object-cover"
             autoPlay
             muted
             loop
@@ -158,6 +184,25 @@ function DevelopmentSection() {
           </p>
         </header>
 
+        {/* Language Distribution Visualization */}
+        {githubProjects.length > 0 && (
+          <LanguageDistribution
+            techCounts={techCounts}
+            onSelectTech={setSelectedTech}
+            selectedTech={selectedTech}
+          />
+        )}
+
+        {/* Technology Filters */}
+        {githubProjects.length > 0 && (
+          <TechFilters
+            technologies={allTechs}
+            selectedTech={selectedTech}
+            onSelectTech={setSelectedTech}
+            projectCounts={techCounts}
+          />
+        )}
+
         {/* Project Content */}
         <div className="projects-content">
           <GitHubProjects
@@ -165,6 +210,7 @@ function DevelopmentSection() {
             loading={githubLoading}
             error={githubError}
             hasMore={hasMoreGithubProjects}
+            selectedTech={selectedTech}
           />
         </div>
       </div>

@@ -88,7 +88,8 @@ function getTechIconAndAccent(techRaw?: string) {
   };
 }
 // Helpers
-const normalize = (t?: string) => (t || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+// normalize must preserve the '+' character for languages like C++
+const normalize = (t?: string) => (t || '').toLowerCase().replace(/[^a-z0-9+]/g, '');
 
 // Use the new helper for accent and icon
 
@@ -104,14 +105,22 @@ interface GitHubProjectsProps {
   loading: boolean;
   error: string | null;
   hasMore?: boolean;
+  selectedTech?: string | null;
 }
 
 export default function GitHubProjects({
   projects,
   loading,
   error,
-  hasMore = false
+  hasMore = false,
+  selectedTech = null
 }: GitHubProjectsProps) {
+  // Filter projects by selected technology
+  const filteredProjects = selectedTech
+    ? projects.filter(project =>
+        project.tech?.some(t => normalize(t) === selectedTech)
+      )
+    : projects;
 
   if (loading && projects.length === 0) {
     return <div className="text-gray-300">Loading GitHub projects...</div>;
@@ -137,9 +146,23 @@ export default function GitHubProjects({
         </a>
       </div>
 
-      {/* Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-        {projects.map((project) => {
+      {/* Grid - centers items when few projects exist */}
+      <div
+        className={`grid gap-6 md:gap-8 ${
+          filteredProjects.length === 1
+            ? 'grid-cols-1 max-w-md mx-auto'
+            : filteredProjects.length === 2
+              ? 'grid-cols-1 sm:grid-cols-2 max-w-3xl mx-auto'
+              : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+        }`}
+      >
+        {filteredProjects.length === 0 && selectedTech ? (
+          <div className="col-span-full text-center py-12 text-gray-400">
+            <p className="text-lg">No projects found with this technology.</p>
+            <p className="text-sm mt-2">Try selecting a different filter.</p>
+          </div>
+        ) : null}
+        {filteredProjects.map((project) => {
           const accent = getTechIconAndAccent(project.tech?.[0]);
           const { stars, forks } = parseMetrics(project.metrics);
           const TitleIcon = accent.Icon;
