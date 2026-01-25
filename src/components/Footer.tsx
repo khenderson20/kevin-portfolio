@@ -61,13 +61,13 @@ function Footer() {
               <ul className="space-y-3">
                 <li className="flex items-center gap-2">
                   <SiGithub className="w-4 h-4 text-gray-400" />
-                  <a href="https://github.com/kevinhenderson" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-300 hover:text-white transition-colors duration-200">
+                  <a href="https://github.com/khenderson20" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-300 hover:text-white transition-colors duration-200">
                     GitHub
                   </a>
                 </li>
                 <li className="flex items-center gap-2">
                   <SiLinkedin className="w-4 h-4 text-gray-400" />
-                  <a href="https://linkedin.com/in/kevinhenderson" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-300 hover:text-white transition-colors duration-200">
+                  <a href="https://www.linkedin.com/in/kevin-h-cs/" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-300 hover:text-white transition-colors duration-200">
                     LinkedIn
                   </a>
                 </li>

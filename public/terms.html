@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service - Kevin Henderson</title>
+  <meta name="description" content="Terms of Service for Kevin Henderson's portfolio website. Read the terms and conditions for using this website.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  
+  <!-- Font preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Theme -->
+  <meta name="theme-color" content="#0ea5e9">
+  <meta name="color-scheme" content="dark">
+  
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #020617, #111827, #020617);
+      color: #d1d5db;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+    
+    /* Header */
+    header {
+      padding: 2rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 3rem;
+    }
+    
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #60a5fa;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+      margin-bottom: 1.5rem;
+    }
+    
+    .back-link:hover {
+      color: #93c5fd;
+    }
+    
+    .back-link svg {
+      width: 1rem;
+      height: 1rem;
+    }
+    
+    h1 {
+      font-size: clamp(2rem, 5vw, 2.5rem);
+      font-weight: 700;
+      color: white;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #7dd3fc, #10b981);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .last-updated {
+      font-size: 0.875rem;
+      color: #9ca3af;
+    }
+    
+    /* Main content */
+    main {
+      padding-bottom: 4rem;
+    }
+    
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: white;
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #e5e7eb;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    p {
+      margin-bottom: 1rem;
+    }
+    
+    ul {
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+    }
+    
+    li {
+      margin-bottom: 0.5rem;
+    }
+    
+    a {
+      color: #60a5fa;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    
+    a:hover {
+      color: #93c5fd;
+    }
+    
+    .highlight-box {
+      background: rgba(14, 165, 233, 0.1);
+      border: 1px solid rgba(14, 165, 233, 0.2);
+      border-radius: 0.5rem;
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+    }
+    
+    .warning-box {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      border-radius: 0.5rem;
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+    }
+    
+    /* Footer */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 2rem 0;
+      margin-top: 3rem;
+    }
+    
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .footer-links a {
+      font-size: 0.875rem;
+      color: #9ca3af;
+    }
+    
+    .footer-links a:hover {
+      color: white;
+    }
+    
+    .copyright {
+      font-size: 0.75rem;
+      color: #6b7280;
+    }
+    
+    .copyright .name {
+      font-weight: 600;
+      background: linear-gradient(135deg, #7dd3fc, #10b981);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    /* Responsive */
+    @media (max-width: 640px) {
+      .container {
+        padding: 1.5rem 1rem;
+      }
+      
+      h1 {
+        font-size: 1.75rem;
+      }
+      
+      h2 {
+        font-size: 1.25rem;
+      }
+      
+      .footer-links {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="/" class="back-link">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to Portfolio
+      </a>
+      <h1>Terms of Service</h1>
+      <p class="last-updated">Last updated: January 25, 2026</p>
+    </header>
+    
+    <main>
+      <section>
+        <h2>Acceptance of Terms</h2>
+        <p>By accessing and using Kevin Henderson's portfolio website ("the Website"), you accept and agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the Website.</p>
+        <p>These terms apply to all visitors, users, and others who access or use the Website.</p>
+      </section>
+      
+      <section>
+        <h2>Use of Website</h2>
+        
+        <h3>Permitted Uses</h3>
+        <p>You may use this Website for:</p>
+        <ul>
+          <li>Viewing portfolio content and projects</li>
+          <li>Learning about Kevin Henderson's work and experience</li>
+          <li>Contacting Kevin Henderson through provided channels</li>
+          <li>Sharing links to the Website</li>
+        </ul>
+        
+        <h3>Prohibited Activities</h3>
+        <p>You agree not to:</p>
+        <ul>
+          <li>Use the Website for any unlawful purpose or in violation of any applicable laws</li>
+          <li>Attempt to gain unauthorized access to any portion of the Website or its systems</li>
+          <li>Interfere with or disrupt the Website's operation or servers</li>
+          <li>Scrape, copy, or redistribute Website content without permission</li>
+          <li>Use automated systems (bots, scrapers) to access the Website in a manner that exceeds reasonable use</li>
+          <li>Impersonate Kevin Henderson or misrepresent affiliation with the Website</li>
+          <li>Use the Website to transmit malware, spam, or harmful content</li>
+        </ul>
+      </section>
+      
+      <section>
+        <h2>Intellectual Property</h2>
+        
+        <h3>Copyright Notice</h3>
+        <div class="highlight-box">
+          <p>All content on this Website, including but not limited to text, graphics, logos, images, code samples, and portfolio projects, is the property of Kevin Henderson and is protected by copyright and intellectual property laws.</p>
+        </div>
+        
+        <h3>Portfolio Content Ownership</h3>
+        <p>The projects, code, designs, and creative works displayed in the portfolio section are owned by Kevin Henderson unless otherwise noted. Some projects may be:</p>
+        <ul>
+          <li>Open source projects available under specific licenses (see individual project repositories)</li>
+          <li>Collaborations with other creators or organizations (credited appropriately)</li>
+          <li>Work created as part of employment or contract work (used with permission)</li>
+        </ul>
+        
+        <h3>Usage Restrictions</h3>
+        <p>You may not reproduce, distribute, modify, create derivative works from, publicly display, or commercially exploit any content from this Website without explicit written permission, except for:</p>
+        <ul>
+          <li>Personal, non-commercial reference</li>
+          <li>Open source projects used according to their respective licenses</li>
+          <li>Brief quotations for commentary or review purposes (with attribution)</li>
+        </ul>
+      </section>
+      
+      <section>
+        <h2>Third-Party Links</h2>
+        <p>The Website may contain links to third-party websites or services, including:</p>
+        <ul>
+          <li>GitHub repositories</li>
+          <li>Social media profiles</li>
+          <li>Music streaming platforms</li>
+          <li>External tools and resources</li>
+        </ul>
+        <p>These links are provided for convenience only. Kevin Henderson is not responsible for the content, privacy policies, or practices of any third-party websites. Visiting external links is at your own risk.</p>
+      </section>
+      
+      <section>
+        <h2>Disclaimer of Warranties</h2>
+        <div class="warning-box">
+          <p><strong>THE WEBSITE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED.</strong></p>
+        </div>
+        <p>Kevin Henderson does not warrant that:</p>
+        <ul>
+          <li>The Website will be uninterrupted, secure, or error-free</li>
+          <li>Any defects or errors will be corrected</li>
+          <li>The Website is free of viruses or harmful components</li>
+          <li>The information provided is accurate, complete, or current</li>
+        </ul>
+      </section>
+      
+      <section>
+        <h2>Limitation of Liability</h2>
+        <p>To the fullest extent permitted by applicable law, Kevin Henderson shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to:</p>
+        <ul>
+          <li>Loss of data or information</li>
+          <li>Loss of profits or revenue</li>
+          <li>Personal injury or property damage</li>
+          <li>Interruption of business</li>
+        </ul>
+        <p>This limitation applies regardless of whether the damages arise from use of the Website, inability to use the Website, or any content obtained from the Website.</p>
+      </section>
+      
+      <section>
+        <h2>Indemnification</h2>
+        <p>You agree to indemnify and hold harmless Kevin Henderson from any claims, damages, losses, liabilities, costs, or expenses (including reasonable attorneys' fees) arising from your use of the Website or violation of these Terms.</p>
+      </section>
+      
+      <section>
+        <h2>Governing Law</h2>
+        <p>These Terms of Service shall be governed by and construed in accordance with the laws of the State of Texas, United States, without regard to its conflict of law provisions.</p>
+        <p>Any disputes arising from these Terms or use of the Website shall be resolved in the state or federal courts located in Texas, and you consent to the personal jurisdiction of such courts.</p>
+      </section>
+      
+      <section>
+        <h2>Changes to Terms</h2>
+        <p>Kevin Henderson reserves the right to modify or replace these Terms at any time. Changes will be posted on this page with an updated revision date.</p>
+        <p>Your continued use of the Website after any changes constitutes acceptance of the new Terms. It is your responsibility to review these Terms periodically for changes.</p>
+      </section>
+      
+      <section>
+        <h2>Severability</h2>
+        <p>If any provision of these Terms is found to be unenforceable or invalid, that provision shall be limited or eliminated to the minimum extent necessary, and the remaining provisions shall remain in full force and effect.</p>
+      </section>
+      
+      <section>
+        <h2>Contact Information</h2>
+        <p>If you have any questions about these Terms of Service, please contact me through the contact form on the main website or via the social links provided in the footer.</p>
+      </section>
+    </main>
+    
+    <footer>
+      <nav class="footer-links">
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+        <a href="/cookies">Cookie Policy</a>
+        <a href="/">Back to Portfolio</a>
+      </nav>
+      <p class="copyright">© 2026 <span class="name">Kevin Henderson</span>. All rights reserved.</p>
+    </footer>
+  </div>
+</body>
+</html>

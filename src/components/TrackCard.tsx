@@ -1,6 +1,4 @@
-import { Card, CardBody, CardHeader, CardFooter, Typography, Chip, Button } from "@material-tailwind/react";
 import { FaClock, FaPlay, FaSoundcloud } from "react-icons/fa";
-
 
 interface Track {
   title: string;
@@ -16,10 +14,11 @@ interface TrackCardProps {
 
 function getGradientForGenre(genre: string): string {
   const g = genre.toLowerCase();
-  if (g.includes("ambient")) return "from-indigo-500 via-blue-500 to-purple-600"; // cool blues/purples
-  if (g.includes("modular") || g.includes("synthesis")) return "from-teal-400 via-emerald-500 to-cyan-500"; // techy greens/cyans
-  if (g.includes("garage")) return "from-orange-500 via-rose-500 to-red-600"; // warm oranges/reds
-  return "from-slate-600 via-indigo-600 to-purple-700"; // default
+  // Using emerald-based gradients to match site theme
+  if (g.includes("ambient")) return "from-emerald-600 via-teal-600 to-cyan-600";
+  if (g.includes("modular") || g.includes("synthesis")) return "from-teal-500 via-emerald-500 to-green-600";
+  if (g.includes("garage")) return "from-emerald-500 via-green-500 to-lime-600";
+  return "from-slate-600 via-emerald-600 to-teal-600";
 }
 
 function TrackCard({ track }: TrackCardProps) {
@@ -27,67 +26,74 @@ function TrackCard({ track }: TrackCardProps) {
   const gradient = getGradientForGenre(track.genre);
 
   return (
-    <Card className="h-full bg-white/80 dark:bg-neutral-900 border border-white/10 shadow-lg" role="article" aria-labelledby={trackId}>
-      <CardHeader
-        floated={undefined}
-        className={`relative grid place-content-center h-28 bg-gradient-to-r ${gradient} rounded-b-none text-white`}
+    <article 
+      className="h-full glass-effect bg-white/5 backdrop-blur-md border border-white/10 hover:border-emerald-400/50 rounded-xl overflow-hidden transition-all duration-300" 
+      role="article" 
+      aria-labelledby={trackId}
+    >
+      {/* Album Art Header */}
+      <header
+        className={`relative grid place-content-center h-28 bg-gradient-to-r ${gradient}`}
       >
-        <FaSoundcloud className="w-16 h-16" aria-hidden="true" />
-      </CardHeader>
+        <FaSoundcloud className="w-14 h-14 text-white/80" aria-hidden="true" />
+        {/* Decorative overlay */}
+        <div className="absolute inset-0 bg-black/10" aria-hidden="true" />
+      </header>
 
-      <CardBody className="p-5">
-        <Typography type="h5" className="mb-2 text-neutral-900 dark:text-white" id={trackId}>
+      {/* Card Content */}
+      <div className="p-5">
+        <h4 className="text-lg font-semibold text-white mb-3" id={trackId}>
           {track.title}
-        </Typography>
+        </h4>
 
         <div className="flex items-center flex-wrap gap-2 mb-3">
-          <Chip size="sm" className="bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-200">{track.genre}</Chip>
-          <span className="inline-flex items-center gap-1 text-sm text-neutral-700 dark:text-neutral-300" aria-label="Year or duration">
-            <FaClock className="w-4 h-4" aria-hidden="true" />
+          {/* Genre Tag - Using emerald theme */}
+          <span className="px-3 py-1 bg-emerald-600/20 text-emerald-300 text-xs rounded-full border border-emerald-500/30">
+            {track.genre}
+          </span>
+          {/* Duration/Year */}
+          <span 
+            className="inline-flex items-center gap-1 text-sm text-gray-400" 
+            aria-label="Year or duration"
+          >
+            <FaClock className="w-3.5 h-3.5" aria-hidden="true" />
             {track.duration}
           </span>
         </div>
 
         {track.description && (
-          <Typography type="p" className="text-sm leading-relaxed text-neutral-700 dark:text-neutral-300 line-clamp-4">
+          <p className="text-sm leading-relaxed text-gray-400 line-clamp-3 mb-4">
             {track.description}
-          </Typography>
+          </p>
         )}
-      </CardBody>
+      </div>
 
-      <CardFooter className="pt-0">
+      {/* Card Footer */}
+      <div className="px-5 pb-5 pt-0">
         {track.soundCloudUrl ? (
-          <Button
-            size="md"
-            color="primary"
-            className="w-full flex items-center justify-center gap-2"
-            variant="solid"
-            as="a"
+          <a
             href={track.soundCloudUrl}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={`Open Soundcloud: ${track.title}`}
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+            aria-label={`Preview ${track.title} on SoundCloud`}
           >
-            <FaPlay className="w-4 h-4" aria-hidden="true" />
-            Preview on Soundcloud
-          </Button>
+            <FaPlay className="w-3.5 h-3.5" aria-hidden="true" />
+            Preview on SoundCloud
+          </a>
         ) : (
-          <Button
-            size="md"
-            color="primary"
-            className="w-full flex items-center justify-center gap-2"
-            variant="solid"
+          <button
             disabled
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-gray-700/50 text-gray-500 font-medium cursor-not-allowed"
             aria-label={`Preview unavailable for ${track.title}`}
           >
-            <FaPlay className="w-4 h-4" aria-hidden="true" />
+            <FaPlay className="w-3.5 h-3.5" aria-hidden="true" />
             Preview Unavailable
-          </Button>
+          </button>
         )}
-      </CardFooter>
-    </Card>
+      </div>
+    </article>
   );
 }
 
 export default TrackCard;
-
