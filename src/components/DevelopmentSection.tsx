@@ -107,76 +107,69 @@ function DevelopmentSection() {
   return (
     <div
       ref={sectionRef}
-      className="relative py-6 px-12 overflow-hidden"
+      className="relative overflow-hidden min-h-full py-6 px-12"
     >
-        {/* Background video (Technical Projects section) */}
-        <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
-          {!reducedMotion && !videoError ? (
-            <video
-              className="h-full w-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              poster={techPoster}
-              aria-hidden="true"
-              tabIndex={-1}
-              disablePictureInPicture
-              onError={() => setVideoError(true)}
-            >
-              {/* Prefer WebM when available; falls back to MP4. */}
-              <source src={techVideoWebm} type="video/webm" />
-              <source src={techVideoMp4} type="video/mp4" />
-            </video>
-          ) : (
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${techPoster})` }}
-            />
-          )}
+      {/* Background video (Technical Projects section) */}
+      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+        {!reducedMotion && !videoError ? (
+          <video
+            className="h-full w-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster={techPoster}
+            aria-hidden="true"
+            tabIndex={-1}
+            disablePictureInPicture
+            onError={() => setVideoError(true)}
+          >
+            {/* Prefer WebM when available; falls back to MP4. */}
+            <source src={techVideoWebm} type="video/webm" />
+            <source src={techVideoMp4} type="video/mp4" />
+          </video>
+        ) : (
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${techPoster})` }}
+          />
+        )}
 
-          {/* Contrast overlay for readability */}
-          <div className="absolute inset-0 bg-black/70" />
-        </div>
+        {/* Contrast overlay for readability */}
+        <div className="absolute inset-0 bg-black/70" />
+      </div>
 
-        {/* Background Elements (temporarily removed for mobile interaction debugging) */}
-        <div className="pointer-events-none absolute -inset-x-16 -top-16 -bottom-0 z-[2] md:-inset-x-24 md:-top-24 md:-bottom-0">
-          <div className="absolute inset-0 opacity-30">
-            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-emerald-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-teal-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-2000"></div>
-            <div className="absolute top-3/4 right-1/3 w-96 h-96 bg-cyan-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-4000"></div>
+      
+
+      <div className="container-responsive relative z-10 section-content-container">
+        <header ref={headerRef} className="text-center mb-16">
+          <div className="inline-flex items-center gap-3 mb-6 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
+            <DevelopmentIcons.code className="w-5 h-5 text-emerald-300" />
+            <span className="text-emerald-200 font-medium">Development</span>
           </div>
-        </div>
 
-        <div className="container-responsive relative z-10 section-content-container">
-          <header ref={headerRef} className="text-center mb-16">
-            <div className="inline-flex items-center gap-3 mb-6 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
-              <DevelopmentIcons.code className="w-5 h-5 text-emerald-300" />
-              <span className="text-emerald-200 font-medium">Development</span>
-            </div>
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white">
+            <span className="gradient-text">Technical Projects</span>
+          </h2>
 
-            <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white">
-              <span className="gradient-text">Technical Projects</span>
-            </h2>
+          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+            These are my GitHub projects that I built myself.
+          </p>
+        </header>
 
-            <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
-              These are my GitHub projects that I built myself.
-            </p>
-          </header>
-
-          {/* Project Content */}
-          <div className="projects-content">
-            <GitHubProjects
-              projects={githubProjects}
-              loading={githubLoading}
-              error={githubError}
-              hasMore={hasMoreGithubProjects}
-            />
-          </div>
+        {/* Project Content */}
+        <div className="projects-content">
+          <GitHubProjects
+            projects={githubProjects}
+            loading={githubLoading}
+            error={githubError}
+            hasMore={hasMoreGithubProjects}
+          />
         </div>
       </div>
-    );
+    </div>
+  );
 }
 
 export default DevelopmentSection;
